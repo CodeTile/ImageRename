@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaDataExtractor", "MetaDa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXIFextractor", "EXIFextractor\EXIFextractor.csproj", "{748E81BC-D466-4E39-99AA-372ACBC2BB1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRename", "ImageRename\ImageRename.csproj", "{1D0B2B64-129F-4C86-A555-07BF2B42013E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRename.Core", "ImageRename.Core\ImageRename.Core\ImageRename.Core.csproj", "{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{748E81BC-D466-4E39-99AA-372ACBC2BB1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{748E81BC-D466-4E39-99AA-372ACBC2BB1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{748E81BC-D466-4E39-99AA-372ACBC2BB1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D0B2B64-129F-4C86-A555-07BF2B42013E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0B2B64-129F-4C86-A555-07BF2B42013E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0B2B64-129F-4C86-A555-07BF2B42013E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0B2B64-129F-4C86-A555-07BF2B42013E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
