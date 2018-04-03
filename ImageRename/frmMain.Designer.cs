@@ -75,6 +75,7 @@
             this.btnProcess.TabIndex = 3;
             this.btnProcess.Text = "Process";
             this.btnProcess.UseVisualStyleBackColor = true;
+            this.btnProcess.Click += new System.EventHandler(this.btnProcess_Click);
             // 
             // label2
             // 

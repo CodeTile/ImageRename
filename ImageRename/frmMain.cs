@@ -35,5 +35,12 @@ namespace ImageRename
             }
         }
 
+        private void btnProcess_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(txtPath.Text))
+            {
+                throw new DirectoryNotFoundException(txtPath.Text);
+            }
+        }
     }
 }
