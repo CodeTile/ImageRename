@@ -11,7 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXIFextractor", "EXIFextrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRename", "ImageRename\ImageRename.csproj", "{1D0B2B64-129F-4C86-A555-07BF2B42013E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRename.Core", "ImageRename.Core\ImageRename.Core\ImageRename.Core.csproj", "{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRename.Core", "ImageRename.Core\ImageRename.Core\ImageRename.Core.csproj", "{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRename.Test", "ImageRename.Test\ImageRename.Test.csproj", "{3A5EFAE7-371F-4155-A96D-20859FC7A403}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1C0FD8E-E9BA-44CE-8DB0-391D1FED5960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A5EFAE7-371F-4155-A96D-20859FC7A403}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5EFAE7-371F-4155-A96D-20859FC7A403}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5EFAE7-371F-4155-A96D-20859FC7A403}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5EFAE7-371F-4155-A96D-20859FC7A403}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
