@@ -6,26 +6,42 @@ namespace ImageRename.Core.Model
 {
     public class ImageFile : IImageFile
     {
-        public ImageFile(string path)
+        public ImageFile(string path, bool suppressExifError=true)
         {
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException(path);
             }
             FileDetails = new FileInfo(path);
-            ReadExif();
+            ReadExif(suppressExifError);
         }
 
-        private void ReadExif()
+        private void ReadExif(bool suppressExifError = false)
         {
-            using (var reader = new ExifReader(FileDetails.FullName))
-            {
-                // Extract the tag data using the ExifTags enumeration
-                if (reader.GetTagValue<DateTime>(ExifTags.DateTimeDigitized,
-                                                out DateTime datePictureTaken))
+            try
                 {
-                    ImageCreated = datePictureTaken;
+                using (var reader = new ExifReader(FileDetails.FullName))
+                {
+                    // Extract the tag data using the ExifTags enumeration
+                    if (reader.GetTagValue<DateTime>(ExifTags.DateTimeDigitized,
+                                                    out DateTime datePictureTaken))
+                    {
+                        ImageCreated = datePictureTaken;
+                    }
                 }
+
+            }
+            catch(ExifLibException)
+            {
+                if(!suppressExifError)
+                {
+                    throw;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
@@ -35,14 +51,17 @@ namespace ImageRename.Core.Model
         {
             get
             {
-                return NewFileName != FileDetails.Name.Replace($".{FileDetails.Extension}", string.Empty);
+                return NewFileName!=null &&
+                      NewFileName != FileDetails.Name.Replace($".{FileDetails.Extension}", string.Empty);
             }
         }
+
         public string NewFilePath
         {
             get
             {
-                if (FileDetails == null ||
+                if (!NeedsRenaming ||
+                    FileDetails == null ||
                       !File.Exists(FileDetails.FullName))
                 {
                     return null;

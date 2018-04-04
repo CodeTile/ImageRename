@@ -9,6 +9,7 @@ namespace ImageRename.Test.Model
     public class ImageFileTests
     {
         private string GetGoodJpegPath => Path.GetFullPath(".\\Test Files\\JPG\\Good.jpg");
+        private string GetBadJpegPath => Path.GetFullPath(".\\Test Files\\JPG\\Bad.jpg");
 
         [TestMethod]
         public void ConstructorTest01()
@@ -21,6 +22,19 @@ namespace ImageRename.Test.Model
             Assert.AreEqual("20180310_115353", actual.NewFileName);
             var expectedNewFilePath = GetGoodJpegPath.Replace("Good", actual.NewFileName);
             Assert.AreEqual(expectedNewFilePath, actual.NewFilePath);
+        }
+
+        [TestMethod]
+        public void ConstructorTest02()
+        {
+            var actual = new ImageFile(GetBadJpegPath);
+            Assert.IsNotNull(actual);
+            Assert.IsInstanceOfType(actual, typeof(IImageFile));
+
+            Assert.IsNull(actual.ImageCreated);
+            Assert.IsFalse(actual.NeedsRenaming);
+            Assert.IsNull(actual.NewFileName);
+            Assert.IsNull(actual.NewFilePath);
         }
     }
 }
