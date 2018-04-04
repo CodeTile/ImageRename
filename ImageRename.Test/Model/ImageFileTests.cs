@@ -14,7 +14,7 @@ namespace ImageRename.Test.Model
         [TestMethod]
         public void ConstructorTest01()
         {
-            var actual = new ImageFile(GetGoodJpegPath);
+            var actual = new ImageFileJpeg(GetGoodJpegPath);
             Assert.IsNotNull(actual);
             Assert.IsInstanceOfType(actual, typeof(IImageFile));
             Assert.AreEqual(Convert.ToDateTime("10 March 2018 11:53:53"), actual.ImageCreated);
@@ -27,7 +27,7 @@ namespace ImageRename.Test.Model
         [TestMethod]
         public void ConstructorTest02()
         {
-            var actual = new ImageFile(GetBadJpegPath);
+            var actual = new ImageFileJpeg(GetBadJpegPath);
             Assert.IsNotNull(actual);
             Assert.IsInstanceOfType(actual, typeof(IImageFile));
 

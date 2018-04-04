@@ -4,9 +4,9 @@ using ExifLib;
 
 namespace ImageRename.Core.Model
 {
-    public class ImageFile : IImageFile
+    public class ImageFileJpeg : IImageFile
     {
-        public ImageFile(string path, bool suppressExifError=true)
+        public ImageFileJpeg(string path, bool suppressExifError=true)
         {
             if (!File.Exists(path))
             {
@@ -71,6 +71,7 @@ namespace ImageRename.Core.Model
                 return retval;
             }
         }
+
         public string NewFileName
         {
             get
@@ -89,6 +90,10 @@ namespace ImageRename.Core.Model
                                         imageDate.Minute.ToString("00"),
                                         imageDate.Second.ToString("00"));
             }
+        }
+        public override string ToString()
+        {
+            return $"{NeedsRenaming} | {FileDetails.FullName}";
         }
     }
 }
