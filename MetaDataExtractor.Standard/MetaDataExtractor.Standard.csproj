@@ -1,0 +1,244 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="exif.xslt" />
+    <None Remove="resources\CanonMarkernote.txt" />
+    <None Remove="resources\CasioMarkernote.txt" />
+    <None Remove="resources\Commons.txt" />
+    <None Remove="resources\en\CanonMarkernote.txt" />
+    <None Remove="resources\en\CasioMarkernote.txt" />
+    <None Remove="resources\en\Commons.txt" />
+    <None Remove="resources\en\ExifInteropMarkernote.txt" />
+    <None Remove="resources\en\ExifMarkernote.txt" />
+    <None Remove="resources\en\FujiFilmMarkernote.txt" />
+    <None Remove="resources\en\GpsMarkernote.txt" />
+    <None Remove="resources\en\IptcMarkernote.txt" />
+    <None Remove="resources\en\JpegMarkernote.txt" />
+    <None Remove="resources\en\KodakMarkernote.txt" />
+    <None Remove="resources\en\KyoceraMarkernote.txt" />
+    <None Remove="resources\en\NikonTypeMarkernote.txt" />
+    <None Remove="resources\en\OlympusMarkernote.txt" />
+    <None Remove="resources\en\PanasonicMarkernote.txt" />
+    <None Remove="resources\en\PentaxMarkernote.txt" />
+    <None Remove="resources\en\SonyMarkernote.txt" />
+    <None Remove="resources\ExifInteropMarkernote.txt" />
+    <None Remove="resources\ExifMarkernote.txt" />
+    <None Remove="resources\FujiFilmMarkernote.txt" />
+    <None Remove="resources\GpsMarkernote.txt" />
+    <None Remove="resources\IptcMarkernote.txt" />
+    <None Remove="resources\JpegMarkernote.txt" />
+    <None Remove="resources\KodakMarkernote.txt" />
+    <None Remove="resources\KyoceraMarkernote.txt" />
+    <None Remove="resources\NikonTypeMarkernote.txt" />
+    <None Remove="resources\OlympusMarkernote.txt" />
+    <None Remove="resources\PanasonicMarkernote.txt" />
+    <None Remove="resources\PentaxMarkernote.txt" />
+    <None Remove="resources\SonyMarkernote.txt" />
+    <None Remove="sampleFile.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="exif.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sampleFile.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="resources\CanonMarkernote.txt" />
+    <EmbeddedResource Include="resources\CasioMarkernote.txt" />
+    <EmbeddedResource Include="resources\Commons.txt" />
+    <EmbeddedResource Include="resources\en\CanonMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\CasioMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\Commons.txt" />
+    <EmbeddedResource Include="resources\en\ExifInteropMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\ExifMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\FujiFilmMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\GpsMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\IptcMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\JpegMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\KodakMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\KyoceraMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\NikonTypeMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\OlympusMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\PanasonicMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\PentaxMarkernote.txt" />
+    <EmbeddedResource Include="resources\en\SonyMarkernote.txt" />
+    <EmbeddedResource Include="resources\ExifInteropMarkernote.txt" />
+    <EmbeddedResource Include="resources\ExifMarkernote.txt" />
+    <EmbeddedResource Include="resources\FujiFilmMarkernote.txt" />
+    <EmbeddedResource Include="resources\GpsMarkernote.txt" />
+    <EmbeddedResource Include="resources\IptcMarkernote.txt" />
+    <EmbeddedResource Include="resources\JpegMarkernote.txt" />
+    <EmbeddedResource Include="resources\KodakMarkernote.txt" />
+    <EmbeddedResource Include="resources\KyoceraMarkernote.txt" />
+    <EmbeddedResource Include="resources\NikonTypeMarkernote.txt" />
+    <EmbeddedResource Include="resources\OlympusMarkernote.txt" />
+    <EmbeddedResource Include="resources\PanasonicMarkernote.txt" />
+    <EmbeddedResource Include="resources\PentaxMarkernote.txt" />
+    <EmbeddedResource Include="resources\SonyMarkernote.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="com\codec\jpeg\JPEGDecodeParam.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\codec\jpeg\JPEGHuffmanTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\codec\jpeg\JPEGQTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\imaging\jpg\JpegMetadataReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\imaging\jpg\JpegProcessingException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\imaging\jpg\JpegSegmentReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\lang\CompoundException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\lang\Rational.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\AbstractDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\AbstractTagDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\AbstractNikonTypeDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\CanonDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\CanonDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\CasioType1Descriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\CasioType1Directory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\ExifDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\ExifDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\ExifInteropDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\ExifInteropDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\ExifProcessingException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\ExifReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\FujifilmDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\FujifilmDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\GpsDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\GpsDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\NikonType1Descriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\NikonType1Directory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\NikonType2Descriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\NikonType2Directory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\OlympusDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\exif\OlympusDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\IMetadataReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\iptc\IptcDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\iptc\IptcDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\iptc\IptcProcessingException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\iptc\IptcReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\jpeg\JpegCommentDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\jpeg\JpegCommentDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\jpeg\JpegCommentReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\jpeg\JpegComponent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\jpeg\JpegDescriptor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\jpeg\JpegDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\jpeg\JpegReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\Metadata.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\MetadataException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\drew\metadata\Tag.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\utils\bundle\ResourceBundle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="com\utils\Utils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="MetadataExtractor.dtd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MetadataExtractorNew.dtd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

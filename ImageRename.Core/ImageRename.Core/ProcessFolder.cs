@@ -89,7 +89,7 @@ namespace ImageRename.Core
                     {
                         case "jpg":
                         case "jpeg":
-                            _images.Add(new ImageFileJpeg(file));
+                            _images.Add(new ImageFile(file));
                             break;
 
                         default:

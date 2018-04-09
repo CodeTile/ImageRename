@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageRename.Test", "ImageRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExifLib.Standard", "..\..\..\Published\Nuget\ExifLib.Standard\ExifLib.Standard\ExifLib.Standard.csproj", "{615F3537-4D12-428E-BC72-4C41A595F3A6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaDataExtractor.Standard", "MetaDataExtractor.Standard\MetaDataExtractor.Standard.csproj", "{BB3DE7D2-8A62-4EB9-B742-A51260AC1E63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{615F3537-4D12-428E-BC72-4C41A595F3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{615F3537-4D12-428E-BC72-4C41A595F3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{615F3537-4D12-428E-BC72-4C41A595F3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB3DE7D2-8A62-4EB9-B742-A51260AC1E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3DE7D2-8A62-4EB9-B742-A51260AC1E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3DE7D2-8A62-4EB9-B742-A51260AC1E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3DE7D2-8A62-4EB9-B742-A51260AC1E63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

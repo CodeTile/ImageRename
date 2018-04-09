@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Published\Nuget\ExifLib.Standard\ExifLib.Standard\ExifLib.Standard.csproj" />
+    <ProjectReference Include="..\..\MetaDataExtractor.Standard\MetaDataExtractor.Standard.csproj" />
   </ItemGroup>
 
 </Project>

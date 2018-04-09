@@ -286,3 +286,5 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+/ImageRename.Test/Test Files/CR2/Thumbs.db
+/ImageRename.Test/Test Files/NEF/Thumbs.db
