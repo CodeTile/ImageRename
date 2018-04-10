@@ -78,7 +78,7 @@ namespace ImageRename.Core
 
         private void FindFiles(string root)
         {
-            string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a".Split(';');
+            string[] sFilter = "jpg;jpeg;cr2;nef;mov".Split(';');
             foreach (var file in Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories))
 
             {
@@ -91,10 +91,6 @@ namespace ImageRename.Core
                         case "jpeg":
                         case "cr2":
                             _images.Add(new ImageFile(file));
-                            break;
-                        case "mov":
-                        case "m4a":
-                            _images.Add(new VideoFile(file));
                             break;
                         default:
                             break;

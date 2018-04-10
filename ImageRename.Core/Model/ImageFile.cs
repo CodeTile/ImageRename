@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 namespace ImageRename.Core.Model
 {
-    public class  ImageFile : BaseImageFile, IImageFile
+    public class ImageFile : BaseImageFile, IImageFile
     {
         public ImageFile(string path)
         {
@@ -35,7 +35,8 @@ namespace ImageRename.Core.Model
                             ImageCreated = Convert.ToDateTime(tag.LastChild.InnerText);
                             break;
                         }
-                    }//end tags
+                    }  //end tags
+
                     if (ImageCreated != null) { break; }
                 }//end directorys
                 if (ImageCreated != null) { break; }
