@@ -44,10 +44,10 @@ namespace ImageRename.Core
         {
 
             var e = new ReportFindFilesProgressEventArgs();
-            if(_images!=null)
+            if (_images != null)
             {
                 e.TotalFileCount = _images.Count();
-                e.FilesToRename = _images.Count(c=>c.NeedsRenaming);
+                e.FilesToRename = _images.Count(c => c.NeedsRenaming);
             }
 
             OnReportFilesFoundProgress(e);
@@ -92,6 +92,8 @@ namespace ImageRename.Core
             {
                 File.Move(sourceFile, destinationFile);
             }
+            item.FileDetails = new FileInfo(destinationFile);
+            ReportFindFileProgress();
 
             ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
         }

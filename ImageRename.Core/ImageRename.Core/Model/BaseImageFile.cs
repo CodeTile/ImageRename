@@ -8,7 +8,7 @@ namespace ImageRename.Core.Model
 {
     public abstract class BaseImageFile
     {
-        public FileInfo FileDetails { get; internal set; }
+        public FileInfo FileDetails { get; set; }
         public DateTime? ImageCreated { get; internal set; }
 
         public string NewFileName

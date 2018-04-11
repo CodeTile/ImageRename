@@ -5,7 +5,7 @@ namespace ImageRename.Core.Model
 {
     public interface IImageFile
     {
-        FileInfo FileDetails { get; }
+        FileInfo FileDetails { get; set; }
         DateTime? ImageCreated { get; }
         bool NeedsRenaming { get; }
         string NewFileName { get; }
