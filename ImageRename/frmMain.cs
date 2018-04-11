@@ -20,11 +20,21 @@ namespace ImageRename
             backgroundWorker1.RunWorkerCompleted += BackgroundWorker1_RunWorkerCompleted;
 
         }
-
-        private void _processor_ReportProgress(object sender, ReportProgressEventArgs e)
+        private enum ProgressReporting
+        {
+            FileCountProgress = 10,
+            RenameProgress = 20
+        }
+        private void _processor_ReportRenameProgress(object sender, ReportRenameProgressEventArgs e)
         {
             var msg = e.Message.ToString();
-            backgroundWorker1.ReportProgress(0, msg);
+            backgroundWorker1.ReportProgress((int)ProgressReporting.RenameProgress, msg);
+        }
+
+        private void _processor_ReportFoundFileProgress(object sender, ReportFindFilesProgressEventArgs e)
+        {
+            string msg = $"{e.FilesToRename}/ {e.TotalFileCount}";
+            backgroundWorker1.ReportProgress((int)ProgressReporting.FileCountProgress, msg);
         }
 
         private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -36,7 +46,14 @@ namespace ImageRename
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            txtProgress.AppendText($"{e.UserState.ToString()}\r\n");
+            if (e.ProgressPercentage == (int)ProgressReporting.FileCountProgress)
+            {
+                txtFileSummary.Text = e.UserState.ToString();
+            }
+            else
+            {
+                txtProgress.AppendText($"{e.UserState.ToString()}\r\n");
+            }
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -45,10 +62,12 @@ namespace ImageRename
             {
                 DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"])
             };
-            _processor.ReportProgress += _processor_ReportProgress;
+            _processor.ReportRenameProgress += _processor_ReportRenameProgress;
+            _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
             backgroundWorker1.ReportProgress(0, "Starting");
             _processor.Process(e.Argument.ToString());
         }
+
 
         private void btnFindPath_Click(object sender, EventArgs e)
         {

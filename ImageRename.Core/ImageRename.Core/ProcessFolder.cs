@@ -1,41 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using ImageRename.Core.Model;
 
 namespace ImageRename.Core
 {
-    public class ReportProgressEventArgs : EventArgs
-    {
-        public string Message { get; set; }
-    }
+
     public class ProcessFolder
     {
 
         public bool DebugDontRenameFile { get; set; } = false;
-        private List<IImageFile> _images;
+        private ObservableCollection<IImageFile> _images;
         private string _rootFolder;
 
-        #region ProgressEvent
-        public event EventHandler<ReportProgressEventArgs> ReportProgress;
-        protected virtual void OnReportProgress(ReportProgressEventArgs e)
+        #region RenameProgressEvent
+        public event EventHandler<ReportRenameProgressEventArgs> ReportRenameProgress;
+        protected virtual void OnReportRenaimingProgress(ReportRenameProgressEventArgs e)
         {
-            var handler = ReportProgress;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            ReportRenameProgress?.Invoke(this, e);
         }
         #endregion
 
-        private void ReportProgressLog(string message)
+        #region FindFileProgressEvent
+        public event EventHandler<ReportFindFilesProgressEventArgs> ReportFoundFileProgress;
+        protected virtual void OnReportFilesFoundProgress(ReportFindFilesProgressEventArgs e)
+        {
+            ReportFoundFileProgress?.Invoke(this, e);
+        }
+        #endregion
+
+        private void ReportRenamingProgress(string message)
         {
             System.Diagnostics.Debug.WriteLine(message);
-            var e = new ReportProgressEventArgs()
+            var e = new ReportRenameProgressEventArgs()
             { Message = message };
 
-            OnReportProgress(e);
+            OnReportRenaimingProgress(e);
+        }
+
+        private void ReportFindFileProgress()
+        {
+
+            var e = new ReportFindFilesProgressEventArgs();
+            if(_images!=null)
+            {
+                e.TotalFileCount = _images.Count();
+                e.FilesToRename = _images.Count(c=>c.NeedsRenaming);
+            }
+
+            OnReportFilesFoundProgress(e);
         }
 
         public void Process(string root)
@@ -45,9 +60,15 @@ namespace ImageRename.Core
                 throw new DirectoryNotFoundException(root);
             }
             _rootFolder = root;
-            _images = new List<IImageFile>();
+            _images = new ObservableCollection<IImageFile>();
+            _images.CollectionChanged += _images_CollectionChanged;
             FindFiles(root);
             RenameFiles();
+        }
+
+        private void _images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            ReportFindFileProgress();
         }
 
         private void RenameFiles()
@@ -72,13 +93,13 @@ namespace ImageRename.Core
                 File.Move(sourceFile, destinationFile);
             }
 
-            ReportProgressLog($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
+            ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
         }
 
 
         private void FindFiles(string root)
         {
-            string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a".Split(';');
+            string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
             foreach (var file in Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories))
 
             {
@@ -93,6 +114,7 @@ namespace ImageRename.Core
                             _images.Add(new ImageFile(file));
                             break;
                         case "mov":
+                        case "mp4":
                         case "m4a":
                             _images.Add(new VideoFile(file));
                             break;
