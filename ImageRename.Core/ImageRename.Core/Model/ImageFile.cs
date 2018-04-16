@@ -5,13 +5,14 @@ namespace ImageRename.Core.Model
 {
     public class  ImageFile : BaseImageFile, IImageFile
     {
-        public ImageFile(string path)
+        public ImageFile(string path, string processedPath=null)
         {
 
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException(path);
             }
+            ProcessedPath = processedPath;
             FileDetails = new FileInfo(path);
             ExtractCreatedDate();
         }

@@ -10,7 +10,6 @@ namespace ImageRename
     {
         private ProcessFolder _processor;
 
-
         public frmMain()
         {
             InitializeComponent();
@@ -42,6 +41,7 @@ namespace ImageRename
             txtProgress.AppendText("#######################################\r\n");
             txtProgress.AppendText("###          Finished               ###\r\n");
             txtProgress.AppendText("#######################################\r\n");
+            btnProcess.Enabled = true;
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -60,7 +60,9 @@ namespace ImageRename
         {
             _processor = new ProcessFolder()
             {
-                DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"])
+                DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]),
+                MoveToProcessedByYear = chkMoveToProcessedByYear.Checked,
+                ProcessedPath = txtProcessedPath.Text
             };
             _processor.ReportRenameProgress += _processor_ReportRenameProgress;
             _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
@@ -81,7 +83,21 @@ namespace ImageRename
             if (result == DialogResult.OK)
             {
                 txtPath.Text = folderBrowserDialog1.SelectedPath.ToString();
+                SetDefaultProcessedPath();
             }
+        }
+
+        private void SetDefaultProcessedPath()
+        {
+            if (string.IsNullOrEmpty(txtPath.Text))
+            {
+                txtProcessedPath.Clear();
+            }
+            else
+            {
+                txtProcessedPath.Text = Path.GetFullPath(Path.Combine(txtPath.Text, "..\\Processed"));
+            }
+
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -96,7 +112,29 @@ namespace ImageRename
         private void btnProcess_Click(object sender, EventArgs e)
         {
             txtProgress.Clear();
+            txtFileSummary.Clear();
             backgroundWorker1.RunWorkerAsync(txtPath.Text);
+        }
+
+        private void btnProcessedBrowse_Click(object sender, EventArgs e)
+        {
+
+            if (Directory.Exists(txtProcessedPath.Text))
+            {
+                folderBrowserDialog1.SelectedPath = txtProcessedPath.Text;
+            }
+            folderBrowserDialog1.ShowNewFolderButton = true;
+
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                txtProcessedPath.Text = folderBrowserDialog1.SelectedPath.ToString();
+            }
+        }
+
+        private void txtPath_Leave(object sender, EventArgs e)
+        {
+            SetDefaultProcessedPath();
         }
     }
 }

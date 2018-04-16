@@ -37,6 +37,10 @@
             this.txtFileSummary = new System.Windows.Forms.TextBox();
             this.txtProgress = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.chkMoveToProcessedByYear = new System.Windows.Forms.CheckBox();
+            this.btnProcessedBrowse = new System.Windows.Forms.Button();
+            this.txtProcessedPath = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -56,6 +60,7 @@
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new System.Drawing.Size(529, 20);
             this.txtPath.TabIndex = 1;
+            this.txtPath.Leave += new System.EventHandler(this.txtPath_Leave);
             // 
             // btnFindPath
             // 
@@ -70,7 +75,7 @@
             // 
             // btnProcess
             // 
-            this.btnProcess.Location = new System.Drawing.Point(27, 137);
+            this.btnProcess.Location = new System.Drawing.Point(31, 169);
             this.btnProcess.Name = "btnProcess";
             this.btnProcess.Size = new System.Drawing.Size(131, 33);
             this.btnProcess.TabIndex = 3;
@@ -81,7 +86,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 57);
+            this.label2.Location = new System.Drawing.Point(28, 94);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 13);
             this.label2.TabIndex = 4;
@@ -90,7 +95,7 @@
             // txtFileSummary
             // 
             this.txtFileSummary.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtFileSummary.Location = new System.Drawing.Point(108, 57);
+            this.txtFileSummary.Location = new System.Drawing.Point(108, 94);
             this.txtFileSummary.Multiline = true;
             this.txtFileSummary.Name = "txtFileSummary";
             this.txtFileSummary.ReadOnly = true;
@@ -103,19 +108,64 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtProgress.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProgress.Location = new System.Drawing.Point(31, 176);
+            this.txtProgress.Location = new System.Drawing.Point(31, 208);
             this.txtProgress.Multiline = true;
             this.txtProgress.Name = "txtProgress";
             this.txtProgress.ReadOnly = true;
             this.txtProgress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtProgress.Size = new System.Drawing.Size(641, 173);
+            this.txtProgress.Size = new System.Drawing.Size(641, 141);
             this.txtProgress.TabIndex = 6;
+            // 
+            // chkMoveToProcessedByYear
+            // 
+            this.chkMoveToProcessedByYear.AutoSize = true;
+            this.chkMoveToProcessedByYear.Checked = true;
+            this.chkMoveToProcessedByYear.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkMoveToProcessedByYear.Location = new System.Drawing.Point(108, 49);
+            this.chkMoveToProcessedByYear.Name = "chkMoveToProcessedByYear";
+            this.chkMoveToProcessedByYear.Size = new System.Drawing.Size(172, 17);
+            this.chkMoveToProcessedByYear.TabIndex = 7;
+            this.chkMoveToProcessedByYear.Text = "Move file to processed by Year";
+            this.chkMoveToProcessedByYear.UseVisualStyleBackColor = true;
+            // 
+            // btnProcessedBrowse
+            // 
+            this.btnProcessedBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnProcessedBrowse.Location = new System.Drawing.Point(643, 70);
+            this.btnProcessedBrowse.Name = "btnProcessedBrowse";
+            this.btnProcessedBrowse.Size = new System.Drawing.Size(29, 23);
+            this.btnProcessedBrowse.TabIndex = 10;
+            this.btnProcessedBrowse.Text = "...";
+            this.btnProcessedBrowse.UseVisualStyleBackColor = true;
+            this.btnProcessedBrowse.Click += new System.EventHandler(this.btnProcessedBrowse_Click);
+            // 
+            // txtProcessedPath
+            // 
+            this.txtProcessedPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProcessedPath.Location = new System.Drawing.Point(108, 72);
+            this.txtProcessedPath.Name = "txtProcessedPath";
+            this.txtProcessedPath.Size = new System.Drawing.Size(529, 20);
+            this.txtProcessedPath.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(21, 72);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(81, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Processed path";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 361);
+            this.Controls.Add(this.btnProcessedBrowse);
+            this.Controls.Add(this.txtProcessedPath);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.chkMoveToProcessedByYear);
             this.Controls.Add(this.txtProgress);
             this.Controls.Add(this.txtFileSummary);
             this.Controls.Add(this.label2);
@@ -143,6 +193,10 @@
         private System.Windows.Forms.TextBox txtFileSummary;
         private System.Windows.Forms.TextBox txtProgress;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.CheckBox chkMoveToProcessedByYear;
+        private System.Windows.Forms.Button btnProcessedBrowse;
+        private System.Windows.Forms.TextBox txtProcessedPath;
+        private System.Windows.Forms.Label label3;
     }
 }
 

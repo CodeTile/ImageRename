@@ -12,6 +12,9 @@ namespace ImageRename.Core
     {
 
         public bool DebugDontRenameFile { get; set; } = false;
+        public bool MoveToProcessedByYear { get; set; }
+        public string ProcessedPath { get; set; }
+
         private ObservableCollection<IImageFile> _images;
         private string _rootFolder;
 
@@ -101,6 +104,13 @@ namespace ImageRename.Core
 
         private void FindFiles(string root)
         {
+            if(MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
+            {
+                if(!Directory.Exists(ProcessedPath))
+                {
+                    Directory.CreateDirectory(ProcessedPath);
+                }
+            }
             string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
             foreach (var file in Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories))
 
@@ -113,12 +123,12 @@ namespace ImageRename.Core
                         case "jpg":
                         case "jpeg":
                         case "cr2":
-                            _images.Add(new ImageFile(file));
+                            _images.Add(new ImageFile(file, ProcessedPath));
                             break;
                         case "mov":
                         case "mp4":
                         case "m4a":
-                            _images.Add(new VideoFile(file));
+                            _images.Add(new VideoFile(file, ProcessedPath));
                             break;
                         default:
                             break;

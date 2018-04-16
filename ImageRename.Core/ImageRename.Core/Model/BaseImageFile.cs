@@ -10,7 +10,7 @@ namespace ImageRename.Core.Model
     {
         public FileInfo FileDetails { get; set; }
         public DateTime? ImageCreated { get; internal set; }
-
+        public string ProcessedPath { get; set; } = null;
         public string NewFileName
         {
             get
@@ -42,22 +42,59 @@ namespace ImageRename.Core.Model
             }
         }
 
+        public string GetQuarter
+        {
+            get
+            {
+                string retval = null;
+                var date = (DateTime)ImageCreated;
+                if (date.Month<4)
+                {
+                    retval = "Q1";
+                }
+                else if(date.Month>3 && date.Month <7)
+                {
+                    retval = "Q2";
+                }
+                else if(date.Month>6 && date.Month <10)
+                {
+                    retval = "Q3";
+                }
+                else if(date.Month >9)
+                {
+                    retval = "Q4";
+                }
+                return retval;
+            }
+        }
         public string NewFilePath
         {
             get
             {
+                string processedPath = ProcessedPath;
+                if (string.IsNullOrEmpty(processedPath))
+                {
+                    processedPath = FileDetails.DirectoryName;
+                }
+                else
+                {
+                    processedPath = Path.Combine(processedPath,
+                                                ((DateTime)ImageCreated).Year.ToString(),
+                                                GetQuarter);
+                }
+
                 if (!NeedsRenaming ||
                     FileDetails == null ||
                       !File.Exists(FileDetails.FullName))
                 {
                     return null;
                 }
-                var retval = Path.Combine(FileDetails.DirectoryName,
+                
+                var retval = Path.Combine(processedPath,
                                            NewFileName + FileDetails.Extension);
                 return retval;
             }
         }
-
 
         public override string ToString()
         {

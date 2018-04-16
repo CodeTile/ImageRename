@@ -4,12 +4,13 @@ namespace ImageRename.Core.Model
 {
     public class VideoFile : BaseImageFile, IImageFile
     {
-        public VideoFile(string path)
+        public VideoFile(string path, string processedPath=null)
         {
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException(path);
             }
+            ProcessedPath = processedPath;
             FileDetails = new FileInfo(path);
             GetDate();
         }
@@ -21,14 +22,13 @@ namespace ImageRename.Core.Model
                 return;
             }
 
-            if (FileDetails.CreationTime < FileDetails.LastWriteTime)
+            ImageCreated = FileDetails.LastWriteTime;
+
+            if (FileDetails.CreationTime < ImageCreated)
             {
                 ImageCreated = FileDetails.CreationTime;
             }
-            else
-            {
-                ImageCreated = FileDetails.LastWriteTime;
-            }
+
         }
     }
 }

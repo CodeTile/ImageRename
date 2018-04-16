@@ -48,7 +48,7 @@ namespace ImageRename.Test
             Assert.IsTrue(files.Contains($"{targetPath}\\mov\\20160124_141022.MOV"), "Missing file \r\n\\mov\\20160124_141022.MOV");
             //Assert.IsTrue(files.Contains($"{targetPath}\\NEF\\Bad.nef"), "Missing file");
 
-            // Directory.Delete(targetPath, true);
+            Directory.Delete(targetPath, true);
         }
 
     }

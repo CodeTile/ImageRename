@@ -79,6 +79,9 @@
     <Content Include="Test Files\mov\20160124_141026.MOV">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Test Files\mov\Good2.MOV">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Test Files\mov\Good.MOV">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
