@@ -8,7 +8,7 @@ namespace ImageRename.Core.Model
 {
     public class ImageFileNEF : BaseImageFile, IImageFile
     {
-        public ImageFileNEF(string path)
+        public ImageFileNEF(string path, string processedPath = null) : base(path, processedPath)
         {
             throw new NotImplementedException();
             //if (!File.Exists(path))

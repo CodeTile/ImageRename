@@ -1,19 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
+
 namespace ImageRename.Core.Model
 {
-    public class  ImageFile : BaseImageFile, IImageFile
+    public class ImageFile : BaseImageFile, IImageFile
     {
-        public ImageFile(string path, string processedPath=null)
-        {
-
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException(path);
-            }
-            ProcessedPath = processedPath;
-            FileDetails = new FileInfo(path);
+        public ImageFile(string path, string processedPath = null):base(path,processedPath)
+        {           
             ExtractCreatedDate();
         }
 
