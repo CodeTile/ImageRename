@@ -65,10 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Test Files\CR2\20180408_122634.CR2">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Test Files\CR2\Good.CR2">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Test Files\JPG\Bad.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -77,10 +77,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Test Files\mov\20160124_141026.MOV">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Test Files\mov\Good2.MOV">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Test Files\mov\Good.MOV">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

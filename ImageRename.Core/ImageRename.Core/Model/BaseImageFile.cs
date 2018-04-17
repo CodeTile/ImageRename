@@ -4,22 +4,22 @@ using System.Linq;
 
 namespace ImageRename.Core.Model
 {
-    public abstract class BaseImageFile
+    public abstract class BaseImageFile : IImageFile
     {
+        private string _processedDirectory = null;
         public BaseImageFile(string path, string processedPath = null)
         {
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException(path);
             }
-            ProcessedPath = processedPath;
+            _processedDirectory = processedPath;
             FileDetails = new FileInfo(path);
         }
         public FileInfo FileDetails { get; set; }
         public DateTime? ImageCreated { get; internal set; }
-        public string ProcessedPath { get; set; } = null;
 
-        public string NewFileName
+        public string ProcessedFileName
         {
             get
             {
@@ -45,8 +45,8 @@ namespace ImageRename.Core.Model
             {
                 var originalExtension = FileDetails.Name.Split('.').Last();
                 var originalFileName = FileDetails.Name.Split('\\').Last().Replace($".{originalExtension}", string.Empty);
-                return NewFileName != null &&
-                      NewFileName != originalFileName;
+                return ProcessedFileName != null &&
+                      ProcessedFileName != originalFileName;
             }
         }
 
@@ -76,11 +76,11 @@ namespace ImageRename.Core.Model
             }
         }
 
-        public string NewFilePath
+        public string ProcessedFullName
         {
             get
             {
-                string processedPath = ProcessedPath;
+                string processedPath = _processedDirectory;
                 if (string.IsNullOrEmpty(processedPath))
                 {
                     processedPath = FileDetails.DirectoryName;
@@ -100,14 +100,50 @@ namespace ImageRename.Core.Model
                 }
 
                 var retval = Path.Combine(processedPath,
-                                           NewFileName + FileDetails.Extension);
+                                           ProcessedFileName + FileDetails.Extension);
                 return retval;
             }
         }
 
+
+        public string ProcessedDirectory
+        {
+            get
+            {
+                string retval = null;
+                if (!string.IsNullOrEmpty(ProcessedFullName))
+                {
+                    var fn = ProcessedFullName.Split('\\').Last();
+                    retval = ProcessedFullName.Replace(fn, string.Empty);
+                }
+                return retval;
+            }
+        }
+
+        public bool NeedsMoving
+        {
+            get
+            {
+                bool retval = !string.IsNullOrEmpty(ProcessedDirectory)
+                            && !FileDetails.DirectoryName.Equals(ProcessedDirectory);
+                return retval;
+            }
+        }
+
+
         public override string ToString()
         {
-            return $"{NeedsRenaming} | {FileDetails.FullName}";
+            string move = string.Empty;
+            string rename = string.Empty;
+            if(NeedsRenaming)
+            {
+                rename = "Rename";
+            }
+            if (NeedsMoving)
+            {
+                move = "Move";
+            }
+            return $"{rename.PadRight(7)} | {move.PadRight(7)} |  {FileDetails.FullName}";
         }
     }
 }

@@ -8,7 +8,9 @@ namespace ImageRename.Core.Model
         FileInfo FileDetails { get; set; }
         DateTime? ImageCreated { get; }
         bool NeedsRenaming { get; }
-        string NewFileName { get; }
-        string NewFilePath { get; }
+        bool NeedsMoving { get; }
+        string ProcessedFileName { get; }
+        string ProcessedFullName { get; }
+        string ProcessedDirectory { get; }
     }
 }
