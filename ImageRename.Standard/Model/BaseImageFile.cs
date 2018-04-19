@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace ImageRename.Core.Model
+namespace ImageRename.Standard.Model
 {
     public abstract class BaseImageFile
     {

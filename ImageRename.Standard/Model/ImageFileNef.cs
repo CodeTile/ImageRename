@@ -4,7 +4,7 @@
 //using System.Drawing.Imaging;
 //using System.IO;
 using System;
-namespace ImageRename.Core.Model
+namespace ImageRename.Standard.Model
 {
     public class ImageFileNEF : BaseImageFile, IImageFile
     {

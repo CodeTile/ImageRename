@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ImageRename.Core.Model;
+using ImageRename.Standard.Model;
 
-namespace ImageRename.Core
+namespace ImageRename.Standard
 {
 
     public class ProcessFolder

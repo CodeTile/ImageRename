@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using ImageRename.Core;
+using ImageRename.Standard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImageRename.Test

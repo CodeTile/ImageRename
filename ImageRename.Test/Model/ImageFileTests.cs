@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using ImageRename.Core.Model;
+using ImageRename.Standard.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ImageRename.Test.Model

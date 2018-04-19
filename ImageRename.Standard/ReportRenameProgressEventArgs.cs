@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImageRename.Core
+namespace ImageRename.Standard
 {
     public class ReportRenameProgressEventArgs : EventArgs
     {

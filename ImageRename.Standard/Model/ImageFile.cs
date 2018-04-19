@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml;
 
-namespace ImageRename.Core.Model
+namespace ImageRename.Standard.Model
 {
     public class ImageFile : BaseImageFile, IImageFile
     {

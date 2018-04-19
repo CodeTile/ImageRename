@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace ImageRename.Core.Model
+namespace ImageRename.Standard.Model
 {
     public class VideoFile : BaseImageFile, IImageFile
     {

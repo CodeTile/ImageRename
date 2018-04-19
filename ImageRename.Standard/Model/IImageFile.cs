@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ImageRename.Core.Model
+namespace ImageRename.Standard.Model
 {
     public interface IImageFile
     {

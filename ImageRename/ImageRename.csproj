@@ -80,9 +80,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImageRename.Core\ImageRename.Core\ImageRename.Core.csproj">
-      <Project>{b1c0fd8e-e9ba-44ce-8db0-391d1fed5960}</Project>
-      <Name>ImageRename.Core</Name>
+    <ProjectReference Include="..\ImageRename.Standard\ImageRename.Standard.csproj">
+      <Project>{661b94e8-4f45-4d1c-8070-b90f98db4eac}</Project>
+      <Name>ImageRename.Standard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

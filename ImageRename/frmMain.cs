@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-using ImageRename.Core;
+using ImageRename.Standard;
 
 namespace ImageRename
 {
