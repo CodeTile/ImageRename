@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using ImageRename.Core.Model;
 
 namespace ImageRename.Core
 {
+
     public class ProcessFolder
     {
 
@@ -13,7 +15,7 @@ namespace ImageRename.Core
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
 
-        public ObservableCollection<IImageFile> Images;
+        private ObservableCollection<IImageFile> _images;
         private string _rootFolder;
 
         #region RenameProgressEvent
@@ -45,10 +47,10 @@ namespace ImageRename.Core
         {
 
             var e = new ReportFindFilesProgressEventArgs();
-            if (Images != null)
+            if (_images != null)
             {
-                e.TotalFileCount = Images.Count();
-                e.FilesToRename = Images.Count(c => c.NeedsRenaming);
+                e.TotalFileCount = _images.Count();
+                e.FilesToRename = _images.Count(c => c.NeedsRenaming);
             }
 
             OnReportFilesFoundProgress(e);
@@ -61,8 +63,8 @@ namespace ImageRename.Core
                 throw new DirectoryNotFoundException(root);
             }
             _rootFolder = root;
-            Images = new ObservableCollection<IImageFile>();
-            Images.CollectionChanged += _images_CollectionChanged;
+            _images = new ObservableCollection<IImageFile>();
+            _images.CollectionChanged += _images_CollectionChanged;
             FindFiles(root);
             RenameFiles();
         }
@@ -74,36 +76,23 @@ namespace ImageRename.Core
 
         private void RenameFiles()
         {
-            if (Images == null || !Images.Any(a => a.NeedsRenaming == true))
+            if (_images == null || !_images.Any(a => a.NeedsRenaming == true))
             {
                 return;
             }
 
-            foreach (var item in Images.Where(w => w.NeedsRenaming ))
+            foreach (var item in _images.Where(w => w.NeedsRenaming == true))
             {
                 RenameFile(item);
-            }
-            foreach (var item in Images.Where(w=>w.NeedsMoving))
-            {
-                if(!File.Exists(item.FileDetails.FullName))
-                {
-                    continue;
-                }
-                File.Move(item.FileDetails.FullName, item.ProcessedFullName);
             }
         }
 
         private void RenameFile(IImageFile item)
         {
             var sourceFile = item.FileDetails.FullName;
-            var destinationFile = item.ProcessedFullName;
+            var destinationFile = item.NewFilePath;
             if (!DebugDontRenameFile)
             {
-                if (!File.Exists(item.FileDetails.FullName))
-                {
-                    throw new FileNotFoundException(item.FileDetails.FullName);
-                }
-                Helper.CreateDirectory(item.ProcessedDirectory, true);
                 File.Move(sourceFile, destinationFile);
             }
             item.FileDetails = new FileInfo(destinationFile);
@@ -115,9 +104,9 @@ namespace ImageRename.Core
 
         private void FindFiles(string root)
         {
-            if (MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
+            if(MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
             {
-                if (!Directory.Exists(ProcessedPath))
+                if(!Directory.Exists(ProcessedPath))
                 {
                     Directory.CreateDirectory(ProcessedPath);
                 }
@@ -134,12 +123,12 @@ namespace ImageRename.Core
                         case "jpg":
                         case "jpeg":
                         case "cr2":
-                            Images.Add(new ImageFile(file, ProcessedPath));
+                            _images.Add(new ImageFile(file, ProcessedPath));
                             break;
                         case "mov":
                         case "mp4":
                         case "m4a":
-                            Images.Add(new VideoFile(file, ProcessedPath));
+                            _images.Add(new VideoFile(file, ProcessedPath));
                             break;
                         default:
                             break;

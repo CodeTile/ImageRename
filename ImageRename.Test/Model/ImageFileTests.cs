@@ -67,29 +67,23 @@ namespace ImageRename.Test.Model
                 Assert.AreEqual(createdDateExpected, createdDateActual, 
                     $"\r\nExpected date and ImageCreated date to not match.\r\nActual:\t\t{createdDateExpected}\r\nExpected:\t{createdDateActual}");
             }
-            Assert.AreEqual(expectedNewFileName, actual.ProcessedFileName, "\r\nExpected newFileName and Actual newFileName do not match");
+            Assert.AreEqual(expectedNewFileName, actual.NewFileName, "\r\nExpected newFileName and Actual newFileName do not match");
             Assert.AreEqual(expectedNeedsRenaming, actual.NeedsRenaming, "\r\nActual Needs renaiming flag does not match expected flag");
 
-
-            if (!string.IsNullOrEmpty(processedPath))
+            if(!string.IsNullOrEmpty(processedPath))
             {
                 var expectedNewFilePath = Path.GetFullPath(expectedProcessedPath);
-                Assert.AreEqual(expectedNewFilePath, actual.ProcessedFullName, 
-                    $"\r\nExpected and actual NewFilePath do not match.\r\nActual:\t\t{actual.ProcessedFullName}\r\nExpected:\t{expectedNewFilePath}");
-                Assert.IsTrue(actual.NeedsMoving, "Needs moving flag should be set to true");
-                Assert.IsNotNull(actual.ProcessedDirectory,$"\r\nProcessed directory should be set");
+                Assert.AreEqual(expectedNewFilePath, actual.NewFilePath, 
+                    $"\r\nExpected and actual NewFilePath do not match.\r\nActual:\t\t{actual.NewFilePath}\r\nExpected:\t{expectedNewFilePath}");
             }
             else if (expectedNeedsRenaming)
             {
                 var expectedNewFilePath = path.Replace(originalFileName, expectedNewFileName);
-                Assert.AreEqual(expectedNewFilePath, actual.ProcessedFullName, "\r\nExpected and actual NewFilePath do not match.");
-                Assert.IsNotNull(actual.ProcessedDirectory, $"\r\nProcessed directory should be set");
+                Assert.AreEqual(expectedNewFilePath, actual.NewFilePath, "\r\nExpected and actual NewFilePath do not match.");
             }
             else
             {
-                Assert.IsNull(actual.ProcessedFullName, "\r\nNewFilePath should be null");
-                Assert.IsFalse(actual.NeedsMoving, "Needs moving flag should be set to false");
-                Assert.IsNull(actual.ProcessedDirectory, $"\r\nProcessed directory should be null");
+                Assert.IsNull(actual.NewFilePath, "\r\nNewFilePath should be null");
             }
         }
     }
