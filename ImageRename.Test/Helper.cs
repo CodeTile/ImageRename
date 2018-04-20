@@ -1,10 +1,53 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace ImageRename.Test
 {
     public static class Helper
     {
-        public static void DirectoryCopy( string sourceDirName, string destDirName, bool copySubDirs)
+        public static void DeleteDirectory(string path, bool isRelative = true)
+        {
+            if (isRelative)
+            {
+                path = Path.GetFullPath(path);
+            }
+            if (Directory.Exists(path))
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Delete ==> {path}");
+                Directory.Delete(path, true);
+            }
+        }
+
+        public static void CopyTestFilesTo(string destinationFolder)
+        {
+            // DeleteDirectory(destinationFolder, true);
+            var originalPath = Path.GetFullPath(".\\Test Files");
+            var fullDestination = Path.GetFullPath(destinationFolder);
+            DirectoryCopy(originalPath, fullDestination);
+            RemoveFilesNotInSource(originalPath, fullDestination);
+        }
+
+        private static void RemoveFilesNotInSource(string source, string destination)
+        {
+            var sourceFiles = Directory.GetFiles(source, "*", SearchOption.AllDirectories)
+                             .Select(s => s.Replace(source, string.Empty)).ToList();
+            var destinationFiles = Directory.GetFiles(destination, "*", SearchOption.AllDirectories)
+                               .Select(s => s.Replace(destination, string.Empty)).ToList();
+            var destinationFilesToDelete = destinationFiles.Except(sourceFiles).ToList();
+            foreach (var item in destinationFilesToDelete)
+            {
+                var path = destination + item;
+                if (!File.Exists(path))
+                {
+                    continue;
+                }
+                File.Delete(path);
+            }
+        }
+
+        public static void DirectoryCopy(string sourceDirName, string destDirName)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -20,25 +63,28 @@ namespace ImageRename.Test
             // If the destination directory doesn't exist, create it.
             if (!Directory.Exists(destDirName))
             {
+
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Create  ==> {destDirName}");
                 Directory.CreateDirectory(destDirName);
             }
 
             // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
+            FileInfo[] files = dir.GetFiles().Where(w => !w.Extension.Equals(".db", StringComparison.CurrentCultureIgnoreCase)).ToArray();
             foreach (FileInfo file in files)
             {
                 string temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, false);
+                if (!File.Exists(temppath))
+                {
+                    Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {temppath}");
+                    file.CopyTo(temppath, false);
+                }
             }
 
             // If copying subdirectories, copy them and their contents to new location.
-            if (copySubDirs)
+            foreach (DirectoryInfo subdir in dirs)
             {
-                foreach (DirectoryInfo subdir in dirs)
-                {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
-                }
+                string temppath = Path.Combine(destDirName, subdir.Name);
+                DirectoryCopy(subdir.FullName, temppath);
             }
         }
     }

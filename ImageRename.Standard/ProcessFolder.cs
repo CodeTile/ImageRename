@@ -60,7 +60,7 @@ namespace ImageRename.Standard
         {
             if (!Directory.Exists(root))
             {
-                throw new DirectoryNotFoundException(root);
+                throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{root}");
             }
             _rootFolder = root;
             _images = new ObservableCollection<IImageFile>();
