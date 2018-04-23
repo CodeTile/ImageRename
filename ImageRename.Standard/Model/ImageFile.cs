@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Xml;
 using ExifLib;
 
 namespace ImageRename.Standard.Model

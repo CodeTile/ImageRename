@@ -27,9 +27,9 @@ namespace ImageRename.Test.Model
         [DataRow("JPG 02", ".\\Test Files\\JPG\\Good.jpg", "20180310_115353", "10 March 2018 11:53:53", true, true, ".\\Processed", ".\\Processed\\2018\\Q1\\20180310_115353.jpg")]
         [DataRow("JPG 03", ".\\Test Files\\JPG\\Bad.jpg", null, null, false, false, null, null)]
 
-        //[DataRow("CR2 01", ".\\Test Files\\CR2\\Good.CR2", "20180408_072740", "08 April 2018 07:27:40", true, false, null, null)]
-        //[DataRow("CR2 02", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, false, null, null)]
-        //[DataRow("CR2 03", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, true, ".\\Processed", ".\\Processed\\2018\\Q2\\20180408_122634.CR2")]
+        [DataRow("CR2 01", ".\\Test Files\\CR2\\Good.CR2", "20180408_072740", "08 April 2018 07:27:40", true, false, null, null)]
+        [DataRow("CR2 02", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, false, null, null)]
+        [DataRow("CR2 03", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, true, ".\\Processed", ".\\Processed\\2018\\Q2\\20180408_122634.CR2")]
 
         [DataRow("MOV 01", ".\\Test Files\\mov\\20160124_141026.MOV", "20160124_141026", "24 January 2016 14:10:26", false, false, null, null)]
         [DataRow("MOV 02", ".\\Test Files\\mov\\Good.MOV", "20160124_141022", "24 January 2016 14:10:22", true, false, null, null)]
@@ -64,8 +64,9 @@ namespace ImageRename.Test.Model
                 //case "nef":
                 //    actual = new ImageFileNEF(path);
                 //    break;
-                //case "cr2":
-                //    throw new NotImplementedException();
+                case "cr2":
+                    actual = new ImageFileCR2(path, Convert.ToString(processedPath));
+                    break;
 
                 case "jpg":
                 case "jpeg":
