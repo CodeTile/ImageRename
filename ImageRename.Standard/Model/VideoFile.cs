@@ -11,16 +11,16 @@ namespace ImageRename.Standard.Model
 
         private void GetDate()
         {
-            if (FileDetails == null)
+            if (SourceFileInfo == null)
             {
                 return;
             }
 
-            ImageCreated = FileDetails.LastWriteTime;
+            ImageCreated = SourceFileInfo.LastWriteTime;
 
-            if (FileDetails.CreationTime < ImageCreated)
+            if (SourceFileInfo.CreationTime < ImageCreated)
             {
-                ImageCreated = FileDetails.CreationTime;
+                ImageCreated = SourceFileInfo.CreationTime;
             }
         }
     }

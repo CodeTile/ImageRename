@@ -5,10 +5,12 @@ namespace ImageRename.Standard.Model
 {
     public interface IImageFile
     {
-        FileInfo FileDetails { get; set; }
+        FileInfo SourceFileInfo { get; set; }
+        FileInfo DestinationFileInfo { get; }
         DateTime? ImageCreated { get; }
         bool NeedsRenaming { get; }
-        string NewFileName { get; }
-        string NewFilePath { get; }
+        bool NeedsMoving { get; }
+        string DestinationFileName { get; }
+        string DestinationFilePath { get; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -89,13 +88,13 @@ namespace ImageRename.Standard
 
         private void RenameFile(IImageFile item)
         {
-            var sourceFile = item.FileDetails.FullName;
-            var destinationFile = item.NewFilePath;
+            var sourceFile = item.SourceFileInfo.FullName;
+            var destinationFile = item.DestinationFilePath;
             if (!DebugDontRenameFile)
             {
                 File.Move(sourceFile, destinationFile);
             }
-            item.FileDetails = new FileInfo(destinationFile);
+            item.SourceFileInfo = new FileInfo(destinationFile);
             ReportFindFileProgress();
 
             ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");

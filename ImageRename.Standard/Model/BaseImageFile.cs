@@ -1,32 +1,103 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 
 namespace ImageRename.Standard.Model
 {
     public abstract class BaseImageFile
     {
+        private FileInfo _sourceFileInfo;
+        private FileInfo _destinationFileInfo;
+        private DateTime? _imageCreated;
+        private DirectoryInfo _processedRoot;
         public BaseImageFile(string path, string processedPath = null)
         {
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException(path);
             }
-            ProcessedPath = processedPath;
-            FileDetails = new FileInfo(path);
-        }
-        public FileInfo FileDetails { get; set; }
-        public DateTime? ImageCreated { get; internal set; }
-        public string ProcessedPath { get; set; } = null;
 
-        public string NewFileName
+            _sourceFileInfo = new FileInfo(path);
+            if (!string.IsNullOrEmpty(processedPath) 
+                && !processedPath.Equals(_processedRoot?.FullName,StringComparison.CurrentCultureIgnoreCase))
+            {
+                _processedRoot = new DirectoryInfo(processedPath);
+            }
+            GetCreationDate();
+        }
+
+        public virtual void GetCreationDate()
+        {
+            //throw new NotImplementedException("GetCreationDate needs to be overriden in the parent class");
+        }
+
+
+        public FileInfo DestinationFileInfo
+        {
+            get => _destinationFileInfo;
+            private set => _destinationFileInfo = value;
+        }
+     
+        public FileInfo SourceFileInfo
+        {
+            get => _sourceFileInfo;
+            set
+            {
+                if (value.Exists)
+                {
+                    _sourceFileInfo = value;
+                }
+                else
+                {
+                    _sourceFileInfo = null;
+                }
+                OnInputParameterChanged();
+            }
+        }
+        public DateTime? ImageCreated
+        {
+            get => _imageCreated;
+            internal set
+            {
+                _imageCreated = value;
+                OnInputParameterChanged();
+            }
+        }
+
+        private void OnInputParameterChanged()
+        {
+            if (FullDestinationFileName == null)
+            {
+                DestinationFileInfo = null;
+                return;
+            }
+            string newPath;
+            if (!string.IsNullOrEmpty(_processedRoot?.FullName))
+            {
+                newPath = Path.Combine(_processedRoot.FullName,
+                                       $"{ ((DateTime)ImageCreated).Year}"
+                                       , GetQuarter
+                                       , FullDestinationFileName);
+            }
+            else
+            {
+                newPath = Path.Combine(SourceFileInfo.DirectoryName,
+                                             FullDestinationFileName);
+            }
+            DestinationFileInfo = new FileInfo(newPath);
+        }
+
+        /// <summary>
+        /// Returns the destination filename
+        /// </summary>
+        public string DestinationFileName
         {
             get
             {
-                if (ImageCreated == null)
+                if (ImageCreated == null || SourceFileInfo == null)
                 {
                     return null;
                 }
+
                 DateTime imageDate = (DateTime)ImageCreated;
 
                 return string.Format("{0}{1}{2}_{3}{4}{5}",
@@ -39,21 +110,65 @@ namespace ImageRename.Standard.Model
             }
         }
 
+        /// <summary>
+        /// Return the destination FilenameIncluding the extenstion
+        /// </summary>
+        private string FullDestinationFileName
+        {
+            get
+            {
+                if (DestinationFileName == null)
+                {
+                    return null;
+                }
+                return $"{DestinationFileName}{SourceFileInfo?.Extension}";
+            }
+        }
+
+        /// <summary>
+        /// Does the file need renaming
+        /// </summary>
         public bool NeedsRenaming
         {
             get
             {
-                var originalExtension = FileDetails.Name.Split('.').Last();
-                var originalFileName = FileDetails.Name.Split('\\').Last().Replace($".{originalExtension}", string.Empty);
-                return NewFileName != null &&
-                      NewFileName != originalFileName;
+                var retval = false;
+                retval = DestinationFileName != null &&
+                      SourceFileInfo != null &&
+                     FullDestinationFileName != SourceFileInfo.Name;
+                return retval;
             }
         }
 
+        /// <summary>
+        /// Does the file need moving
+        /// </summary>
+        public bool NeedsMoving
+        {
+            get
+            {
+                var retval = false;
+                if (!string.IsNullOrEmpty(_processedRoot?.FullName)
+                    && !SourceFileInfo.Directory.FullName.Equals(_processedRoot.FullName, StringComparison.CurrentCultureIgnoreCase)
+                    && ImageCreated != null)
+                {
+                    retval = true;
+                }
+                return retval;
+            }
+        }
+
+        /// <summary>
+        /// Get the Quarter the image was taken in.
+        /// </summary>
         public string GetQuarter
         {
             get
             {
+                if (ImageCreated == null)
+                {
+                    return null;
+                }
                 string retval = null;
                 var date = (DateTime)ImageCreated;
                 if (date.Month < 4)
@@ -76,38 +191,25 @@ namespace ImageRename.Standard.Model
             }
         }
 
-        public string NewFilePath
+        public string DestinationFilePath
         {
             get
             {
-                string processedPath = ProcessedPath;
-                if (string.IsNullOrEmpty(processedPath))
-                {
-                    processedPath = FileDetails.DirectoryName;
-                }
-                else
-                {
-                    processedPath = Path.Combine(processedPath,
-                                                ((DateTime)ImageCreated).Year.ToString(),
-                                                GetQuarter);
-                }
-
-                if (!NeedsRenaming ||
-                    FileDetails == null ||
-                      !File.Exists(FileDetails.FullName))
+                if ((!NeedsMoving && !NeedsRenaming) || DestinationFileInfo == null)
                 {
                     return null;
                 }
+                return DestinationFileInfo.FullName;
 
-                var retval = Path.Combine(processedPath,
-                                           NewFileName + FileDetails.Extension);
-                return retval;
             }
         }
 
-        public override string ToString()
-        {
-            return $"{NeedsRenaming} | {FileDetails.FullName}";
-        }
+        ////////public override string ToString()
+        ////////{
+        ////////    string rename = NeedsRenaming ? "R " : "   ";
+        ////////    string move = NeedsMoving ? "M " : "   ";
+
+        ////////    return $"{rename} {move} | {SourceFileInfo.FullName}";
+        ////////}
     }
 }
