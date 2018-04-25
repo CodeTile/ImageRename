@@ -204,12 +204,5 @@ namespace ImageRename.Standard.Model
             }
         }
 
-        ////////public override string ToString()
-        ////////{
-        ////////    string rename = NeedsRenaming ? "R " : "   ";
-        ////////    string move = NeedsMoving ? "M " : "   ";
-
-        ////////    return $"{rename} {move} | {SourceFileInfo.FullName}";
-        ////////}
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Xml;
+using MetadataExtractor;
 
 namespace ImageRename.Standard.Model
 {
@@ -14,26 +15,33 @@ namespace ImageRename.Standard.Model
 
         public override void GetCreationDate()
         {
-            string xmlImage;
-            //DateTime imagedate = Convert.ToDateTime("1 jan 1900");
-            xmlImage = com.Run.GetImageInfoForFile(SourceFileInfo.FullName, com.Run.eOutput.eoXML2);
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xmlImage);
-            XmlNodeList files = doc.SelectNodes("metadataExtractor/file");
-            foreach (XmlNode file in files)
+            string dateTaken;
+            IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
+
+            dateTaken = directories.SingleOrDefault(d => d.Name.Equals("Exif SubIFD", StringComparison.CurrentCultureIgnoreCase))
+                              .Tags.SingleOrDefault(t => t.Name.Equals("Date/Time Original", StringComparison.CurrentCultureIgnoreCase))
+                              .Description;
+
+            if (string.IsNullOrEmpty(dateTaken))
             {
-                foreach (XmlNode directory in file.SelectNodes("directory"))
+                foreach (var directory in directories)
                 {
-                    foreach (XmlNode tag in directory.SelectNodes("tag"))
+                    foreach (var tag in directory.Tags.Where(w => w.Name.Equals("Date/Time Original", StringComparison.CurrentCultureIgnoreCase)))
                     {
-                        if (tag.FirstChild.InnerText == "Date/Time Original")
-                        {
-                            ImageCreated = Convert.ToDateTime(tag.LastChild.InnerText);
-                            return;
-                        }
-                    }//end tags
-                }//end directorys
-            }//end file
+                        dateTaken = tag.Description;
+                        break;
+                    }
+                    if (!string.IsNullOrEmpty(dateTaken))
+                        break;
+                }
+            }
+
+            var mySplit = dateTaken.Trim().Split(' ');
+            var dateSplit = mySplit[0].Split(':');
+            var timeSplit = mySplit[1].Split(':');
+            var date = new DateTime(Convert.ToInt32(dateSplit[0]), Convert.ToInt32(dateSplit[1]), Convert.ToInt32(dateSplit[2]),
+                                  Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
+            ImageCreated = date;
         }
     }
 }

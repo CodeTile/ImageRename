@@ -34,7 +34,6 @@ namespace ImageRename.Test.Model
         [DataRow("MOV 01", ".\\Test Files\\mov\\20160124_141026.MOV", "20160124_141026", "24 January 2016 14:10:26", false, false, null, null)]
         [DataRow("MOV 02", ".\\Test Files\\mov\\Good.MOV", "20160124_141022", "24 January 2016 14:10:22", true, false, null, null)]
         [DataRow("MOV 03", ".\\Test Files\\mov\\Good2.MOV", "20151129_093544", "29 November 2015 09:35:44", true, true, ".\\Processed", ".\\Processed\\2015\\Q4\\20151129_093544.MOV")]
-
         [DataTestMethod]
         public void ImageFileTest(string test,
                                   string relativePath,
