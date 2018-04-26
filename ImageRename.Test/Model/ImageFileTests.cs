@@ -69,7 +69,7 @@ namespace ImageRename.Test.Model
 
                 case "jpg":
                 case "jpeg":
-                    actual = new ImageFile(path, Convert.ToString(processedPath));
+                    actual = new ImageFileJpg(path, Convert.ToString(processedPath));
                     break;
                 default:
                     throw new NotImplementedException();

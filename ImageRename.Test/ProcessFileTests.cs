@@ -15,34 +15,32 @@ namespace ImageRename.Test
         public void Initilise()
         {
             var originalFolder = Path.GetFullPath(".\\..\\..\\Test Files");
-            var testSourceFolder = Path.GetFullPath(".\\Test Files");
-            Helper.DirectoryCopy(Path.Combine(originalFolder, "JPG"), Path.Combine(testSourceFolder, "JPG"));
-            Helper.DirectoryCopy(Path.Combine(originalFolder, "CR2"), Path.Combine(testSourceFolder, "CR2"));
-            Helper.DirectoryCopy(Path.Combine(originalFolder, "mov"), Path.Combine(testSourceFolder, "mov"));
+            Helper.DirectoryCopy(Path.Combine(originalFolder, "JPG"), Path.Combine(Helper.TestSourceFolder, "JPG"));
+            Helper.DirectoryCopy(Path.Combine(originalFolder, "CR2"), Path.Combine(Helper.TestSourceFolder, "CR2"));
+            Helper.DirectoryCopy(Path.Combine(originalFolder, "mov"), Path.Combine(Helper.TestSourceFolder, "mov"));
             /////////////////////////////////////////////////////////////////////////////////////////
-            Helper.CopyTestFilesTo(Path.GetFullPath(".\\ProcessFolderTest02"));
+            Helper.CopyTestFilesTo(Path.GetFullPath(".\\ProcessFolderDontMoveTest"));
+            Helper.CopyTestFilesTo(Path.GetFullPath(".\\ProcessFolderMoveTest"));
         }
 
         [TestMethod]
-        public void ProcessFolderTest01()
+        public void ProcessFolderTestSimpleRunsTest()
         {
-            var path = Path.GetFullPath(".\\Test Files");
+           
             var target = new ProcessFolder()
             {
                 DebugDontRenameFile = true
             };
 
-            target.Process(path);
+            target.Process(Helper.TestSourceFolder);
 
         }
 
         [TestMethod]
-        public void ProcessFolderTest02()
+        public void ProcessFolderDontMoveTest()
         {
-            var targetPath = Path.GetFullPath(".\\ProcessFolderTest02");
-
-            var testSourceFolder = Path.GetFullPath(".\\Test Files");
-
+            var targetPath = Path.GetFullPath(".\\ProcessFolderDontMoveTest");
+            
             var target = new ProcessFolder()
             {
                 DebugDontRenameFile = false,

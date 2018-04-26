@@ -3,9 +3,9 @@ using ExifLib;
 
 namespace ImageRename.Standard.Model
 {
-    public class ImageFile : BaseImageFile, IImageFile
+    public class ImageFileJpg : BaseImageFile, IImageFile
     {
-        public ImageFile(string path, string processedPath = null) : base(path, processedPath)
+        public ImageFileJpg(string path, string processedPath = null) : base(path, processedPath)
         {
 
         }

@@ -121,7 +121,7 @@ namespace ImageRename.Standard
                     {
                         case "jpg":
                         case "jpeg":
-                            _images.Add(new ImageFile(file, ProcessedPath));
+                            _images.Add(new ImageFileJpg(file, ProcessedPath));
                             break;
                         case "cr2":
                             _images.Add(new ImageFileCR2(file, ProcessedPath));
