@@ -66,6 +66,20 @@ namespace ImageRename.Standard
             _images.CollectionChanged += _images_CollectionChanged;
             FindFiles(root);
             RenameFiles();
+            DeleteEmptySourceFolders(_rootFolder);
+        }
+
+        private void DeleteEmptySourceFolders(string root)
+        {
+            foreach (var directory in Directory.GetDirectories(root))
+            {
+                DeleteEmptySourceFolders(directory);
+                if (!Directory.GetFiles(directory).Any() &&
+                    !Directory.GetDirectories(directory).Any())
+                {
+                    Directory.Delete(directory, false);
+                }
+            }
         }
 
         private void _images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -75,12 +89,12 @@ namespace ImageRename.Standard
 
         private void RenameFiles()
         {
-            if (_images == null || !_images.Any(a => a.NeedsRenaming == true))
+            if (_images == null || !_images.Any(a => a.NeedsRenaming  || a.NeedsMoving))
             {
                 return;
             }
 
-            foreach (var item in _images.Where(w => w.NeedsRenaming == true))
+            foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving))
             {
                 RenameFile(item);
             }

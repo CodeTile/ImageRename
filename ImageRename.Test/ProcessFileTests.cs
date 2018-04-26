@@ -8,12 +8,15 @@ namespace ImageRename.Test
     [TestClass]
     public class ProcessFileTests
     {
+        private string _processFolderMoveTestProcessedroot = Path.GetFullPath(".\\ProcessFolderMoveTestProcessed");
         /// <summary>
         /// Reset the content of the test folders
         /// </summary>
         [TestInitialize]
         public void Initilise()
         {
+            Helper.DeleteDirectory(_processFolderMoveTestProcessedroot);
+
             var originalFolder = Path.GetFullPath(".\\..\\..\\Test Files");
             Helper.DirectoryCopy(Path.Combine(originalFolder, "JPG"), Path.Combine(Helper.TestSourceFolder, "JPG"));
             Helper.DirectoryCopy(Path.Combine(originalFolder, "CR2"), Path.Combine(Helper.TestSourceFolder, "CR2"));
@@ -68,34 +71,40 @@ namespace ImageRename.Test
         public void ProcessFolderMoveTest()
         {
             var originalPath = Path.GetFullPath(".\\ProcessFolderMoveTest");
-            var processedPath = Path.GetFullPath(".\\ProcessFolderMoveTestProcessed");
 
             var target = new ProcessFolder()
             {
                 DebugDontRenameFile = false,
                 MoveToProcessedByYear = true,
-                ProcessedPath = processedPath
+                ProcessedPath = _processFolderMoveTestProcessedroot
             };
 
             target.Process(originalPath);
 
             var filesOriginal = Directory.GetFiles(originalPath, "*", SearchOption.AllDirectories);
-            var filesProcessed = Directory.GetFiles(processedPath, "*", SearchOption.AllDirectories);
-            var filesInFolders = $"\r\nOriginal:\r\n\t{string.Join("\r\n\t", filesOriginal).Replace(originalPath, string.Empty)}"
-                               + $"\r\nProcessed:\r\n\t{string.Join("\r\n\t", filesProcessed).Replace(processedPath, string.Empty)}";
+            var filesProcessed = Directory.GetFiles(_processFolderMoveTestProcessedroot, "*", SearchOption.AllDirectories);
+            var filesInFolders = $"\r\nOriginal path:\r\n\t{string.Join("\r\n\t", filesOriginal).Replace(originalPath, string.Empty)}"
+                               + $"\r\nProcessed path:\r\n\t{string.Join("\r\n\t", filesProcessed).Replace(_processFolderMoveTestProcessedroot, string.Empty)}";
 
-            Assert.AreEqual(6, filesOriginal.Count(), filesInFolders);
-            Assert.AreEqual(1, filesProcessed.Count(), filesInFolders);
+            Assert.AreEqual(1, filesOriginal.Count(), $"{filesInFolders}");
+            Assert.AreEqual(6, filesProcessed.Count(), $"{filesInFolders}");
             //Processed files
-            Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\CR2\\20180408_122634.CR2"), $"Missing file \r\n\\CR2\\20180408_122634.CR2{filesInFolders}");
-            Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\CR2\\20180408_072740.CR2"), $"Missing file \r\n\\CR2\\20180408_072740.CR2{filesInFolders}");
-            Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\JPG\\20180310_115353.jpg"), $"Missing file \r\n\\JPG\\20180310_115353.jpg{filesInFolders}");
-            Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\mov\\20160124_141026.MOV"), $"Missing file \r\n\\mov\\20160124_141026.MOV{filesInFolders}");
-            Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\mov\\20160124_141022.MOV"), $"Missing file \r\n\\mov\\20160124_141022.MOV{filesInFolders}");
-            Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\mov\\20151129_093544.MOV"), $"Missing file \r\n\\mov\\20151129_093544.MOV{filesInFolders}");
-            //Faild to process files
+            Assert.IsTrue(filesProcessed.Contains($"{_processFolderMoveTestProcessedroot}\\2018\\Q2\\20180408_122634.CR2"), $"\r\nMissing file \r\n\t\\2018\\Q2\\20180408_122634.CR2{filesInFolders}");
+            Assert.IsTrue(filesProcessed.Contains($"{_processFolderMoveTestProcessedroot}\\2018\\Q2\\20180408_072740.CR2"), $"\r\nMissing file \r\n\t\\2018\\Q2\\20180408_072740.CR2{filesInFolders}");
+            Assert.IsTrue(filesProcessed.Contains($"{_processFolderMoveTestProcessedroot}\\2018\\Q1\\20180310_115353.jpg"), $"\r\nMissing file \r\n\t\\2018\\Q1\\20180310_115353.jpg{filesInFolders}");
+            Assert.IsTrue(filesProcessed.Contains($"{_processFolderMoveTestProcessedroot}\\2016\\Q1\\20160124_141022.MOV"), $"\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141022.MOV{filesInFolders}");
+            Assert.IsTrue(filesProcessed.Contains($"{_processFolderMoveTestProcessedroot}\\2016\\Q1\\20160124_141026.MOV"), $"\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141026.MOV{filesInFolders}");
+            Assert.IsTrue(filesProcessed.Contains($"{_processFolderMoveTestProcessedroot}\\2015\\Q4\\20151129_093544.MOV"), $"\r\nMissing file \r\n\t\\2015\\Q4\\20151129_093544.MOV{filesInFolders}");
+            //Failed to process files
             Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\JPG\\Bad.jpg"), $"Missing file \r\n\\JPG\\Bad.jpg{filesInFolders}");
+            /////////////////////////////////////////////////////
+            //   Check empty directories have been removed
+            /////////////////////////////////////////////////////
 
+            var originalDirectories = Directory.EnumerateDirectories(originalPath,"*",SearchOption.AllDirectories).ToList();
+            var directoriesInOriginalPath = $"\r\nOriginal path:\r\n\t{string.Join("\r\n\t", originalDirectories).Replace(originalPath, string.Empty)}";
+            Assert.AreEqual(1, originalDirectories.Count(),$"{directoriesInOriginalPath}");
+            Assert.IsTrue(originalDirectories.Contains($"{originalPath}\\JPG"),$"{directoriesInOriginalPath}");
         }
 
 
