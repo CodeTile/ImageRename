@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using ImageRename.Standard.Model;
+using System.Security.Cryptography;
 
 namespace ImageRename.Standard
 {
@@ -89,7 +90,7 @@ namespace ImageRename.Standard
 
         private void RenameFiles()
         {
-            if (_images == null || !_images.Any(a => a.NeedsRenaming  || a.NeedsMoving))
+            if (_images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
             {
                 return;
             }
@@ -104,23 +105,68 @@ namespace ImageRename.Standard
         {
             var sourceFile = item.SourceFileInfo.FullName;
             var destinationFile = item.DestinationFilePath;
-            if (!DebugDontRenameFile)
+            if (!DebugDontRenameFile && !File.Exists(destinationFile))
             {
                 Helper.CreateDirectory(item.DestinationFileInfo.DirectoryName);
                 File.Move(sourceFile, destinationFile);
             }
-            item.SourceFileInfo = new FileInfo(destinationFile);
-            ReportFindFileProgress();
+            if (File.Exists(destinationFile))
+            {
+                ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ############# File Exists");
+                if (!AreFilesTheSame(sourceFile, destinationFile))
+                {
+                    destinationFile = GetSequenceFilename(item.DestinationFileInfo);
+                }
+            }
+           
+                item.SourceFileInfo = new FileInfo(destinationFile);
+                ReportFindFileProgress();
 
-            ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
+                ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
+            
         }
 
+        private string GetSequenceFilename(FileInfo file)
+        {
+            var sequenceId = 2;
+            var template = file.FullName.Replace(file.Extension, "_{0}" + file.Extension);
+
+            while (File.Exists(string.Format(template,sequenceId)))
+            {
+                sequenceId++;
+            }
+            return string.Format(template, sequenceId);
+        }
+
+        internal bool AreFilesTheSame(string sourceFile, string destinationFile)
+        {
+            bool retval = false;
+
+            if (GetMD5(sourceFile) != GetMD5(destinationFile))
+            {
+                retval = false;
+            }
+
+            return retval;
+        }
+
+        internal string GetMD5(string filename)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(filename))
+                {
+                    var hash = md5.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
+        }
 
         private void FindFiles(string root)
         {
-            if(MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
+            if (MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
             {
-                if(!Directory.Exists(ProcessedPath))
+                if (!Directory.Exists(ProcessedPath))
                 {
                     Directory.CreateDirectory(ProcessedPath);
                 }

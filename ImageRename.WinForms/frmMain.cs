@@ -111,9 +111,14 @@ namespace ImageRename
 
         private void btnProcess_Click(object sender, EventArgs e)
         {
-            txtProgress.Clear();
-            txtFileSummary.Clear();
-            backgroundWorker1.RunWorkerAsync(txtPath.Text);
+            if (Directory.Exists(txtPath.Text))
+            {
+                txtProgress.Clear();
+                txtFileSummary.Clear();
+                Properties.Settings.Default.Path = txtPath.Text;
+                Properties.Settings.Default.Save();
+                backgroundWorker1.RunWorkerAsync(txtPath.Text);
+            }
         }
 
         private void btnProcessedBrowse_Click(object sender, EventArgs e)
