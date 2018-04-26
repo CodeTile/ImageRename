@@ -26,7 +26,7 @@ namespace ImageRename.Standard.Model
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
                 //Suppress errors
             }
         }

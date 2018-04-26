@@ -92,6 +92,7 @@ namespace ImageRename.Standard
             var destinationFile = item.DestinationFilePath;
             if (!DebugDontRenameFile)
             {
+                Helper.CreateDirectory(item.DestinationFileInfo.DirectoryName);
                 File.Move(sourceFile, destinationFile);
             }
             item.SourceFileInfo = new FileInfo(destinationFile);
