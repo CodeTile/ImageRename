@@ -24,21 +24,22 @@ namespace ImageRename.Test
         [TestInitialize]
         public void Initilise()
         {
+            Helper.DeleteDirectory(_duplicateTimeStampMoveWithExistingFilesProcessed);
             Helper.DeleteDirectory(_processFolderMoveTestProcessed);
             Helper.DeleteDirectory(_duplicateTimeStampMoveProcessed);
-            Helper.DeleteDirectory(_duplicateTimeStampMoveWithExistingFilesProcessed);
 
             var originalFolder = Path.GetFullPath(".\\..\\..\\Test Files");
             Helper.DirectoryCopy(Path.Combine(originalFolder, "JPG"), Path.Combine(Helper.TestSourceFolder, "JPG"));
             Helper.DirectoryCopy(Path.Combine(originalFolder, "CR2"), Path.Combine(Helper.TestSourceFolder, "CR2"));
             Helper.DirectoryCopy(Path.Combine(originalFolder, "mov"), Path.Combine(Helper.TestSourceFolder, "mov"));
             /////////////////////////////////////////////////////////////////////////////////////////
-            Helper.CopyTestFilesTo(_processFolderDontMoveTest);
-            Helper.CopyTestFilesTo(_processFolderMoveTest);
-
             Helper.CopyTestFilesTo(_duplicateTimeStampDontMove);
             Helper.CopyTestFilesTo(_duplicateTimeStampMove);
             Helper.CopyTestFilesTo(_duplicateTimeStampMoveWithExistingFiles);
+
+            Helper.CopyTestFilesTo(_processFolderDontMoveTest);
+            Helper.CopyTestFilesTo(_processFolderMoveTest);
+
 
             Helper.DuplicateFile(_duplicateTimeStampDontMove, "CR2\\Good.CR2", "CR2\\Duplicate.CR2");
             Helper.DuplicateFile(_duplicateTimeStampDontMove, "JPG\\Good.jpg", "JPG\\Duplicate.jpg");
