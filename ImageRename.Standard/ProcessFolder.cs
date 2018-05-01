@@ -97,7 +97,15 @@ namespace ImageRename.Standard
 
             foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving))
             {
-                RenameFile(item);
+                try
+                {
+                    RenameFile(item);
+
+                }
+                catch (Exception ex)
+                {
+                    ReportRenamingProgress($"\r\n##############Error\r\n{item.SourceFileInfo.FullName.Replace(_rootFolder, string.Empty)}r\n{ex.Message}\r\n####################\n\n");
+                }
             }
         }
 
@@ -105,18 +113,20 @@ namespace ImageRename.Standard
         {
             var sourceFile = item.SourceFileInfo.FullName;
             var destinationFile = item.DestinationFilePath;
+            if (File.Exists(destinationFile))
+            {
+                ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ############# File Exists");
+                if (AreFilesTheSame(sourceFile, destinationFile))
+                {
+                    destinationFile = destinationFile.Replace(item.SourceFileInfo.Extension,$"(Duplicate){item.SourceFileInfo.Extension}");
+                }
+                destinationFile = GetSequenceFilename(item.DestinationFileInfo);
+            }
+
             if (!DebugDontRenameFile && !File.Exists(destinationFile))
             {
                 Helper.CreateDirectory(item.DestinationFileInfo.DirectoryName);
                 File.Move(sourceFile, destinationFile);
-            }
-            if (File.Exists(destinationFile))
-            {
-                ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ############# File Exists");
-                if (!AreFilesTheSame(sourceFile, destinationFile))
-                {
-                    destinationFile = GetSequenceFilename(item.DestinationFileInfo);
-                }
             }
            
                 item.SourceFileInfo = new FileInfo(destinationFile);
@@ -135,7 +145,8 @@ namespace ImageRename.Standard
             {
                 sequenceId++;
             }
-            return string.Format(template, sequenceId);
+            var retval = string.Format(template, sequenceId);
+            return retval;
         }
 
         internal bool AreFilesTheSame(string sourceFile, string destinationFile)

@@ -49,7 +49,14 @@ namespace ImageRename.Test
                 File.Delete(path);
             }
         }
-
+        public static void CreateDirectory(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Create  ==> {path}");
+                Directory.CreateDirectory(path);
+            }
+        }
         public static void DirectoryCopy(string sourceDirName, string destDirName)
         {
             // Get the subdirectories for the specified directory.
@@ -64,12 +71,7 @@ namespace ImageRename.Test
 
             DirectoryInfo[] dirs = dir.GetDirectories();
             // If the destination directory doesn't exist, create it.
-            if (!Directory.Exists(destDirName))
-            {
-
-                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Create  ==> {destDirName}");
-                Directory.CreateDirectory(destDirName);
-            }
+            CreateDirectory(destDirName);
 
             // Get the files in the directory and copy them to the new location.
             FileInfo[] files = dir.GetFiles().Where(w => !w.Extension.Equals(".db", StringComparison.CurrentCultureIgnoreCase)).ToArray();
@@ -88,6 +90,23 @@ namespace ImageRename.Test
             {
                 string temppath = Path.Combine(destDirName, subdir.Name);
                 DirectoryCopy(subdir.FullName, temppath);
+            }
+        }
+        
+        internal static void DuplicateFile(string root, string original, string duplicate)
+        {
+            var originalPath = new FileInfo(Path.Combine(root, original));
+            var duplicatePath = new FileInfo(Path.Combine(root, duplicate));
+            if (!originalPath.Exists)
+            {
+                throw new FileNotFoundException($"\r\nSource file does not exist.\r\n\t{originalPath.FullName}");
+            }
+            CreateDirectory(duplicatePath.DirectoryName);
+
+            if (!duplicatePath.Exists)
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {duplicatePath}");
+                originalPath.CopyTo(duplicatePath.FullName, false);
             }
         }
     }
