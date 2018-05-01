@@ -92,7 +92,19 @@ namespace ImageRename.Test
                 DirectoryCopy(subdir.FullName, temppath);
             }
         }
-        
+
+        internal static void CopyTestFileTo(string source, string destination)
+        {
+            var target = new FileInfo(destination);
+            CreateDirectory(target.DirectoryName);
+
+            if (!target.Exists)
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {target.FullName}");
+                File.Copy(source, target.FullName, false);
+            }
+        }
+
         internal static void DuplicateFile(string root, string original, string duplicate)
         {
             var originalPath = new FileInfo(Path.Combine(root, original));
