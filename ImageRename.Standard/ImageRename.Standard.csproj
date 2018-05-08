@@ -9,7 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Published\Nuget\ExifLib.Standard\ExifLib.Standard\ExifLib.Standard.csproj" />
+    <PackageReference Include="ExifLib.Standard" Version="1.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MetaDataExtractor.Standard\MetaDataExtractor.Standard.csproj" />
   </ItemGroup>
 
