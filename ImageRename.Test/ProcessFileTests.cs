@@ -232,8 +232,8 @@ namespace ImageRename.Test
             var filesInFolders = $"\r\nOriginal path:\r\n\t{originalPath}\r\n\t{string.Join("\r\n\t", filesOriginal).Replace(originalPath, string.Empty)}"
                                + $"\r\nProcessed path:\r\n\t{processedPath}\r\n\t{string.Join("\r\n\t", filesProcessed).Replace(processedPath, string.Empty)}";
 
-            Assert.AreEqual(1, filesOriginal.Count(), $"{filesInFolders}");
-            Assert.AreEqual(11, filesProcessed.Count(), $"{filesInFolders}");
+            Assert.AreEqual(1, filesOriginal.Count(), $"\r\nOriginal folder check{filesInFolders}");
+            Assert.AreEqual(11, filesProcessed.Count(), $"\r\nProcessed folder check{filesInFolders}");
             //Processed files
             Assert.IsTrue(filesProcessed.Contains($"{processedPath}\\2018\\Q2\\20180408_122634.CR2"), $"\r\nMissing file \r\n\t\\2018\\Q2\\20180408_122634.CR2{filesInFolders}");
             Assert.IsTrue(filesProcessed.Contains($"{processedPath}\\2018\\Q2\\20180408_072740.CR2"), $"\r\nMissing file \r\n\t\\2018\\Q2\\20180408_072740.CR2{filesInFolders}");
