@@ -10,10 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="ExifLib.Standard" Version="1.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MetaDataExtractor.Standard\MetaDataExtractor.Standard.csproj" />
+    <PackageReference Include="MetadataExtractor" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
