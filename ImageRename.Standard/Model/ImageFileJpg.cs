@@ -1,5 +1,8 @@
 ﻿using System;
-using ExifLib;
+using System.Collections.Generic;
+using System.Linq;
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
 
 namespace ImageRename.Standard.Model
 {
@@ -9,26 +12,6 @@ namespace ImageRename.Standard.Model
         {
 
         }
-        public override void GetCreationDate()
-        {
-            try
-            {
-                using (var reader = new ExifReader(SourceFileInfo.FullName))
-                {
-                    // Extract the tag data using the ExifTags enumeration
-                    if (reader.GetTagValue<DateTime>(ExifTags.DateTimeDigitized,
-                                                    out var datePictureTaken))
-                    {
-                        ImageCreated = datePictureTaken;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
-                //Suppress errors
-            }
-        }
+      
     }
 }

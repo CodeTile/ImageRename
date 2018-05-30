@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
 
 namespace ImageRename.Standard.Model
 {
@@ -27,7 +31,28 @@ namespace ImageRename.Standard.Model
 
         public virtual void GetCreationDate()
         {
-            //throw new NotImplementedException("GetCreationDate needs to be overriden in the parent class");
+            try
+            {
+                string dateTaken;
+                IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
+                var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
+
+                dateTaken = subIfdDirectory?.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
+
+
+                var mySplit = dateTaken.Trim().Split(' ');
+                var dateSplit = mySplit[0].Split(':');
+                var timeSplit = mySplit[1].Split(':');
+                var date = new DateTime(Convert.ToInt32(dateSplit[0]), Convert.ToInt32(dateSplit[1]), Convert.ToInt32(dateSplit[2]),
+                                      Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
+                ImageCreated = date;
+
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
+                //Suppress errors
+            }
         }
 
 
