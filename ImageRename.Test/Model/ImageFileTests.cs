@@ -32,9 +32,9 @@ namespace ImageRename.Test.Model
         [DataRow("CR2 02", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, false, null, null)]
         [DataRow("CR2 03", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, true, ".\\Processed", ".\\Processed\\2018\\Q2\\20180408_122634.CR2")]
 
-        [DataRow("MOV 01", ".\\Test Files\\mov\\20160124_141026.MOV", "20160124_141026", "24 January 2016 14:10:26", false, false, null, null)]
-        [DataRow("MOV 02", ".\\Test Files\\mov\\Good.MOV", "20160124_141022", "24 January 2016 14:10:22", true, false, null, null)]
-        [DataRow("MOV 03", ".\\Test Files\\mov\\Good2.MOV", "20151129_093544", "29 November 2015 09:35:44", true, true, ".\\Processed", ".\\Processed\\2015\\Q4\\20151129_093544.MOV")]
+        [DataRow("MOV 01", ".\\Test Files\\mov\\20160124_141023.MOV", "20160124_141023", "24 January 2016 14:10:23", false, false, null, null)]
+        [DataRow("MOV 02", ".\\Test Files\\mov\\Good.MOV", "20160124_141020", "24 January 2016 14:10:20", true, false, null, null)]
+        [DataRow("MOV 03", ".\\Test Files\\mov\\Good2.MOV", "20151129_093543", "29 November 2015 09:35:43", true, true, ".\\Processed", ".\\Processed\\2015\\Q4\\20151129_093543.MOV")]
         [DataTestMethod]
         public void ImageFileTest(string test,
                                   string relativePath,
@@ -58,22 +58,16 @@ namespace ImageRename.Test.Model
             switch (originalExtension.ToLower())
             {
                 case "mov":
-                case "m4a":
+                //case "m4a":
                     actual = new VideoFile(path, processedPath);
                     break;
-                //case "nef":
-                //    actual = new ImageFileNEF(path);
-                //    break;
                 case "cr2":
                     actual = new ImageFileCR2(path, Convert.ToString(processedPath));
                     break;
-
-                case "jpg":
-                case "jpeg":
+                default:
                     actual = new ImageFileJpg(path, Convert.ToString(processedPath));
                     break;
-                default:
-                    throw new NotImplementedException();
+                    
             }
 
             Assert.IsNotNull(actual, "\r\nImageFile not constructed.");

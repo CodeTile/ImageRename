@@ -118,7 +118,7 @@ namespace ImageRename.Standard
                 ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ############# File Exists");
                 if (AreFilesTheSame(sourceFile, destinationFile))
                 {
-                    destinationFile = destinationFile.Replace(item.SourceFileInfo.Extension,$"(Duplicate){item.SourceFileInfo.Extension}");
+                    destinationFile = destinationFile.Replace(item.SourceFileInfo.Extension, $"(Duplicate){item.SourceFileInfo.Extension}");
                 }
                 destinationFile = GetSequenceFilename(item.DestinationFileInfo);
             }
@@ -128,12 +128,12 @@ namespace ImageRename.Standard
                 Helper.CreateDirectory(item.DestinationFileInfo.DirectoryName);
                 File.Move(sourceFile, destinationFile);
             }
-           
-                item.SourceFileInfo = new FileInfo(destinationFile);
-                ReportFindFileProgress();
 
-                ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
-            
+            item.SourceFileInfo = new FileInfo(destinationFile);
+            ReportFindFileProgress();
+
+            ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
+
         }
 
         private string GetSequenceFilename(FileInfo file)
@@ -141,7 +141,7 @@ namespace ImageRename.Standard
             var sequenceId = 2;
             var template = file.FullName.Replace(file.Extension, "_{0}" + file.Extension);
 
-            while (File.Exists(string.Format(template,sequenceId)))
+            while (File.Exists(string.Format(template, sequenceId)))
             {
                 sequenceId++;
             }
@@ -191,20 +191,21 @@ namespace ImageRename.Standard
                 {
                     switch (fileExtention)
                     {
-                        case "jpg":
-                        case "jpeg":
-                            _images.Add(new ImageFileJpg(file, ProcessedPath));
-                            break;
-                        case "cr2":
-                            _images.Add(new ImageFileCR2(file, ProcessedPath));
-                            break;
+                        //    case "jpg":
+                        //    case "jpeg":
+                        //        _images.Add(new ImageFileJpg(file, ProcessedPath));
+                        //        break;
+                        //    case "cr2":
+                        //        _images.Add(new ImageFileCR2(file, ProcessedPath));
+                        //        break;
                         case "mov":
-                        case "mp4":
-                        case "m4a":
+                        //case "mp4":
+                        //case "m4a":
                             _images.Add(new VideoFile(file, ProcessedPath));
                             break;
                         default:
-                            break;
+                            _images.Add(new ImageFileJpg(file, ProcessedPath));
+                            break; ;
                     }
                 }
             }
