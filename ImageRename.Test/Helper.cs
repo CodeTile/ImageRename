@@ -7,7 +7,6 @@ namespace ImageRename.Test
 {
     public static class Helper
     {
-
         public static string TestSourceFolder { get; } = Path.GetFullPath(".\\Test Files");
 
         public static void DeleteDirectory(string path, bool isRelative = true)
@@ -22,7 +21,7 @@ namespace ImageRename.Test
                 Directory.Delete(path, true);
             }
         }
-
+        
         public static void CopyTestFilesTo(string destinationFolder)
         {
             // DeleteDirectory(destinationFolder, true);

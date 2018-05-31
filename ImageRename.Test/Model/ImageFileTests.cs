@@ -17,6 +17,7 @@ namespace ImageRename.Test.Model
         {
             var originalFolder = Path.GetFullPath(".\\..\\..\\Test Files");
             var testSourceFolder = Path.GetFullPath(".\\Test Files");
+
             Helper.DirectoryCopy(Path.Combine(originalFolder, "JPG"), Path.Combine(testSourceFolder, "JPG"));
             Helper.DirectoryCopy(Path.Combine(originalFolder, "CR2"), Path.Combine(testSourceFolder, "CR2"));
             Helper.DirectoryCopy(Path.Combine(originalFolder, "mov"), Path.Combine(testSourceFolder, "mov"));
