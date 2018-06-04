@@ -21,6 +21,7 @@ namespace ImageRename.Test.Model
             Helper.DirectoryCopy(Path.Combine(originalFolder, "JPG"), Path.Combine(testSourceFolder, "JPG"));
             Helper.DirectoryCopy(Path.Combine(originalFolder, "CR2"), Path.Combine(testSourceFolder, "CR2"));
             Helper.DirectoryCopy(Path.Combine(originalFolder, "mov"), Path.Combine(testSourceFolder, "mov"));
+            Helper.DirectoryCopy(Path.Combine(originalFolder, "NEF"), Path.Combine(testSourceFolder, "NEF"));
             /////////////////////////////////////////////////////////////////////////////////////////
         }
 
@@ -35,6 +36,10 @@ namespace ImageRename.Test.Model
         [DataRow("MOV 01", ".\\Test Files\\mov\\20160124_141023.MOV", "20160124_141023", "24 January 2016 14:10:23", false, false, null, null)]
         [DataRow("MOV 02", ".\\Test Files\\mov\\Good.MOV", "20160124_141020", "24 January 2016 14:10:20", true, false, null, null)]
         [DataRow("MOV 03", ".\\Test Files\\mov\\Good2.MOV", "20151129_093543", "29 November 2015 09:35:43", true, true, ".\\Processed", ".\\Processed\\2015\\Q4\\20151129_093543.MOV")]
+
+        [DataRow("NEF 01", ".\\Test Files\\NEF\\20080601_020200.nef", "20080601_020200", "01 Jun 2008 02:02:00", false, false, null, null)]
+        [DataRow("NEF 02", ".\\Test Files\\NEF\\Good.nef", "20080601_020200", "01 Jun 2008 02:02:00", true, false, null, null)]
+
         [DataTestMethod]
         public void ImageFileTest(string test,
                                   string relativePath,
@@ -58,14 +63,13 @@ namespace ImageRename.Test.Model
             switch (originalExtension.ToLower())
             {
                 case "mov":
-                //case "m4a":
                     actual = new VideoFile(path, processedPath);
                     break;
-                case "cr2":
-                    actual = new ImageFileCR2(path, Convert.ToString(processedPath));
+                case "nef":
+                    actual = new ImageFileNEF(path, processedPath);
                     break;
                 default:
-                    actual = new ImageFileJpg(path, Convert.ToString(processedPath));
+                    actual = new ImageFile(path, Convert.ToString(processedPath));
                     break;
                     
             }

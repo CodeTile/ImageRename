@@ -6,9 +6,9 @@ using MetadataExtractor.Formats.Exif;
 
 namespace ImageRename.Standard.Model
 {
-    public class ImageFileJpg : BaseImageFile, IImageFile
+    public class ImageFile : BaseImageFile, IImageFile
     {
-        public ImageFileJpg(string path, string processedPath = null) : base(path, processedPath)
+        public ImageFile(string path, string processedPath = null) : base(path, processedPath)
         {
 
         }

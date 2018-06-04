@@ -68,6 +68,8 @@
     <Content Include="Test Files\mov\20160124_141023.MOV" />
     <Content Include="Test Files\mov\Good2.MOV" />
     <Content Include="Test Files\mov\Good.MOV" />
+    <Content Include="Test Files\NEF\20080601_020200.nef" />
+    <Content Include="Test Files\NEF\Good.nef" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ImageRename.Standard\ImageRename.Standard.csproj">

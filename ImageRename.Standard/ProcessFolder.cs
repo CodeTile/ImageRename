@@ -191,20 +191,14 @@ namespace ImageRename.Standard
                 {
                     switch (fileExtention)
                     {
-                        //    case "jpg":
-                        //    case "jpeg":
-                        //        _images.Add(new ImageFileJpg(file, ProcessedPath));
-                        //        break;
-                        //    case "cr2":
-                        //        _images.Add(new ImageFileCR2(file, ProcessedPath));
-                        //        break;
+                        case "nef":
+                            _images.Add(new ImageFileNEF(file, ProcessedPath));
+                            break;
                         case "mov":
-                        //case "mp4":
-                        //case "m4a":
                             _images.Add(new VideoFile(file, ProcessedPath));
                             break;
                         default:
-                            _images.Add(new ImageFileJpg(file, ProcessedPath));
+                            _images.Add(new ImageFile(file, ProcessedPath));
                             break; ;
                     }
                 }
