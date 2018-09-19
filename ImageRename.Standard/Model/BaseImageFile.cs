@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using MetadataExtractor;
+using MetadataExtractor.Formats.Exif;
 
 namespace ImageRename.Standard.Model
 {
