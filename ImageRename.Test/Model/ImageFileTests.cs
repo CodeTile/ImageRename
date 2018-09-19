@@ -25,21 +25,28 @@ namespace ImageRename.Test.Model
             /////////////////////////////////////////////////////////////////////////////////////////
         }
 
+        /// <summary>
+        /// Test if the file can be renamed
+        /// </summary>
+        /// <param name="test"></param>
+        /// <param name="relativePath"></param>
+        /// <param name="expectedNewFileName"></param>
+        /// <param name="expectedDate"></param>
+        /// <param name="expectedNeedsRenaming"></param>
+        /// <param name="expectedNeedsMoving"></param>
+        /// <param name="relativeProcessedPath"></param>
+        /// <param name="expectedProcessedPath"></param>
         [DataRow("JPG 01", ".\\Test Files\\JPG\\Good.jpg", "20180310_115353", "10 March 2018 11:53:53", true, false, null, null)]
         [DataRow("JPG 02", ".\\Test Files\\JPG\\Good.jpg", "20180310_115353", "10 March 2018 11:53:53", true, true, ".\\Processed", ".\\Processed\\2018\\Q1\\20180310_115353.jpg")]
         [DataRow("JPG 03", ".\\Test Files\\JPG\\Bad.jpg", null, null, false, false, null, null)]
-
         [DataRow("CR2 01", ".\\Test Files\\CR2\\Good.CR2", "20180408_072740", "08 April 2018 07:27:40", true, false, null, null)]
         [DataRow("CR2 02", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, false, null, null)]
         [DataRow("CR2 03", ".\\Test Files\\CR2\\20180408_122634.CR2", "20180408_122634", "08 April 2018 12:26:34", false, true, ".\\Processed", ".\\Processed\\2018\\Q2\\20180408_122634.CR2")]
-
         [DataRow("MOV 01", ".\\Test Files\\mov\\20160124_141023.MOV", "20160124_141023", "24 January 2016 14:10:23", false, false, null, null)]
         [DataRow("MOV 02", ".\\Test Files\\mov\\Good.MOV", "20160124_141020", "24 January 2016 14:10:20", true, false, null, null)]
         [DataRow("MOV 03", ".\\Test Files\\mov\\Good2.MOV", "20151129_093543", "29 November 2015 09:35:43", true, true, ".\\Processed", ".\\Processed\\2015\\Q4\\20151129_093543.MOV")]
-
         [DataRow("NEF 01", ".\\Test Files\\NEF\\20080601_020200.nef", "20080601_020200", "01 Jun 2008 02:02:00", false, false, null, null)]
         [DataRow("NEF 02", ".\\Test Files\\NEF\\Good.nef", "20080601_020200", "01 Jun 2008 02:02:00", true, false, null, null)]
-
         [DataTestMethod]
         public void ImageFileTest(string test,
                                   string relativePath,
@@ -65,13 +72,14 @@ namespace ImageRename.Test.Model
                 case "mov":
                     actual = new VideoFile(path, processedPath);
                     break;
+
                 case "nef":
                     actual = new ImageFileNEF(path, processedPath);
                     break;
+
                 default:
                     actual = new ImageFile(path, Convert.ToString(processedPath));
                     break;
-                    
             }
 
             Assert.IsNotNull(actual, "\r\nImageFile not constructed.");

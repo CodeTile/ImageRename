@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MetadataExtractor;
-using MetadataExtractor.Formats.Exif;
 
 namespace ImageRename.Standard.Model
 {
     public abstract class BaseImageFile
     {
         private FileInfo _sourceFileInfo;
-        private FileInfo _destinationFileInfo;
         private DateTime? _imageCreated;
         private DirectoryInfo _processedRoot;
+
         public BaseImageFile(string path, string processedPath = null)
         {
             if (!File.Exists(path))
@@ -21,24 +18,26 @@ namespace ImageRename.Standard.Model
             }
 
             _sourceFileInfo = new FileInfo(path);
-            if (!string.IsNullOrEmpty(processedPath) 
-                && !processedPath.Equals(_processedRoot?.FullName,StringComparison.CurrentCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(processedPath)
+                && !processedPath.Equals(_processedRoot?.FullName, StringComparison.CurrentCultureIgnoreCase))
             {
                 _processedRoot = new DirectoryInfo(processedPath);
             }
             GetCreationDate();
         }
 
+        /// <summary>
+        /// Get the creation date of the file.
+        /// </summary>
         public virtual void GetCreationDate()
         {
             try
             {
                 string dateTaken;
-                IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
+                var directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
                 var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 
                 dateTaken = subIfdDirectory?.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
-
 
                 var mySplit = dateTaken.Trim().Split(' ');
                 var dateSplit = mySplit[0].Split(':');
@@ -46,7 +45,6 @@ namespace ImageRename.Standard.Model
                 var date = new DateTime(Convert.ToInt32(dateSplit[0]), Convert.ToInt32(dateSplit[1]), Convert.ToInt32(dateSplit[2]),
                                       Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
                 ImageCreated = date;
-
             }
             catch (Exception ex)
             {
@@ -55,13 +53,14 @@ namespace ImageRename.Standard.Model
             }
         }
 
+        /// <summary>
+        /// Get/Set the Destination FileInfo
+        /// </summary>
+        public FileInfo DestinationFileInfo { get; private set; }
 
-        public FileInfo DestinationFileInfo
-        {
-            get => _destinationFileInfo;
-            private set => _destinationFileInfo = value;
-        }
-     
+        /// <summary>
+        /// Get/Set the source FileInfo
+        /// </summary>
         public FileInfo SourceFileInfo
         {
             get => _sourceFileInfo;
@@ -78,6 +77,10 @@ namespace ImageRename.Standard.Model
                 OnInputParameterChanged();
             }
         }
+
+        /// <summary>
+        /// Get/set for image created.
+        /// </summary>
         public DateTime? ImageCreated
         {
             get => _imageCreated;
@@ -88,6 +91,9 @@ namespace ImageRename.Standard.Model
             }
         }
 
+        /// <summary>
+        /// Event for changed input parameter
+        /// </summary>
         private void OnInputParameterChanged()
         {
             if (FullDestinationFileName == null)
@@ -216,6 +222,9 @@ namespace ImageRename.Standard.Model
             }
         }
 
+        /// <summary>
+        /// The full destination file path
+        /// </summary>
         public string DestinationFilePath
         {
             get
@@ -225,9 +234,7 @@ namespace ImageRename.Standard.Model
                     return null;
                 }
                 return DestinationFileInfo.FullName;
-
             }
         }
-
     }
 }

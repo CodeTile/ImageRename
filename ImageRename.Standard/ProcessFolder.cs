@@ -2,15 +2,13 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using ImageRename.Standard.Model;
 using System.Security.Cryptography;
+using ImageRename.Standard.Model;
 
 namespace ImageRename.Standard
 {
-
     public class ProcessFolder
     {
-
         public bool DebugDontRenameFile { get; set; } = false;
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
@@ -19,20 +17,34 @@ namespace ImageRename.Standard
         private string _rootFolder;
 
         #region RenameProgressEvent
+
         public event EventHandler<ReportRenameProgressEventArgs> ReportRenameProgress;
+
+        /// <summary>
+        /// Rename file event
+        /// </summary>
+        /// <param name="e"></param>
         protected virtual void OnReportRenaimingProgress(ReportRenameProgressEventArgs e)
         {
             ReportRenameProgress?.Invoke(this, e);
         }
-        #endregion
+
+        #endregion RenameProgressEvent
 
         #region FindFileProgressEvent
+
         public event EventHandler<ReportFindFilesProgressEventArgs> ReportFoundFileProgress;
+
+        /// <summary>
+        /// Event for a file has been found.
+        /// </summary>
+        /// <param name="e"></param>
         protected virtual void OnReportFilesFoundProgress(ReportFindFilesProgressEventArgs e)
         {
             ReportFoundFileProgress?.Invoke(this, e);
         }
-        #endregion
+
+        #endregion FindFileProgressEvent
 
         private void ReportRenamingProgress(string message)
         {
@@ -45,7 +57,6 @@ namespace ImageRename.Standard
 
         private void ReportFindFileProgress()
         {
-
             var e = new ReportFindFilesProgressEventArgs();
             if (_images != null)
             {
@@ -100,7 +111,6 @@ namespace ImageRename.Standard
                 try
                 {
                     RenameFile(item);
-
                 }
                 catch (Exception ex)
                 {
@@ -133,7 +143,6 @@ namespace ImageRename.Standard
             ReportFindFileProgress();
 
             ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
-
         }
 
         private string GetSequenceFilename(FileInfo file)
@@ -194,9 +203,11 @@ namespace ImageRename.Standard
                         case "nef":
                             _images.Add(new ImageFileNEF(file, ProcessedPath));
                             break;
+
                         case "mov":
                             _images.Add(new VideoFile(file, ProcessedPath));
                             break;
+
                         default:
                             _images.Add(new ImageFile(file, ProcessedPath));
                             break; ;

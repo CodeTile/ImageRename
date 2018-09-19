@@ -9,6 +9,9 @@ namespace ImageRename.Test
     {
         public static string TestSourceFolder { get; } = Path.GetFullPath(".\\Test Files");
 
+        /// <summary>
+        /// Delete a test file.
+        /// </summary>
         public static void DeleteDirectory(string path, bool isRelative = true)
         {
             if (isRelative)
@@ -21,7 +24,11 @@ namespace ImageRename.Test
                 Directory.Delete(path, true);
             }
         }
-        
+
+        /// <summary>
+        /// Create a copy of all test files.
+        /// </summary>
+        /// <param name="destinationFolder"></param>
         public static void CopyTestFilesTo(string destinationFolder)
         {
             // DeleteDirectory(destinationFolder, true);
@@ -31,6 +38,9 @@ namespace ImageRename.Test
             RemoveFilesNotInSource(originalPath, fullDestination);
         }
 
+        /// <summary>
+        /// Remove any files that do not exist in the source folder
+        /// </summary>
         private static void RemoveFilesNotInSource(string source, string destination)
         {
             var sourceFiles = Directory.GetFiles(source, "*", SearchOption.AllDirectories)
@@ -48,6 +58,10 @@ namespace ImageRename.Test
                 File.Delete(path);
             }
         }
+
+        /// <summary>
+        /// Create a directory if it does not exist.
+        /// </summary>
         public static void CreateDirectory(string path)
         {
             if (!Directory.Exists(path))
@@ -56,6 +70,10 @@ namespace ImageRename.Test
                 Directory.CreateDirectory(path);
             }
         }
+
+        /// <summary>
+        /// Copy the complete contents of a directory
+        /// </summary>
         public static void DirectoryCopy(string sourceDirName, string destDirName)
         {
             // Get the subdirectories for the specified directory.
@@ -92,6 +110,9 @@ namespace ImageRename.Test
             }
         }
 
+        /// <summary>
+        /// Create a copy of a test file
+        /// </summary>
         internal static void CopyTestFileTo(string source, string destination)
         {
             var target = new FileInfo(destination);
@@ -104,6 +125,9 @@ namespace ImageRename.Test
             }
         }
 
+        /// <summary>
+        /// Duplicate a testfile
+        /// </summary>
         internal static void DuplicateFile(string root, string original, string duplicate)
         {
             var originalPath = new FileInfo(Path.Combine(root, original));
