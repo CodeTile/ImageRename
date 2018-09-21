@@ -86,7 +86,7 @@ namespace ImageRename.WPF
         {
             if (Directory.Exists(txtPath.Text))
             {
-                txtProgress.Clear();
+                txtProgress.Text = string.Empty;
                 txtFileSummary.Content = string.Empty;
                 Properties.Settings.Default.SourceFolder = txtPath.Text;
                 Properties.Settings.Default.DestinationFolder = txtProcessedPath.Text;
