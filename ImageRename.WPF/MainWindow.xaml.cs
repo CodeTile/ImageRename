@@ -64,5 +64,11 @@ namespace ImageRename.WPF
         {
             SetDefaultProcessedPath();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            txtPath.Text = Properties.Settings.Default.SourceFolder;
+            txtProcessedPath.Text = Properties.Settings.Default.DestinationFolder;
+        }
     }
 }

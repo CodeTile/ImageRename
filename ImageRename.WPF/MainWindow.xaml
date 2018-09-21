@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageRename.WPF"
         mc:Ignorable="d"
-        Title="Image Rename" Height="418.125" Width="800">
+        Title="Image Rename" Height="418.125" Width="800" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15*" />
