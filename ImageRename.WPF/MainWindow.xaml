@@ -1,0 +1,39 @@
+﻿<Window x:Class="ImageRename.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageRename.WPF"
+        mc:Ignorable="d"
+        Title="Image Rename" Height="418.125" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*" />
+            <ColumnDefinition Width="80*" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
+        <TextBox Grid.Column="1" TextAlignment="Left" VerticalContentAlignment="Center"  TextWrapping="NoWrap" Text="c:\" HorizontalAlignment="Stretch" Name="txtPath" />
+        <Button Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnFindPath" />
+        <CheckBox Grid.Row="1" Grid.Column="1" Content="Move File to processed by year." IsChecked="True" VerticalAlignment="Center"   Name="chkMoveToProcessedByYear" />
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
+        <TextBox  Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" TextAlignment="Left"   TextWrapping="NoWrap" Text="c:\xxx" HorizontalAlignment="Stretch" Name="txtProcessedPath" />
+        <Button  Grid.Row="2" Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnProcessedBrowse" />
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Images Found" />
+        <Label Grid.Row="3" Grid.Column="1" Name="txtFileSummary" />
+
+        <Button Grid.Row="4" Grid.Column="1" Name="btnProcess" Content="Process" Width="200" HorizontalAlignment="Left" />
+        <TextBox  Grid.Row="5" Grid.Column="1" TextAlignment="Left" IsReadOnly="True" Margin="0,10" />
+    </Grid>
+</Window>
