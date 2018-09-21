@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using ImageRename.Standard;
 
 namespace ImageRename.WPF
 {
@@ -9,6 +12,9 @@ namespace ImageRename.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ProcessFolder _processor;
+        private BackgroundWorker _backgroundWorker;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -69,6 +75,89 @@ namespace ImageRename.WPF
         {
             txtPath.Text = Properties.Settings.Default.SourceFolder;
             txtProcessedPath.Text = Properties.Settings.Default.DestinationFolder;
+            _backgroundWorker = new BackgroundWorker();
+            _backgroundWorker.DoWork += backgroundWorker_DoWork;
+            _backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
+            _backgroundWorker.WorkerReportsProgress = true;
+            _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+        }
+
+        private void btnProcess_Click(object sender, RoutedEventArgs e)
+        {
+            if (Directory.Exists(txtPath.Text))
+            {
+                txtProgress.Clear();
+                txtFileSummary.Content = string.Empty;
+                Properties.Settings.Default.SourceFolder = txtPath.Text;
+                Properties.Settings.Default.DestinationFolder = txtProcessedPath.Text;
+                Properties.Settings.Default.Save();
+                var processParams = new ProcessParameters()
+                {
+                    ProcessedPath = txtProcessedPath.Text,
+                    SourcePath = txtPath.Text,
+                    SortByYear = (bool)chkMoveToProcessedByYear.IsChecked
+                };
+                _backgroundWorker.RunWorkerAsync(processParams);
+            }
+        }
+
+        private struct ProcessParameters
+        {
+            public string ProcessedPath { get; set; }
+            public bool SortByYear { get; set; }
+            public string SourcePath { get; set; }
+        }
+
+        private enum ProgressReporting
+        {
+            FileCountProgress = 10,
+            RenameProgress = 20
+        }
+
+        private void _processor_ReportRenameProgress(object sender, ReportRenameProgressEventArgs e)
+        {
+            var msg = e.Message.ToString();
+            _backgroundWorker.ReportProgress((int)ProgressReporting.RenameProgress, msg);
+        }
+
+        private void _processor_ReportFoundFileProgress(object sender, ReportFindFilesProgressEventArgs e)
+        {
+            string msg = $"{e.FilesToRename}/ {e.TotalFileCount}";
+            _backgroundWorker.ReportProgress((int)ProgressReporting.FileCountProgress, msg);
+        }
+
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            txtProgress.AppendText("#######################################\r\n");
+            txtProgress.AppendText("###          Finished               ###\r\n");
+            txtProgress.AppendText("#######################################\r\n");
+            btnProcess.IsEnabled = false;
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == (int)ProgressReporting.FileCountProgress)
+            {
+                txtFileSummary.Content = e.UserState.ToString();
+            }
+            else
+            {
+                txtProgress.AppendText($"{e.UserState.ToString()}\r\n");
+            }
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var parameters = (ProcessParameters)e.Argument;
+            _processor = new ProcessFolder();
+
+            _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
+            _processor.MoveToProcessedByYear = parameters.SortByYear;
+            _processor.ProcessedPath = parameters.ProcessedPath;
+            _processor.ReportRenameProgress += _processor_ReportRenameProgress;
+            _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
+            _backgroundWorker.ReportProgress(0, "Starting");
+            _processor.Process(parameters.SourcePath);
         }
     }
 }
