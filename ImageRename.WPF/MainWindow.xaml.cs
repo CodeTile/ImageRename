@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+using System.Windows.Forms;
 
 namespace ImageRename.WPF
 {
@@ -14,25 +16,32 @@ namespace ImageRename.WPF
 
         private void btnFindPath_Click(object sender, RoutedEventArgs e)
         {
+            txtPath.Text = ShowDialog(txtPath.Text);
         }
 
         private void btnProcessedBrowse_Click(object sender, RoutedEventArgs e)
         {
+            txtProcessedPath.Text = ShowDialog(txtProcessedPath.Text);
         }
 
-        //private void ShowDialog(string description, string originalPath)
-        //{
-        //    var dialog = new FolderBrowserDialog
-        //    {
-        //        ShowNewFolderButton = false
-        //    };
+        private string ShowDialog( string originalPath)
+        {
+            var dialog = new FolderBrowserDialog()
+            {
+                ShowNewFolderButton = false,
+                SelectedPath = originalPath                
+            };
 
-        //    var result = dialog.ShowDialog();
-        //    if (result == System.Windows.Forms.DialogResult.OK &&
-        //        Directory.Exists(dialog.SelectedPath))
-        //    {
-        //        txtPath.Text = dialog.SelectedPath;
-        //    }
-        //}
+            var result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK &&
+                Directory.Exists(dialog.SelectedPath))
+            {
+                return dialog.SelectedPath;
+            }
+            else
+            {
+                return originalPath;
+            }
+        }
     }
 }
