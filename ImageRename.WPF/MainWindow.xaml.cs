@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace ImageRename.WPF
 {
@@ -24,5 +11,28 @@ namespace ImageRename.WPF
         {
             InitializeComponent();
         }
+
+        private void btnFindPath_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void btnProcessedBrowse_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        //private void ShowDialog(string description, string originalPath)
+        //{
+        //    var dialog = new FolderBrowserDialog
+        //    {
+        //        ShowNewFolderButton = false
+        //    };
+
+        //    var result = dialog.ShowDialog();
+        //    if (result == System.Windows.Forms.DialogResult.OK &&
+        //        Directory.Exists(dialog.SelectedPath))
+        //    {
+        //        txtPath.Text = dialog.SelectedPath;
+        //    }
+        //}
     }
 }

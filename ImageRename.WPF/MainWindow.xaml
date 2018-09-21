@@ -23,12 +23,12 @@
 
         <Label Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
         <TextBox Grid.Column="1" TextAlignment="Left" VerticalContentAlignment="Center"  TextWrapping="NoWrap" Text="c:\" HorizontalAlignment="Stretch" Name="txtPath" />
-        <Button Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnFindPath" />
+        <Button Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnFindPath" Click="btnFindPath_Click" />
         <CheckBox Grid.Row="1" Grid.Column="1" Content="Move File to processed by year." IsChecked="True" VerticalAlignment="Center"   Name="chkMoveToProcessedByYear" />
 
         <Label Grid.Row="2" Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
         <TextBox  Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" TextAlignment="Left"   TextWrapping="NoWrap" Text="c:\xxx" HorizontalAlignment="Stretch" Name="txtProcessedPath" />
-        <Button  Grid.Row="2" Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnProcessedBrowse" />
+        <Button  Grid.Row="2" Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnProcessedBrowse" Click="btnProcessedBrowse_Click" />
 
         <Label Grid.Row="3" Grid.Column="0" Content="Images Found" />
         <Label Grid.Row="3" Grid.Column="1" Name="txtFileSummary" />
