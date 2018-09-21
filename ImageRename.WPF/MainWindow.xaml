@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
-        <TextBox Grid.Column="1" TextAlignment="Left" VerticalContentAlignment="Center"  TextWrapping="NoWrap" Text="c:\" HorizontalAlignment="Stretch" Name="txtPath" />
+        <TextBox Grid.Column="1" TextAlignment="Left" VerticalContentAlignment="Center"  TextWrapping="NoWrap" Text="c:\" HorizontalAlignment="Stretch" Name="txtPath" TextChanged="txtPath_TextChanged" />
         <Button Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnFindPath" Click="btnFindPath_Click" />
         <CheckBox Grid.Row="1" Grid.Column="1" Content="Move File to processed by year." IsChecked="True" VerticalAlignment="Center"   Name="chkMoveToProcessedByYear" />
 

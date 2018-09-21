@@ -24,12 +24,12 @@ namespace ImageRename.WPF
             txtProcessedPath.Text = ShowDialog(txtProcessedPath.Text);
         }
 
-        private string ShowDialog( string originalPath)
+        private string ShowDialog(string originalPath)
         {
             var dialog = new FolderBrowserDialog()
             {
                 ShowNewFolderButton = false,
-                SelectedPath = originalPath                
+                SelectedPath = originalPath
             };
 
             var result = dialog.ShowDialog();
@@ -42,6 +42,27 @@ namespace ImageRename.WPF
             {
                 return originalPath;
             }
+        }
+
+        private void SetDefaultProcessedPath()
+        {
+            if (txtProcessedPath == null)
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(txtPath.Text))
+            {
+                txtProcessedPath.Clear();
+            }
+            else
+            {
+                txtProcessedPath.Text = Path.GetFullPath(Path.Combine(txtPath.Text, "..\\ProcessedPhotos"));
+            }
+        }
+
+        private void txtPath_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            SetDefaultProcessedPath();
         }
     }
 }
