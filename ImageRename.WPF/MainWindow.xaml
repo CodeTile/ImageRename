@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ImageRename.WPF"
         mc:Ignorable="d"
         Title="Image Rename" Height="418.125" Width="800" Loaded="Window_Loaded">
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15*" />
             <ColumnDefinition Width="80*" />
@@ -33,9 +33,11 @@
         <Label Grid.Row="3" Grid.Column="0" Content="Images Found" />
         <Label Grid.Row="3" Grid.Column="1" Name="txtFileSummary" />
 
-        <Button Grid.Row="4" Grid.Column="1" Name="btnProcess" Content="Process" Width="200" HorizontalAlignment="Left" Click="btnProcess_Click" />
-        <ScrollViewer Grid.Row="5" Grid.Column="1" Margin="0,0,0,10">
-            <TextBox   TextAlignment="Left" Margin="0,10" Name="txtProgress" />
+        <Border Grid.Row="4" Grid.Column="1" Width="120" CornerRadius="16" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+            <Button  Content="Process" Width="90" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontSize="14" Name="btnProcess" Click="btnProcess_Click" />
+        </Border>
+        <ScrollViewer Grid.Row="5" Grid.Column="1" Margin="0,0,0,0">
+            <TextBox   TextAlignment="Left" Name="txtProgress" />
         </ScrollViewer>
     </Grid>
 </Window>
