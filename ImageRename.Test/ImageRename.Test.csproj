@@ -65,6 +65,7 @@
     <Content Include="Test Files\CR2\Good.CR2" />
     <Content Include="Test Files\JPG\Bad.jpg" />
     <Content Include="Test Files\JPG\Good.jpg" />
+    <Content Include="Test Files\JPG\GPS.JPG" />
     <Content Include="Test Files\mov\20160124_141023.MOV" />
     <Content Include="Test Files\mov\Good2.MOV" />
     <Content Include="Test Files\mov\Good.MOV" />

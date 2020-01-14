@@ -8,7 +8,6 @@ namespace ImageRename.Test
     [TestClass]
     public class ProcessFileTests
     {
-
         private string _processFolderDontMoveTest = Path.GetFullPath(".\\ProcessFolderDontMoveTest");
         private string _processFolderMoveTest = Path.GetFullPath(".\\ProcessFolderMoveTest");
         private string _processFolderMoveTestProcessed = Path.GetFullPath(".\\ProcessFolderMoveTestProcessed");
@@ -42,9 +41,9 @@ namespace ImageRename.Test
             Helper.CopyTestFilesTo(_processFolderDontMoveTest);
             Helper.CopyTestFilesTo(_processFolderMoveTest);
 
-
             Helper.DuplicateFile(_duplicateTimeStampDontMove, "CR2\\Good.CR2", "CR2\\Duplicate.CR2");
             Helper.DuplicateFile(_duplicateTimeStampDontMove, "JPG\\Good.jpg", "JPG\\Duplicate.jpg");
+            Helper.DuplicateFile(_duplicateTimeStampDontMove, "JPG\\GPS.jpg", "JPG\\Duplicate.jpg");
             Helper.DuplicateFile(_duplicateTimeStampDontMove, "mov\\Good.MOV", "mov\\Duplicate.MOV");
 
             Helper.DuplicateFile(_duplicateTimeStampMove, "CR2\\Good.CR2", "CR2\\Duplicate.CR2");
@@ -64,14 +63,12 @@ namespace ImageRename.Test
         [TestMethod]
         public void ProcessFolderTestSimpleRunsTest()
         {
-
             var target = new ProcessFolder()
             {
                 DebugDontRenameFile = true
             };
 
             target.Process(Helper.TestSourceFolder);
-
         }
 
         [TestMethod]
@@ -92,18 +89,17 @@ namespace ImageRename.Test
             target.Process(originalPath);
             filesInFolders += GetFilesList("Processed", originalPath, ref filesProcessedContent);
 
-            Assert.AreEqual(9, filesProcessedContent.Count(), filesInFolders);
+            Assert.AreEqual(10, filesProcessedContent.Count(), filesInFolders);
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\CR2\\20180408_072740.CR2"), $"\r\nMissing file \r\n\t\\CR2\\20180408_072740.CR2{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\CR2\\20180408_122634.CR2"), $"\r\nMissing file \r\n\t\\CR2\\20180408_122634.CR2{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\JPG\\20180310_115353.jpg"), $"\r\nMissing file \r\n\t\\JPG\\20180310_115353.jpg{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\JPG\\Bad.jpg"), $"\r\nMissing file \r\n\t\\JPG\\Bad.jpg{filesInFolders}");
+            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\JPG\\20190510_095011.JPG"), $"\r\nMissing file \r\n\t\\JPG\\20190510_095011.jpg{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\mov\\20151129_093543.MOV"), $"\r\nMissing file \r\n\t\\mov\\20151129_093543.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\mov\\20160124_141020.MOV"), $"\r\nMissing file \r\n\t\\mov\\20160124_141020.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\mov\\20160124_141023.MOV"), $"\r\nMissing file \r\n\t\\mov\\20160124_141023.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\NEF\\20080601_020200.nef"), $"\r\nMissing file \r\n\t\\NEF\\20080601_020200.nef{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\NEF\\20080601_020200_2.nef"), $"\r\nMissing file \r\n\t\\NEF\\20080601_020200_2.nef{filesInFolders}");
-
-
         }
 
         private string GetFilesList(string header, string targetPath, ref string[] targetContent)
@@ -140,7 +136,7 @@ namespace ImageRename.Test
                            + GetFilesList("Processed", _processFolderMoveTestProcessed, ref filesProcessedContent);
 
             Assert.AreEqual(1, filesSourceContent.Count(), $"\r\n Only Bad.Jpg expected in source folder\r\n{filesInFolders}");
-            Assert.AreEqual(8, filesProcessedContent.Count(), $"{filesInFolders}");
+            Assert.AreEqual(9, filesProcessedContent.Count(), $"{filesInFolders}");
 
             //Processed files
             Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2008\\Q2\\20080601_020200.nef"), $"\r\nMissing file \r\n\t\\2008\\Q2\\20080601_020200.nef{filesInFolders}");
@@ -151,6 +147,7 @@ namespace ImageRename.Test
             Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2016\\Q1\\20160124_141023.MOV"), $"\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141023.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2016\\Q1\\20160124_141020.MOV"), $"\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141020.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2015\\Q4\\20151129_093543.MOV"), $"\r\nMissing file \r\n\t\\2015\\Q4\\20151129_093543.MOV{filesInFolders}");
+            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2019\\Q2\\20190510_095011.JPG"), $"\r\nMissing file \r\n\t\\\\2019\\Q2\\20190510_095011.jpg{filesInFolders}");
 
             //Failed to process files
             Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\JPG\\Bad.jpg"), $"Missing file \r\n\\JPG\\Bad.jpg{filesInFolders}");
@@ -163,7 +160,6 @@ namespace ImageRename.Test
             Assert.AreEqual(1, originalDirectories.Count(), $"{directoriesInOriginalPath}");
             Assert.IsTrue(originalDirectories.Contains($"{originalPath}\\JPG"), $"{directoriesInOriginalPath}");
         }
-
 
         [TestMethod]
         public void DuplicateTimeStampDontMove()
@@ -183,7 +179,7 @@ namespace ImageRename.Test
             target.Process(originalPath);
 
             filesInFolders += GetFilesList("Processed", originalPath, ref filesProcessedContent);
-            Assert.AreEqual(12, filesProcessedContent.Count(), filesInFolders);
+            Assert.AreEqual(13, filesProcessedContent.Count(), filesInFolders);
 
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\CR2\\20180408_072740.CR2"), $"\r\nMissing file \r\n\t\\CR2\\20180408_072740.CR2{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\CR2\\20180408_072740_2.CR2"), $"\r\nMissing file \r\n\t\\CR2\\20180408_072740_2.CR2{filesInFolders}");
@@ -197,7 +193,7 @@ namespace ImageRename.Test
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\mov\\20160124_141023.MOV"), $"\r\nMissing file \r\n\t\\mov\\20160124_141023.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\NEF\\20080601_020200.nef"), $"\r\nMissing file \r\n\t\\NEF\\20080601_020200.nef{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\NEF\\20080601_020200_2.nef"), $"\r\nMissing file \r\n\t\\NEF\\20080601_020200_2.nef{filesInFolders}");
-
+            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\JPG\\20190510_095011.JPG"), $"\r\nMissing file \r\n\t\\JPG\\20190510_095011.JPG{filesInFolders}");
         }
 
         [TestMethod]
@@ -220,12 +216,11 @@ namespace ImageRename.Test
 
             target.Process(originalPath);
 
-
             filesInFolders += GetFilesList("Source", originalPath, ref filesSourceContent)
                            + GetFilesList("Processed", processedPath, ref filesProcessedContent);
 
             Assert.AreEqual(1, filesSourceContent.Count(), $"{filesInFolders}");
-            Assert.AreEqual(11, filesProcessedContent.Count(), $"{filesInFolders}");
+            Assert.AreEqual(12, filesProcessedContent.Count(), $"{filesInFolders}");
             //Processed files
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2015\\Q4\\20151129_093543.MOV"), $"\r\nMissing file \r\n\t\\2015\\Q4\\20151129_093543.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2016\\Q1\\20160124_141020.MOV"), $"\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141020.MOV{filesInFolders}");
@@ -238,7 +233,7 @@ namespace ImageRename.Test
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2018\\Q2\\20180408_122634.CR2"), $"\r\nMissing file \r\n\t\\2018\\Q2\\20180408_122634.CR2{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2008\\Q2\\20080601_020200.nef"), $"\r\nMissing file \r\n\t\\2008\\Q2\\20080601_020200.nef{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2008\\Q2\\20080601_020200_2.nef"), $"\r\nMissing file \r\n\t\\2008\\Q2\\20080601_020200_2.nef{filesInFolders}");
-
+            Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2019\\Q2\\20190510_095011.JPG"), $"\r\nMissing file \r\n\t\\2019\\Q2\\20190510_095011.jpg{filesInFolders}");
 
             //Failed to process files
             Assert.IsTrue(filesSourceContent.Contains($"{originalPath}\\JPG\\Bad.jpg"), $"Missing file \r\n\\JPG\\Bad.jpg{filesInFolders}");
@@ -250,7 +245,6 @@ namespace ImageRename.Test
             var directoriesInOriginalPath = $"\r\nOriginal path:\r\n\t{string.Join("\r\n\t", originalDirectories).Replace(originalPath, string.Empty)}";
             Assert.AreEqual(1, originalDirectories.Count(), $"{directoriesInOriginalPath}");
             Assert.IsTrue(originalDirectories.Contains($"{originalPath}\\JPG"), $"{directoriesInOriginalPath}");
-
         }
 
         [TestMethod]
@@ -272,12 +266,11 @@ namespace ImageRename.Test
 
             target.Process(originalPath);
 
-
             filesInFolders += GetFilesList("Source", originalPath, ref filesSourceContent)
                            + GetFilesList("Processed", processedPath, ref filesProcessedContent);
 
             Assert.AreEqual(1, filesSourceContent.Count(), $"\r\nOriginal folder check{filesInFolders}");
-            Assert.AreEqual(13, filesProcessedContent.Count(), $"\r\nProcessed folder check{filesInFolders}");
+            Assert.AreEqual(14, filesProcessedContent.Count(), $"\r\nProcessed folder check{filesInFolders}");
             //Processed files
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2015\\Q4\\20151129_093543.MOV"), " $\r\nMissing file \r\n\t\\2015\\Q4\\20151129_093543.MOV{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2016\\Q1\\20160124_141020.MOV"), " $\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141020.MOV{filesInFolders}");
@@ -292,6 +285,7 @@ namespace ImageRename.Test
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2018\\Q2\\20180408_122634_3.CR2"), " $\r\nMissing file \r\n\t\\2018\\Q2\\20180408_122634_3.CR2{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2008\\Q2\\20080601_020200.nef"), $"\r\nMissing file \r\n\t\\2008\\Q2\\20080601_020200.nef{filesInFolders}");
             Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2008\\Q2\\20080601_020200_2.nef"), $"\r\nMissing file \r\n\t\\2008\\Q2\\20080601_020200_2.nef{filesInFolders}");
+            Assert.IsTrue(filesProcessedContent.Contains($"{processedPath}\\2019\\Q2\\20190510_095011.JPG"), $"\r\nMissing file \r\n\t\\2019\\Q2\\20190510_095011.jpg{filesInFolders}");
 
             //Failed to process files
             Assert.IsTrue(filesSourceContent.Contains($"{originalPath}\\JPG\\Bad.jpg"), $"Missing file \r\n\\JPG\\Bad.jpg{filesInFolders}");
@@ -303,7 +297,6 @@ namespace ImageRename.Test
             var directoriesInOriginalPath = $"\r\nOriginal path:\r\n\t{string.Join("\r\n\t", originalDirectories).Replace(originalPath, string.Empty)}";
             Assert.AreEqual(1, originalDirectories.Count(), $"{directoriesInOriginalPath}");
             Assert.IsTrue(originalDirectories.Contains($"{originalPath}\\JPG"), $"{directoriesInOriginalPath}");
-
         }
     }
 }
