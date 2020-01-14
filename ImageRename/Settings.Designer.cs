@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ImageRename.WPF.Properties {
+namespace ImageRename {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
