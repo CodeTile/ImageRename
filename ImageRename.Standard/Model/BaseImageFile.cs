@@ -6,52 +6,26 @@ using MetadataExtractor.Formats.Exif;
 
 namespace ImageRename.Standard.Model
 {
-    public abstract class BaseImageFile
+    public abstract partial class BaseImageFile
     {
-        private FileInfo _sourceFileInfo;
         private DateTime? _imageCreated;
+
         private DirectoryInfo _processedRoot;
 
-        public BaseImageFile(string path, string processedPath = null)
-        {
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException(path);
-            }
-
-            _sourceFileInfo = new FileInfo(path);
-            if (!string.IsNullOrEmpty(processedPath)
-                && !processedPath.Equals(_processedRoot?.FullName, StringComparison.CurrentCultureIgnoreCase))
-            {
-                _processedRoot = new DirectoryInfo(processedPath);
-            }
-            GetCreationDate();
-        }
+        private FileInfo _sourceFileInfo;
 
         /// <summary>
-        /// Get the creation date of the file.
+        /// Return the destination FilenameIncluding the extenstion
         /// </summary>
-        public virtual void GetCreationDate()
+        private string FullDestinationFileName
         {
-            try
+            get
             {
-                string dateTaken;
-                var directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
-                var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
-
-                dateTaken = subIfdDirectory?.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
-
-                var mySplit = dateTaken.Trim().Split(' ');
-                var dateSplit = mySplit[0].Split(':');
-                var timeSplit = mySplit[1].Split(':');
-                var date = new DateTime(Convert.ToInt32(dateSplit[0]), Convert.ToInt32(dateSplit[1]), Convert.ToInt32(dateSplit[2]),
-                                      Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
-                ImageCreated = date;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
-                //Suppress errors
+                if (DestinationFileName == null)
+                {
+                    return null;
+                }
+                return $"{DestinationFileName}{SourceFileInfo?.Extension}";
             }
         }
 
@@ -59,65 +33,6 @@ namespace ImageRename.Standard.Model
         /// Get/Set the Destination FileInfo
         /// </summary>
         public FileInfo DestinationFileInfo { get; private set; }
-
-        /// <summary>
-        /// Get/Set the source FileInfo
-        /// </summary>
-        public FileInfo SourceFileInfo
-        {
-            get => _sourceFileInfo;
-            set
-            {
-                if (value.Exists)
-                {
-                    _sourceFileInfo = value;
-                }
-                else
-                {
-                    _sourceFileInfo = null;
-                }
-                OnInputParameterChanged();
-            }
-        }
-
-        /// <summary>
-        /// Get/set for image created.
-        /// </summary>
-        public DateTime? ImageCreated
-        {
-            get => _imageCreated;
-            internal set
-            {
-                _imageCreated = value;
-                OnInputParameterChanged();
-            }
-        }
-
-        /// <summary>
-        /// Event for changed input parameter
-        /// </summary>
-        private void OnInputParameterChanged()
-        {
-            if (FullDestinationFileName == null)
-            {
-                DestinationFileInfo = null;
-                return;
-            }
-            string newPath;
-            if (!string.IsNullOrEmpty(_processedRoot?.FullName))
-            {
-                newPath = Path.Combine(_processedRoot.FullName,
-                                       $"{ ((DateTime)ImageCreated).Year}"
-                                       , GetQuarter
-                                       , FullDestinationFileName);
-            }
-            else
-            {
-                newPath = Path.Combine(SourceFileInfo.DirectoryName,
-                                             FullDestinationFileName);
-            }
-            DestinationFileInfo = new FileInfo(newPath);
-        }
 
         /// <summary>
         /// Returns the destination filename
@@ -144,50 +59,17 @@ namespace ImageRename.Standard.Model
         }
 
         /// <summary>
-        /// Return the destination FilenameIncluding the extenstion
+        /// The full destination file path
         /// </summary>
-        private string FullDestinationFileName
+        public string DestinationFilePath
         {
             get
             {
-                if (DestinationFileName == null)
+                if ((!NeedsMoving && !NeedsRenaming) || DestinationFileInfo == null)
                 {
                     return null;
                 }
-                return $"{DestinationFileName}{SourceFileInfo?.Extension}";
-            }
-        }
-
-        /// <summary>
-        /// Does the file need renaming
-        /// </summary>
-        public bool NeedsRenaming
-        {
-            get
-            {
-                var retval = false;
-                retval = DestinationFileName != null &&
-                      SourceFileInfo != null &&
-                     FullDestinationFileName != SourceFileInfo.Name;
-                return retval;
-            }
-        }
-
-        /// <summary>
-        /// Does the file need moving
-        /// </summary>
-        public bool NeedsMoving
-        {
-            get
-            {
-                var retval = false;
-                if (!string.IsNullOrEmpty(_processedRoot?.FullName)
-                    && !SourceFileInfo.Directory.FullName.Equals(_processedRoot.FullName, StringComparison.CurrentCultureIgnoreCase)
-                    && ImageCreated != null)
-                {
-                    retval = true;
-                }
-                return retval;
+                return DestinationFileInfo.FullName;
             }
         }
 
@@ -224,18 +106,149 @@ namespace ImageRename.Standard.Model
             }
         }
 
+        public GPSCoridates GPS { get; set; }
+
         /// <summary>
-        /// The full destination file path
+        /// Get/set for image created.
         /// </summary>
-        public string DestinationFilePath
+        public DateTime? ImageCreated
+        {
+            get => _imageCreated;
+            internal set
+            {
+                _imageCreated = value;
+                OnInputParameterChanged();
+            }
+        }
+
+        /// <summary>
+        /// Does the file need moving
+        /// </summary>
+        public bool NeedsMoving
         {
             get
             {
-                if ((!NeedsMoving && !NeedsRenaming) || DestinationFileInfo == null)
+                var retval = false;
+                if (!string.IsNullOrEmpty(_processedRoot?.FullName)
+                    && !SourceFileInfo.Directory.FullName.Equals(_processedRoot.FullName, StringComparison.CurrentCultureIgnoreCase)
+                    && ImageCreated != null)
                 {
-                    return null;
+                    retval = true;
                 }
-                return DestinationFileInfo.FullName;
+                return retval;
+            }
+        }
+
+        /// <summary>
+        /// Does the file need renaming
+        /// </summary>
+        public bool NeedsRenaming
+        {
+            get
+            {
+                var retval = false;
+                retval = DestinationFileName != null &&
+                      SourceFileInfo != null &&
+                     FullDestinationFileName != SourceFileInfo.Name;
+                return retval;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set the source FileInfo
+        /// </summary>
+        public FileInfo SourceFileInfo
+        {
+            get => _sourceFileInfo;
+            set
+            {
+                if (value.Exists)
+                {
+                    _sourceFileInfo = value;
+                }
+                else
+                {
+                    _sourceFileInfo = null;
+                }
+                OnInputParameterChanged();
+            }
+        }
+
+        public BaseImageFile(string path, string processedPath = null)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(path);
+            }
+
+            _sourceFileInfo = new FileInfo(path);
+            if (!string.IsNullOrEmpty(processedPath)
+                && !processedPath.Equals(_processedRoot?.FullName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                _processedRoot = new DirectoryInfo(processedPath);
+            }
+            GetExifData();
+        }
+
+        /// <summary>
+        /// Event for changed input parameter
+        /// </summary>
+        private void OnInputParameterChanged()
+        {
+            if (FullDestinationFileName == null)
+            {
+                DestinationFileInfo = null;
+                return;
+            }
+            string newPath;
+            if (!string.IsNullOrEmpty(_processedRoot?.FullName))
+            {
+                newPath = Path.Combine(_processedRoot.FullName,
+                                       $"{ ((DateTime)ImageCreated).Year}"
+                                       , GetQuarter
+                                       , FullDestinationFileName);
+            }
+            else
+            {
+                newPath = Path.Combine(SourceFileInfo.DirectoryName,
+                                             FullDestinationFileName);
+            }
+            DestinationFileInfo = new FileInfo(newPath);
+        }
+
+        /// <summary>
+        /// Get the creation date of the file.
+        /// </summary>
+        public virtual void GetExifData()
+        {
+            try
+            {
+                string dateTaken;
+                var directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
+                var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
+                var subGPSDirectory = directories.OfType<GpsDirectory>().FirstOrDefault();
+                dateTaken = subIfdDirectory?.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
+
+                var mySplit = dateTaken.Trim().Split(' ');
+                var dateSplit = mySplit[0].Split(':');
+                var timeSplit = mySplit[1].Split(':');
+                var date = new DateTime(Convert.ToInt32(dateSplit[0]), Convert.ToInt32(dateSplit[1]), Convert.ToInt32(dateSplit[2]),
+                                      Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
+                ImageCreated = date;
+
+                if (subGPSDirectory != null)
+                {
+                    GPS = new GPSCoridates()
+                    {
+                        Longitude = $"{subGPSDirectory?.GetDescription(4)} {subGPSDirectory?.GetDescription(3)}",
+                        Latitude = $"{subGPSDirectory?.GetDescription(2)} {subGPSDirectory?.GetDescription(1)}"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
+                //Suppress errors
             }
         }
     }

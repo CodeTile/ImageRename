@@ -11,7 +11,7 @@ namespace ImageRename.Standard.Model
         {
         }
 
-        public override void GetCreationDate()
+        public override void GetExifData()
         {
             try
             {

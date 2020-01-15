@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using ImageRename.Standard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,14 +9,15 @@ namespace ImageRename.Test
     [TestClass]
     public class ProcessFileTests
     {
-        private string _processFolderDontMoveTest = Path.GetFullPath(".\\ProcessFolderDontMoveTest");
-        private string _processFolderMoveTest = Path.GetFullPath(".\\ProcessFolderMoveTest");
-        private string _processFolderMoveTestProcessed = Path.GetFullPath(".\\ProcessFolderMoveTestProcessed");
+        private readonly string _processFolderDontMoveTest = Path.GetFullPath(".\\ProcessFolderDontMoveTest");
+        private readonly string _processFolderMoveTest = Path.GetFullPath(".\\ProcessFolderMoveTest");
+        private readonly string _processFolderMoveTestProcessed = Path.GetFullPath(".\\ProcessFolderMoveTestProcessed");
         private readonly string _duplicateTimeStampDontMove = Path.GetFullPath(".\\DuplicateTimeStampDontMove");
-        private string _duplicateTimeStampMove = Path.GetFullPath(".\\DuplicateTimeStampMove");
-        private string _duplicateTimeStampMoveProcessed = Path.GetFullPath(".\\DuplicateTimeStampMoveProcessed");
-        private string _duplicateTimeStampMoveWithExistingFiles = Path.GetFullPath(".\\DuplicateTimeStampMoveWithExistingFiles");
-        private string _duplicateTimeStampMoveWithExistingFilesProcessed = Path.GetFullPath(".\\DuplicateTimeStampMoveWithExistingFilesProcessed");
+        private readonly string _duplicateTimeStampMove = Path.GetFullPath(".\\DuplicateTimeStampMove");
+        private readonly string _duplicateTimeStampMoveProcessed = Path.GetFullPath(".\\DuplicateTimeStampMoveProcessed");
+        private readonly string _duplicateTimeStampMoveWithExistingFiles = Path.GetFullPath(".\\DuplicateTimeStampMoveWithExistingFiles");
+        private readonly string _duplicateTimeStampMoveWithExistingFilesProcessed = Path.GetFullPath(".\\DuplicateTimeStampMoveWithExistingFilesProcessed");
+        private readonly string _GPSTest = Path.GetFullPath(".\\GPSTest");
 
         /// <summary>
         /// Reset the content of the test folders
@@ -26,6 +28,7 @@ namespace ImageRename.Test
             Helper.DeleteDirectory(_duplicateTimeStampMoveWithExistingFilesProcessed);
             Helper.DeleteDirectory(_processFolderMoveTestProcessed);
             Helper.DeleteDirectory(_duplicateTimeStampMoveProcessed);
+            Helper.DeleteDirectory(_GPSTest);
 
             var originalFolder = Path.GetFullPath(".\\..\\..\\Test Files");
             Helper.DirectoryCopy(Path.Combine(originalFolder, "JPG"), Path.Combine(Helper.TestSourceFolder, "JPG"));
@@ -58,7 +61,25 @@ namespace ImageRename.Test
                                   Path.Combine(_duplicateTimeStampMoveWithExistingFilesProcessed, "2018\\Q2\\20180408_122634.CR2"));
             Helper.CopyTestFileTo(Path.Combine(_duplicateTimeStampMoveWithExistingFiles, "CR2\\20180408_122634.CR2"),
                                   Path.Combine(_duplicateTimeStampMoveWithExistingFilesProcessed, "2018\\Q2\\20180408_122634_2.CR2"));
+            Helper.CopyTestFileTo(Path.Combine(Helper.TestSourceFolder, "JPG", "GPS.JPG"),
+                                  Path.Combine(_GPSTest, "GPS.JPG"));
         }
+
+        [TestMethod]
+        public void IsGpsPopulated()
+        {
+            var target = new ProcessFolder()
+            {
+                DebugDontRenameFile = false,
+                MoveToProcessedByYear = false,
+                ProcessedPath = null
+            };
+            target._images = new ObservableCollection<Standard.Model.IImageFile>();
+            target.FindFiles(_GPSTest);
+            var actual = target._images.Single();
+            Assert.IsNotNull(actual.GPS);
+        }
+
 
         [TestMethod]
         public void ProcessFolderTestSimpleRunsTest()

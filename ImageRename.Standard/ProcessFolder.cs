@@ -13,7 +13,7 @@ namespace ImageRename.Standard
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
 
-        private ObservableCollection<IImageFile> _images;
+        public ObservableCollection<IImageFile> _images;
         private string _rootFolder;
 
         #region RenameProgressEvent
@@ -182,7 +182,7 @@ namespace ImageRename.Standard
             }
         }
 
-        private void FindFiles(string root)
+        public void FindFiles(string root)
         {
             if (MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
             {

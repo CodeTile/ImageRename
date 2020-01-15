@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-
+using ImageRename.Standard.Model;
 namespace ImageRename.Standard.Model
 {
     public interface IImageFile
@@ -12,5 +12,6 @@ namespace ImageRename.Standard.Model
         bool NeedsMoving { get; }
         string DestinationFileName { get; }
         string DestinationFilePath { get; }
+        GPSCoridates GPS { get; set; }
     }
 }
