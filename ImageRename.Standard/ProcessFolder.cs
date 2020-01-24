@@ -226,10 +226,15 @@ namespace ImageRename.Standard
         private void ReverseGeocode(IImageFile image, string fileName)
         {
             return;
-            var tagSet = new string[] { "Hello", "Hello1" };
+            var tagSet = string.Join(";" ,new string[] { "Hello", "Hello1" });
             var file = ExifLibrary.ImageFile.FromFile(fileName);
             var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
-            
+            //foreach (var item in tagSet)
+            //{
+           
+                file.Properties.Set(ExifLibrary.ExifTag.WindowsKeywords,tagSet);
+            //}
+            file.Save(fileName);
         }
 
     }
