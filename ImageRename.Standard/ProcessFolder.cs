@@ -198,22 +198,39 @@ namespace ImageRename.Standard
                 var fileExtention = file.Split('.').Last().ToLower();
                 if (sFilter.Contains(fileExtention))
                 {
+                    IImageFile image;
                     switch (fileExtention)
                     {
                         case "nef":
-                            _images.Add(new ImageFileNEF(file, ProcessedPath));
+                            image = new ImageFileNEF(file, ProcessedPath);
                             break;
 
                         case "mov":
-                            _images.Add(new VideoFile(file, ProcessedPath));
+                            image = new VideoFile(file, ProcessedPath);
                             break;
 
                         default:
-                            _images.Add(new ImageFile(file, ProcessedPath));
-                            break; ;
+                            image = new ImageFile(file, ProcessedPath);
+                            break; 
                     }
+
+                    if (image.GPS != null)
+                    {
+                        ReverseGeocode(image,file);
+                    }
+                    _images.Add(image);
                 }
             }
         }
+
+        private void ReverseGeocode(IImageFile image, string fileName)
+        {
+            return;
+            var tagSet = new string[] { "Hello", "Hello1" };
+            var file = ExifLibrary.ImageFile.FromFile(fileName);
+            var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
+            
+        }
+
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using MetadataExtractor;
-using MetadataExtractor.Formats.Exif;
+using ExifLibrary;
 
 namespace ImageRename.Standard.Model
 {
@@ -223,25 +222,21 @@ namespace ImageRename.Standard.Model
         {
             try
             {
-                string dateTaken;
-                var directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
-                var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
-                var subGPSDirectory = directories.OfType<GpsDirectory>().FirstOrDefault();
-                dateTaken = subIfdDirectory?.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
+                var file = ExifLibrary.ImageFile.FromFile(SourceFileInfo.FullName);
+                var dateTaken = Convert.ToDateTime(file.Properties.Get<ExifProperty>(ExifTag.DateTimeOriginal).Value);
+                ImageCreated = dateTaken;
 
-                var mySplit = dateTaken.Trim().Split(' ');
-                var dateSplit = mySplit[0].Split(':');
-                var timeSplit = mySplit[1].Split(':');
-                var date = new DateTime(Convert.ToInt32(dateSplit[0]), Convert.ToInt32(dateSplit[1]), Convert.ToInt32(dateSplit[2]),
-                                      Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
-                ImageCreated = date;
-
-                if (subGPSDirectory != null)
+                var latTag = file.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLatitude)?.ToString();
+                if (latTag!=null)
                 {
+                    var longTag = file.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLongitude)?.ToString();
+                    var longRefTag = file.Properties.Get(ExifTag.GPSLongitudeRef).Value.ToString().Substring(0,1);
+                    var latRefTag = file.Properties.Get(ExifTag.GPSLatitudeRef).Value.ToString().Substring(0, 1);
+
                     GPS = new GPSCoridates()
                     {
-                        Longitude = $"{subGPSDirectory?.GetDescription(4)} {subGPSDirectory?.GetDescription(3)}",
-                        Latitude = $"{subGPSDirectory?.GetDescription(2)} {subGPSDirectory?.GetDescription(1)}"
+                        Longitude = $"{longTag} {longRefTag}",
+                        Latitude = $"{latTag} {latRefTag}"
                     };
                 }
             }
