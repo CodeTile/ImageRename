@@ -9,7 +9,7 @@ namespace ImageRename.Standard.Model
     {
         private DateTime? _imageCreated;
 
-        private DirectoryInfo _processedRoot;
+        private readonly DirectoryInfo _processedRoot;
 
         private FileInfo _sourceFileInfo;
 
@@ -145,8 +145,7 @@ namespace ImageRename.Standard.Model
         {
             get
             {
-                var retval = false;
-                retval = DestinationFileName != null &&
+                var retval = DestinationFileName != null &&
                       SourceFileInfo != null &&
                      FullDestinationFileName != SourceFileInfo.Name;
                 return retval;
@@ -223,7 +222,7 @@ namespace ImageRename.Standard.Model
             try
             {
                 var file = ExifLibrary.ImageFile.FromFile(SourceFileInfo.FullName);
-                var dateTaken = Convert.ToDateTime(file.Properties.Get<ExifProperty>(ExifTag.DateTimeOriginal).Value);
+                var dateTaken = Convert.ToDateTime(file.Properties.Get<ExifProperty>(ExifTag.DateTime).Value);
                 ImageCreated = dateTaken;
 
                 var latTag = file.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLatitude)?.ToString();

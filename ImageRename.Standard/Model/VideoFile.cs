@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using MetadataExtractor;
+using MetadataExtractor;
 
 namespace ImageRename.Standard.Model
 {
@@ -15,20 +15,20 @@ namespace ImageRename.Standard.Model
         {
             try
             {
-                //string dateTaken;
-                //IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
-                //var subIfdDirectory = directories.FirstOrDefault(f=>f.Name.Equals("QuickTime Movie Header"));
+                string dateTaken;
+                IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(SourceFileInfo.FullName);
+                var subIfdDirectory = directories.FirstOrDefault(f => f.Name.Equals("QuickTime Movie Header"));
 
-                //dateTaken = subIfdDirectory?.Tags.FirstOrDefault(f => f.Name.Equals("Created", StringComparison.CurrentCultureIgnoreCase)).Description;
+                dateTaken = subIfdDirectory?.Tags.FirstOrDefault(f => f.Name.Equals("Created", StringComparison.CurrentCultureIgnoreCase)).Description;
 
 
 
-                //var mySplit = dateTaken.Trim().Split(' ');               
-                //var timeSplit = mySplit[3].Split(':');
-                //var month = Convert.ToDateTime(mySplit[1] + " 01, 1900").Month;
-                //var date = new DateTime(Convert.ToInt32(mySplit[4]), month, Convert.ToInt32(mySplit[2]),
-                //                      Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
-                //ImageCreated = date;
+                var mySplit = dateTaken.Trim().Split(' ');
+                var timeSplit = mySplit[3].Split(':');
+                var month = Convert.ToDateTime(mySplit[1] + " 01, 1900").Month;
+                var date = new DateTime(Convert.ToInt32(mySplit[4]), month, Convert.ToInt32(mySplit[2]),
+                                      Convert.ToInt32(timeSplit[0]), Convert.ToInt32(timeSplit[1]), Convert.ToInt32(timeSplit[2]));
+                ImageCreated = date;
 
             }
             catch (Exception ex)
