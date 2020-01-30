@@ -222,8 +222,8 @@ namespace ImageRename.Standard.Model
             try
             {
                 var file = ExifLibrary.ImageFile.FromFile(SourceFileInfo.FullName);
-                var dateTaken = Convert.ToDateTime(file.Properties.Get<ExifProperty>(ExifTag.DateTime).Value);
-                ImageCreated = dateTaken;
+                ImageCreated = Convert.ToDateTime(file.Properties.Get<ExifProperty>(ExifTag.DateTime).Value);
+                
 
                 var latTag = file.Properties.Get<GPSLatitudeLongitude>(ExifTag.GPSLatitude)?.ToString();
                 if (latTag!=null)
@@ -237,6 +237,10 @@ namespace ImageRename.Standard.Model
                         Longitude = $"{longTag} {longRefTag}",
                         Latitude = $"{latTag} {latRefTag}"
                     };
+                    var gpsDate = Convert.ToDateTime(file.Properties.Get(ExifTag.GPSDateStamp).Value).ToString("dd MMMM yyyy");
+                    var gpsTime = (GPSTimeStamp)file.Properties.Get(ExifTag.GPSTimeStamp);
+                    ImageCreated = Convert.ToDateTime($"{gpsDate} {gpsTime.Hour.Numerator}:{gpsTime.Minute.Numerator}:{gpsTime.Second.Numerator}");
+
                 }
             }
             catch (Exception ex)
