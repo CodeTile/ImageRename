@@ -140,7 +140,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "Latitude",
                             "ImageCreatedOriginal",
                             "ImageTaken",
-                            "GPSImageTaken"});
+                            "GPSImageTaken",
+                            "DestinationFileName"});
                 table6.AddRow(new string[] {
                             "GPSTest",
                             "GPS.jpg",
@@ -148,7 +149,8 @@ this.ScenarioInitialize(scenarioInfo);
                             "36.00°7.08\'0.00\" N",
                             "27 Jan 2020 12:50:42",
                             "27 Jan 2020 11:50:41",
-                            "27 Jan 2020 11:50:41"});
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041"});
                 table6.AddRow(new string[] {
                             "GPSTest",
                             "Good.jpg",
@@ -156,10 +158,12 @@ this.ScenarioInitialize(scenarioInfo);
                             "",
                             "10 Mar 2018 11:53:53",
                             "10 Mar 2018 11:53:53",
-                            ""});
+                            "",
+                            "20180310_115353"});
                 table6.AddRow(new string[] {
                             "GPSTest",
                             "Bad.jpg",
+                            "",
                             "",
                             "",
                             "",
