@@ -9,12 +9,11 @@ namespace ImageRename.Standard
 {
     public class ProcessFolder
     {
+        private string _rootFolder;
+        public ObservableCollection<IImageFile> _images;
         public bool DebugDontRenameFile { get; set; } = false;
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
-
-        public ObservableCollection<IImageFile> _images;
-        private string _rootFolder;
 
         #region RenameProgressEvent
 
@@ -46,39 +45,9 @@ namespace ImageRename.Standard
 
         #endregion FindFileProgressEvent
 
-        private void ReportRenamingProgress(string message)
+        private void _images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine(message);
-            var e = new ReportRenameProgressEventArgs()
-            { Message = message };
-
-            OnReportRenaimingProgress(e);
-        }
-
-        private void ReportFindFileProgress()
-        {
-            var e = new ReportFindFilesProgressEventArgs();
-            if (_images != null)
-            {
-                e.TotalFileCount = _images.Count();
-                e.FilesToRename = _images.Count(c => c.NeedsRenaming);
-            }
-
-            OnReportFilesFoundProgress(e);
-        }
-
-        public void Process(string root)
-        {
-            if (!Directory.Exists(root))
-            {
-                throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{root}");
-            }
-            _rootFolder = root;
-            _images = new ObservableCollection<IImageFile>();
-            _images.CollectionChanged += _images_CollectionChanged;
-            FindFiles(root);
-            RenameFiles();
-            DeleteEmptySourceFolders(_rootFolder);
+            ReportFindFileProgress();
         }
 
         private void DeleteEmptySourceFolders(string root)
@@ -94,29 +63,17 @@ namespace ImageRename.Standard
             }
         }
 
-        private void _images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private string GetSequenceFilename(FileInfo file)
         {
-            ReportFindFileProgress();
-        }
+            var sequenceId = 2;
+            var template = file.FullName.Replace(file.Extension, "_{0}" + file.Extension);
 
-        private void RenameFiles()
-        {
-            if (_images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
+            while (File.Exists(string.Format(template, sequenceId)))
             {
-                return;
+                sequenceId++;
             }
-
-            foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving))
-            {
-                try
-                {
-                    RenameFile(item);
-                }
-                catch (Exception ex)
-                {
-                    ReportRenamingProgress($"\r\n##############Error\r\n{item.SourceFileInfo.FullName.Replace(_rootFolder, string.Empty)}r\n{ex.Message}\r\n####################\n\n");
-                }
-            }
+            var retval = string.Format(template, sequenceId);
+            return retval;
         }
 
         private void RenameFile(IImageFile item)
@@ -145,17 +102,58 @@ namespace ImageRename.Standard
             ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
         }
 
-        private string GetSequenceFilename(FileInfo file)
+        private void RenameFiles()
         {
-            var sequenceId = 2;
-            var template = file.FullName.Replace(file.Extension, "_{0}" + file.Extension);
-
-            while (File.Exists(string.Format(template, sequenceId)))
+            if (_images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
             {
-                sequenceId++;
+                return;
             }
-            var retval = string.Format(template, sequenceId);
-            return retval;
+
+            foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving))
+            {
+                try
+                {
+                    RenameFile(item);
+                }
+                catch (Exception ex)
+                {
+                    ReportRenamingProgress($"\r\n##############Error\r\n{item.SourceFileInfo.FullName.Replace(_rootFolder, string.Empty)}r\n{ex.Message}\r\n####################\n\n");
+                }
+            }
+        }
+
+        private void ReportFindFileProgress()
+        {
+            var e = new ReportFindFilesProgressEventArgs();
+            if (_images != null)
+            {
+                e.TotalFileCount = _images.Count();
+                e.FilesToRename = _images.Count(c => c.NeedsRenaming);
+            }
+
+            OnReportFilesFoundProgress(e);
+        }
+
+        private void ReportRenamingProgress(string message)
+        {
+            System.Diagnostics.Debug.WriteLine(message);
+            var e = new ReportRenameProgressEventArgs()
+            { Message = message };
+
+            OnReportRenaimingProgress(e);
+        }
+
+        private void ReverseGeocode(IImageFile image, string fileName)
+        {
+            return;
+            var tagSet = string.Join(";", new string[] { "Hello", "Hello1" });
+            var file = ExifLibrary.ImageFile.FromFile(fileName);
+            var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
+            //foreach (var item in tagSet)
+            //{
+            file.Properties.Set(ExifLibrary.ExifTag.WindowsKeywords, tagSet);
+            //}
+            file.Save(fileName);
         }
 
         internal bool AreFilesTheSame(string sourceFile, string destinationFile)
@@ -191,51 +189,55 @@ namespace ImageRename.Standard
                     Directory.CreateDirectory(ProcessedPath);
                 }
             }
-            string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
             foreach (var file in Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories))
 
             {
-                var fileExtention = file.Split('.').Last().ToLower();
-                if (sFilter.Contains(fileExtention))
-                {
-                    IImageFile image;
-                    switch (fileExtention)
-                    {
-                        case "nef":
-                            image = new ImageFileNEF(file, ProcessedPath);
-                            break;
-
-                        case "mov":
-                            image = new VideoFile(file, ProcessedPath);
-                            break;
-
-                        default:
-                            image = new ImageFile(file, ProcessedPath);
-                            break; 
-                    }
-
-                    if (image.GPS != null)
-                    {
-                        ReverseGeocode(image,file);
-                    }
-                    _images.Add(image);
-                }
+                _images.Add(ProcessFile(file));
             }
         }
 
-        private void ReverseGeocode(IImageFile image, string fileName)
+        public void Process(string root)
         {
-            return;
-            var tagSet = string.Join(";" ,new string[] { "Hello", "Hello1" });
-            var file = ExifLibrary.ImageFile.FromFile(fileName);
-            var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
-            //foreach (var item in tagSet)
-            //{
-           
-                file.Properties.Set(ExifLibrary.ExifTag.WindowsKeywords,tagSet);
-            //}
-            file.Save(fileName);
+            if (!Directory.Exists(root))
+            {
+                throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{root}");
+            }
+            _rootFolder = root;
+            _images = new ObservableCollection<IImageFile>();
+            _images.CollectionChanged += _images_CollectionChanged;
+            FindFiles(root);
+            RenameFiles();
+            DeleteEmptySourceFolders(_rootFolder);
         }
 
+        public IImageFile ProcessFile(string filename)
+        {
+            string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
+            IImageFile image = null;
+            var fileExtention = filename.Split('.').Last().ToLower();
+            if (sFilter.Contains(fileExtention))
+            {
+                switch (fileExtention)
+                {
+                    case "nef":
+                        image = new ImageFileNEF(filename, ProcessedPath);
+                        break;
+
+                    case "mov":
+                        image = new VideoFile(filename, ProcessedPath);
+                        break;
+
+                    default:
+                        image = new ImageFile(filename, ProcessedPath);
+                        break;
+                }
+
+                if (image.GPS != null)
+                {
+                    ReverseGeocode(image, filename);
+                }
+            }
+            return image;
+        }
     }
 }

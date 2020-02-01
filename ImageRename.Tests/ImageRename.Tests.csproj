@@ -37,6 +37,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExifLibrary\ExifLibrary.csproj" />
+    <ProjectReference Include="..\ImageRename.Standard\ImageRename.Standard.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
