@@ -1,6 +1,6 @@
 ﻿Feature: ImageGPS
 
-	
+
 Scenario: CheckTheImageHasGPSCoridinates
 	Given I clear the testfiles folder
 	And I copy the following files

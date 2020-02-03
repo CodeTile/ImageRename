@@ -41,10 +41,9 @@ namespace ImageRename.Tests
         public static void CopyTestFilesTo(string destinationFolder)
         {
             // DeleteDirectory(destinationFolder, true);
-            var originalPath = Path.GetFullPath(".\\Test Files");
             var fullDestination = Path.GetFullPath(destinationFolder);
-            DirectoryCopy(originalPath, fullDestination);
-            RemoveFilesNotInSource(originalPath, fullDestination);
+            DirectoryCopy(Helper.TestFilesSourceFolder, fullDestination);
+            //RemoveFilesNotInSource(originalPath, fullDestination);
         }
 
         /// <summary>

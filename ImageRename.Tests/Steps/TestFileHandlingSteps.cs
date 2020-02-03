@@ -30,6 +30,19 @@ namespace ImageRename.Tests.Steps
                
                 Helper.CopyTestFileTo(sourceFile, destinationFile);
             }
+            // let the file system catch up
+            System.Threading.Thread.Sleep(543);
         }
+
+        [Given(@"I create a copy of all test files in the folder '(.*)'")]
+        public void GivenICreateACopyOfAllTestFilesInTheFolder(string destinationFolder)
+        {
+            var destinationPath = Path.Combine(TestFileFolder, destinationFolder);
+            Helper.DirectoryCopy(Helper.TestFilesSourceFolder, destinationPath);
+            Helper.CopyTestFilesTo(destinationPath);
+            // let the file system catch up
+            System.Threading.Thread.Sleep(543);
+        }
+
     }
 }
