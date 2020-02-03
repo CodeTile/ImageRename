@@ -187,13 +187,13 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="MoveTest")]
+        [Xunit.SkippableFactAttribute(DisplayName="MoveTest1")]
         [Xunit.TraitAttribute("FeatureTitle", "ProcessFolder")]
-        [Xunit.TraitAttribute("Description", "MoveTest")]
-        public virtual void MoveTest()
+        [Xunit.TraitAttribute("Description", "MoveTest1")]
+        public virtual void MoveTest1()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MoveTest", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MoveTest1", null, ((string[])(null)));
 #line 39
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -292,6 +292,110 @@ this.FeatureBackground();
                             "\\JPG"});
 #line 72
  testRunner.And("the folder \'ProcessFolderMoveTest\' has subfolders", ((string)(null)), table14, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="MoveTest2")]
+        [Xunit.TraitAttribute("FeatureTitle", "ProcessFolder")]
+        [Xunit.TraitAttribute("Description", "MoveTest2")]
+        public virtual void MoveTest2()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MoveTest2", null, ((string[])(null)));
+#line 76
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 77
+ testRunner.Given("I create a copy of all test files in the folder \'ProcessFolderMoveTest2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table15.AddRow(new string[] {
+                            "JPG\\Bad.jpg"});
+#line 78
+ testRunner.And("in the folder \'ProcessFolderMoveTest2\' I delete the files", ((string)(null)), table15, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table16.AddRow(new string[] {
+                            "\\CR2\\20180408_122634.CR2"});
+                table16.AddRow(new string[] {
+                            "\\CR2\\Good.CR2"});
+                table16.AddRow(new string[] {
+                            "\\JPG\\Good.jpg"});
+                table16.AddRow(new string[] {
+                            "\\JPG\\GPS.jpg"});
+                table16.AddRow(new string[] {
+                            "\\mov\\20160124_141023.MOV"});
+                table16.AddRow(new string[] {
+                            "\\mov\\Good.MOV"});
+                table16.AddRow(new string[] {
+                            "\\mov\\Good2.MOV"});
+                table16.AddRow(new string[] {
+                            "\\NEF\\20080601_020200.nef"});
+                table16.AddRow(new string[] {
+                            "\\NEF\\Good.nef"});
+#line 81
+ testRunner.And("the folder \'ProcessFolderMoveTest2\' with subfolders contains", ((string)(null)), table16, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                            "DebugDontRenameFile",
+                            "MoveToProcessedByYear",
+                            "ProcessedPath"});
+                table17.AddRow(new string[] {
+                            "false",
+                            "true",
+                            "ProcessFolderMoveTest2Processed"});
+#line 93
+ testRunner.When("I process the folder \'ProcessFolderMoveTest2\' with the following flags", ((string)(null)), table17, "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table18.AddRow(new string[] {
+                            "\\2008\\Q2\\20080601_020200.nef"});
+                table18.AddRow(new string[] {
+                            "\\2008\\Q2\\20080601_020200_2.nef"});
+                table18.AddRow(new string[] {
+                            "\\2015\\Q4\\20151129_093543.MOV"});
+                table18.AddRow(new string[] {
+                            "\\2016\\Q1\\20160124_141020.MOV"});
+                table18.AddRow(new string[] {
+                            "\\2016\\Q1\\20160124_141023.MOV"});
+                table18.AddRow(new string[] {
+                            "\\2018\\Q1\\20180310_115353.jpg"});
+                table18.AddRow(new string[] {
+                            "\\2018\\Q2\\20180408_072740.CR2"});
+                table18.AddRow(new string[] {
+                            "\\2018\\Q2\\20180408_122634.CR2"});
+                table18.AddRow(new string[] {
+                            "\\2020\\Q1\\20200127_115041.jpg"});
+#line 97
+ testRunner.Then("the folder \'ProcessFolderMoveTest2Processed\' with subfolders contains", ((string)(null)), table18, "Then ");
+#line hidden
+#line 108
+ testRunner.And("there are no subfolders in \'ProcessFolderMoveTest2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

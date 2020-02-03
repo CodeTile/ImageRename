@@ -36,7 +36,7 @@ Scenario: DontMoveTest
 	| \NEF\20080601_020200.nef   |
 	| \NEF\20080601_020200_2.nef |
 
-Scenario: MoveTest
+Scenario: MoveTest1
 	Given I create a copy of all test files in the folder 'ProcessFolderMoveTest'
 	And the folder 'ProcessFolderMoveTest' with subfolders contains
 	| Path                     |
@@ -72,3 +72,37 @@ Scenario: MoveTest
 	And the folder 'ProcessFolderMoveTest' has subfolders
 	| Path |
 	| \JPG |
+	
+Scenario: MoveTest2
+	Given I create a copy of all test files in the folder 'ProcessFolderMoveTest2'
+	And in the folder 'ProcessFolderMoveTest2' I delete the files
+	| Path         |
+	| JPG\Bad.jpg |
+	And the folder 'ProcessFolderMoveTest2' with subfolders contains
+	| Path                     |
+	| \CR2\20180408_122634.CR2 |
+	| \CR2\Good.CR2            |
+	| \JPG\Good.jpg            |
+	| \JPG\GPS.jpg             |
+	| \mov\20160124_141023.MOV |
+	| \mov\Good.MOV            |
+	| \mov\Good2.MOV           |
+	| \NEF\20080601_020200.nef |
+	| \NEF\Good.nef            |
+	
+	When I process the folder 'ProcessFolderMoveTest2' with the following flags
+	| DebugDontRenameFile | MoveToProcessedByYear | ProcessedPath                   |
+	| false               | true                  | ProcessFolderMoveTest2Processed |
+	
+	Then the folder 'ProcessFolderMoveTest2Processed' with subfolders contains
+	| Path                           |
+	| \2008\Q2\20080601_020200.nef   |
+	| \2008\Q2\20080601_020200_2.nef |
+	| \2015\Q4\20151129_093543.MOV   |
+	| \2016\Q1\20160124_141020.MOV   |
+	| \2016\Q1\20160124_141023.MOV   |
+	| \2018\Q1\20180310_115353.jpg   |
+	| \2018\Q2\20180408_072740.CR2   |
+	| \2018\Q2\20180408_122634.CR2   |
+	| \2020\Q1\20200127_115041.jpg   |
+	And there are no subfolders in 'ProcessFolderMoveTest2'

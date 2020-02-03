@@ -67,6 +67,14 @@ namespace ImageRename.Tests
             }
         }
 
+        internal static void DeleteFile(string filePath)
+        {
+           if(File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
         /// <summary>
         /// Create a directory if it does not exist.
         /// </summary>

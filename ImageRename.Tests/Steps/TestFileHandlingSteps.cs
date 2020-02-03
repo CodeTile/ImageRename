@@ -44,5 +44,16 @@ namespace ImageRename.Tests.Steps
             System.Threading.Thread.Sleep(543);
         }
 
+        [Given(@"in the folder '(.*)' I delete the files")]
+        public void GivenInTheFolderIDeleteTheFiles(string rootPath, Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var path = Path.Combine(TestFileFolder, rootPath, row["Path"]);
+                Helper.DeleteFile(path);
+            }
+        }
+
+
     }
 }

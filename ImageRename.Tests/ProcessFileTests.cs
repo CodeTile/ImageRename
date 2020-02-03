@@ -126,52 +126,6 @@
 //////            return retval;
 //////        }
 
-//////        [TestMethod]
-//////        public void ProcessFolderMoveTest()
-//////        {
-//////            string[] filesOriginal = null;
-//////            string[] filesSourceContent = null;
-//////            string[] filesProcessedContent = null;
-//////            var originalPath = _processFolderMoveTest;
-//////            var filesInFolders = GetFilesList("Orignal contents", originalPath, ref filesOriginal);
-
-//////            var target = new ProcessFolder()
-//////            {
-//////                DebugDontRenameFile = false,
-//////                MoveToProcessedByYear = true,
-//////                ProcessedPath = _processFolderMoveTestProcessed
-//////            };
-
-//////            target.Process(originalPath);
-
-//////            filesInFolders += GetFilesList("Source", originalPath, ref filesSourceContent)
-//////                           + GetFilesList("Processed", _processFolderMoveTestProcessed, ref filesProcessedContent);
-
-//////            Assert.AreEqual(1, filesSourceContent.Count(), $"\r\n Only Bad.Jpg expected in source folder\r\n{filesInFolders}");
-//////            Assert.AreEqual(9, filesProcessedContent.Count(), $"{filesInFolders}");
-
-//////            //Processed files
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2008\\Q2\\20080601_020200.nef"), $"\r\nMissing file \r\n\t\\2008\\Q2\\20080601_020200.nef{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2008\\Q2\\20080601_020200_2.nef"), $"\r\nMissing file \r\n\t\\2008\\Q2\\20080601_020200_2.nef{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2018\\Q2\\20180408_122634.CR2"), $"\r\nMissing file \r\n\t\\2018\\Q2\\20180408_122634.CR2{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2018\\Q2\\20180408_072740.CR2"), $"\r\nMissing file \r\n\t\\2018\\Q2\\20180408_072740.CR2{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2018\\Q1\\20180310_115353.jpg"), $"\r\nMissing file \r\n\t\\2018\\Q1\\20180310_115353.jpg{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2016\\Q1\\20160124_141023.MOV"), $"\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141023.MOV{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2016\\Q1\\20160124_141020.MOV"), $"\r\nMissing file \r\n\t\\2016\\Q1\\20160124_141020.MOV{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2015\\Q4\\20151129_093543.MOV"), $"\r\nMissing file \r\n\t\\2015\\Q4\\20151129_093543.MOV{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{_processFolderMoveTestProcessed}\\2019\\Q2\\20190510_095011.JPG"), $"\r\nMissing file \r\n\t\\\\2019\\Q2\\20190510_095011.jpg{filesInFolders}");
-
-//////            //Failed to process files
-//////            Assert.IsTrue(filesOriginal.Contains($"{originalPath}\\JPG\\Bad.jpg"), $"Missing file \r\n\\JPG\\Bad.jpg{filesInFolders}");
-//////            /////////////////////////////////////////////////////
-//////            //   Check empty directories have been removed
-//////            /////////////////////////////////////////////////////
-
-//////            var originalDirectories = Directory.EnumerateDirectories(originalPath, "*", SearchOption.AllDirectories).ToList();
-//////            var directoriesInOriginalPath = $"\r\nOriginal path:\r\n\t{string.Join("\r\n\t", originalDirectories).Replace(originalPath, string.Empty)}";
-//////            Assert.AreEqual(1, originalDirectories.Count(), $"{directoriesInOriginalPath}");
-//////            Assert.IsTrue(originalDirectories.Contains($"{originalPath}\\JPG"), $"{directoriesInOriginalPath}");
-//////        }
 
 //////        [TestMethod]
 //////        public void DuplicateTimeStampDontMove()
