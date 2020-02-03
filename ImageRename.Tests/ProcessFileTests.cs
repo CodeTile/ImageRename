@@ -112,36 +112,7 @@
 //////            target.Process(Helper.TestSourceFolder);
 //////        }
 
-//////        [TestMethod]
-//////        public void ProcessFolderDontMoveTest()
-//////        {
-//////            string[] filesOriginal = null;
-//////            string[] filesProcessedContent = null;
-//////            var originalPath = _processFolderDontMoveTest;
-//////            var filesInFolders = GetFilesList("Orignal contents", originalPath, ref filesOriginal);
-
-//////            var target = new ProcessFolder()
-//////            {
-//////                DebugDontRenameFile = false,
-//////                MoveToProcessedByYear = false,
-//////                ProcessedPath = null
-//////            };
-
-//////            target.Process(originalPath);
-//////            filesInFolders += GetFilesList("Processed", originalPath, ref filesProcessedContent);
-
-//////            Assert.AreEqual(10, filesProcessedContent.Count(), filesInFolders);
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\CR2\\20180408_072740.CR2"), $"\r\nMissing file \r\n\t\\CR2\\20180408_072740.CR2{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\CR2\\20180408_122634.CR2"), $"\r\nMissing file \r\n\t\\CR2\\20180408_122634.CR2{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\JPG\\20180310_115353.jpg"), $"\r\nMissing file \r\n\t\\JPG\\20180310_115353.jpg{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\JPG\\Bad.jpg"), $"\r\nMissing file \r\n\t\\JPG\\Bad.jpg{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\JPG\\20190510_095011.JPG"), $"\r\nMissing file \r\n\t\\JPG\\20190510_095011.jpg{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\mov\\20151129_093543.MOV"), $"\r\nMissing file \r\n\t\\mov\\20151129_093543.MOV{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\mov\\20160124_141020.MOV"), $"\r\nMissing file \r\n\t\\mov\\20160124_141020.MOV{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\mov\\20160124_141023.MOV"), $"\r\nMissing file \r\n\t\\mov\\20160124_141023.MOV{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\NEF\\20080601_020200.nef"), $"\r\nMissing file \r\n\t\\NEF\\20080601_020200.nef{filesInFolders}");
-//////            Assert.IsTrue(filesProcessedContent.Contains($"{originalPath}\\NEF\\20080601_020200_2.nef"), $"\r\nMissing file \r\n\t\\NEF\\20080601_020200_2.nef{filesInFolders}");
-//////        }
+//////        
 
 //////        private string GetFilesList(string header, string targetPath, ref string[] targetContent)
 //////        {

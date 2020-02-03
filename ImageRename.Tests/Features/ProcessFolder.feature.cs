@@ -187,6 +187,116 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="MoveTest")]
+        [Xunit.TraitAttribute("FeatureTitle", "ProcessFolder")]
+        [Xunit.TraitAttribute("Description", "MoveTest")]
+        public virtual void MoveTest()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MoveTest", null, ((string[])(null)));
+#line 39
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 40
+ testRunner.Given("I create a copy of all test files in the folder \'ProcessFolderMoveTest\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table10.AddRow(new string[] {
+                            "\\CR2\\20180408_122634.CR2"});
+                table10.AddRow(new string[] {
+                            "\\CR2\\Good.CR2"});
+                table10.AddRow(new string[] {
+                            "\\JPG\\Bad.jpg"});
+                table10.AddRow(new string[] {
+                            "\\JPG\\Good.jpg"});
+                table10.AddRow(new string[] {
+                            "\\JPG\\GPS.jpg"});
+                table10.AddRow(new string[] {
+                            "\\mov\\20160124_141023.MOV"});
+                table10.AddRow(new string[] {
+                            "\\mov\\Good.MOV"});
+                table10.AddRow(new string[] {
+                            "\\mov\\Good2.MOV"});
+                table10.AddRow(new string[] {
+                            "\\NEF\\20080601_020200.nef"});
+                table10.AddRow(new string[] {
+                            "\\NEF\\Good.nef"});
+#line 41
+ testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table10, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                            "DebugDontRenameFile",
+                            "MoveToProcessedByYear",
+                            "ProcessedPath"});
+                table11.AddRow(new string[] {
+                            "false",
+                            "true",
+                            "ProcessFolderMoveTestProcessed"});
+#line 54
+ testRunner.When("I process the folder \'ProcessFolderMoveTest\' with the following flags", ((string)(null)), table11, "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table12.AddRow(new string[] {
+                            "\\2008\\Q2\\20080601_020200.nef"});
+                table12.AddRow(new string[] {
+                            "\\2008\\Q2\\20080601_020200_2.nef"});
+                table12.AddRow(new string[] {
+                            "\\2015\\Q4\\20151129_093543.MOV"});
+                table12.AddRow(new string[] {
+                            "\\2016\\Q1\\20160124_141020.MOV"});
+                table12.AddRow(new string[] {
+                            "\\2016\\Q1\\20160124_141023.MOV"});
+                table12.AddRow(new string[] {
+                            "\\2018\\Q1\\20180310_115353.jpg"});
+                table12.AddRow(new string[] {
+                            "\\2018\\Q2\\20180408_072740.CR2"});
+                table12.AddRow(new string[] {
+                            "\\2018\\Q2\\20180408_122634.CR2"});
+                table12.AddRow(new string[] {
+                            "\\2020\\Q1\\20200127_115041.jpg"});
+#line 58
+ testRunner.Then("the folder \'ProcessFolderMoveTestProcessed\' with subfolders contains", ((string)(null)), table12, "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table13.AddRow(new string[] {
+                            "\\JPG\\Bad.jpg"});
+#line 69
+ testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table13, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table14.AddRow(new string[] {
+                            "\\JPG"});
+#line 72
+ testRunner.And("the folder \'ProcessFolderMoveTest\' has subfolders", ((string)(null)), table14, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.1.0.0")]
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : System.IDisposable

@@ -11,7 +11,7 @@ namespace ImageRename.Tests
 {
     public static class Helper
     {
-        public static string TestFilesFolder { get; } = Path.GetFullPath(".\\Test Files");
+        public static string TestFilesFolder { get; } = Path.GetFullPath("..\\Test Files");
         public static string TestFilesSourceFolder { get; } = Path.GetFullPath(".\\..\\..\\..\\Test Files");
 
         /// <summary>

@@ -184,6 +184,7 @@ namespace ImageRename.Standard
         {
             if (MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
             {
+                ProcessedPath = Path.GetFullPath(ProcessedPath);
                 if (!Directory.Exists(ProcessedPath))
                 {
                     Directory.CreateDirectory(ProcessedPath);

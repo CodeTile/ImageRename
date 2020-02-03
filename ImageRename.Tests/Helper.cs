@@ -7,7 +7,6 @@ namespace ImageRename.Test
 {
     public static class Helper
     {
-        public static string TestSourceFolder { get; } = Path.GetFullPath(".\\Test Files");
 
         /// <summary>
         /// Delete a test file.
