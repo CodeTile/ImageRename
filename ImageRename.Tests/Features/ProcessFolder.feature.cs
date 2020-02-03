@@ -147,6 +147,42 @@ this.FeatureBackground();
 #line 9
  testRunner.And("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table7, "And ");
 #line hidden
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                            "DebugDontRenameFile",
+                            "MoveToProcessedByYear",
+                            "ProcessedPath"});
+                table8.AddRow(new string[] {
+                            "false",
+                            "false",
+                            ""});
+#line 22
+ testRunner.When("I process the folder \'ProcessFolderDontMoveTest\' with the following flags", ((string)(null)), table8, "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table9.AddRow(new string[] {
+                            "\\CR2\\20180408_072740.CR2"});
+                table9.AddRow(new string[] {
+                            "\\CR2\\20180408_122634.CR2"});
+                table9.AddRow(new string[] {
+                            "\\JPG\\20180310_115353.jpg"});
+                table9.AddRow(new string[] {
+                            "\\JPG\\Bad.jpg"});
+                table9.AddRow(new string[] {
+                            "\\JPG\\20200127_115041.jpg"});
+                table9.AddRow(new string[] {
+                            "\\mov\\20151129_093543.MOV"});
+                table9.AddRow(new string[] {
+                            "\\mov\\20160124_141020.MOV"});
+                table9.AddRow(new string[] {
+                            "\\mov\\20160124_141023.MOV"});
+                table9.AddRow(new string[] {
+                            "\\NEF\\20080601_020200.nef"});
+                table9.AddRow(new string[] {
+                            "\\NEF\\20080601_020200_2.nef"});
+#line 26
+ testRunner.Then("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table9, "Then ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

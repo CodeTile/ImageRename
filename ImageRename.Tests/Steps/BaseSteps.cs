@@ -31,5 +31,9 @@ namespace ImageRename.Tests.Steps
 
             return retval;
         }
+        public void Wait(int milliSeconds)
+        {
+            System.Threading.Thread.Sleep(milliSeconds);
+        }
     }
 }

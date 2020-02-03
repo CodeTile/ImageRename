@@ -189,7 +189,8 @@ namespace ImageRename.Standard
                     Directory.CreateDirectory(ProcessedPath);
                 }
             }
-            foreach (var file in Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories))
+
+            foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
 
             {
                 _images.Add(ProcessFile(file));
@@ -212,6 +213,10 @@ namespace ImageRename.Standard
 
         public IImageFile ProcessFile(string filename)
         {
+            if (!File.Exists(filename))
+            { 
+                throw new FileNotFoundException(filename);
+            }
             string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
             IImageFile image = null;
             var fileExtention = filename.Split('.').Last().ToLower();
