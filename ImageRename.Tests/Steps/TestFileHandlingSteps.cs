@@ -27,7 +27,7 @@ namespace ImageRename.Tests.Steps
             {
                 var sourceFile = Path.Combine(OriginalFolder, row["SourceFolder"], row["SourceFile"]);
                 var destinationFile = Path.Combine(TestFileFolder, row["DestinationFolder"], row["DestinationFile"]);
-               
+
                 Helper.CopyTestFileTo(sourceFile, destinationFile);
             }
             // let the file system catch up
@@ -54,6 +54,28 @@ namespace ImageRename.Tests.Steps
             }
         }
 
+        [Given(@"I copy the following files in the folder '(.*)'")]
+        public void GivenICopyTheFollowingFilesInTheFolder(string folder, Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var sourceFile = Path.Combine(TestFileFolder, folder, row["SourceFolder"], row["SourceFile"]);
+                var destinationFile = Path.Combine(TestFileFolder, folder, row["DestinationFolder"], row["DestinationFile"]);
 
+                Helper.CopyTestFileTo(sourceFile, destinationFile);
+            }
+            //Let the filesystem catchup
+            Wait(345);
+        }
+
+        [Given(@"I delete the folders")]
+        public void GivenIDeleteTheFolders(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var path = Path.Combine(TestFileFolder, row["Path"]);
+                Helper.DeleteDirectory(path);
+            }
+        }
     }
 }

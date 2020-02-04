@@ -30,7 +30,14 @@ namespace ImageRename.Tests
             if (Directory.Exists(path))
             {
                 Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Delete ==> {path}");
-                Directory.Delete(path, true);
+                try
+                {
+                    Directory.Delete(path, true);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
         }
 

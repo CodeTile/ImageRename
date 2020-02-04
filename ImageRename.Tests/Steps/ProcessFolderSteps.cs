@@ -35,7 +35,7 @@ namespace ImageRename.Tests.Steps
                 ProcessedPath = string.IsNullOrEmpty(row["ProcessedPath"]) ? null : Path.Combine(Helper.TestFilesFolder, row["ProcessedPath"])
             };
             target.Process(originalPath);
-            Wait(240);
+            Wait(640);
         }
 
         [Then(@"the folder '(.*)' with subfolders contains")]
