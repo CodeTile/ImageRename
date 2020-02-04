@@ -3,15 +3,17 @@
 
 Background: 
 	Given I delete the folders
-	| Path                            |
-	| ProcessFolderDontMoveTest       |
-	| ProcessFolderMoveTest           |
-	| ProcessFolderMoveTestProcessed  |
-	| ProcessFolderMoveTest2          |
-	| ProcessFolderMoveTest2Processed |
-	| DuplicateTimeStampDontMove      |
-	| DuplicateTimeStampMove          |
-	| DuplicateTimeStampMoveProcessed |
+	| Path                                             |
+	| ProcessFolderDontMoveTest                        |
+	| ProcessFolderMoveTest                            |
+	| ProcessFolderMoveTestProcessed                   |
+	| ProcessFolderMoveTest2                           |
+	| ProcessFolderMoveTest2Processed                  |
+	| DuplicateTimeStampDontMove                       |
+	| DuplicateTimeStampMove                           |
+	| DuplicateTimeStampMoveProcessed                  |
+	| DuplicateTimeStampMoveWithExistingFiles          |
+	| DuplicateTimeStampMoveWithExistingFilesProcessed |
 
 Scenario: DontMoveTest
 	Given I create a copy of all test files in the folder 'ProcessFolderDontMoveTest'
@@ -162,16 +164,20 @@ Scenario: DuplicateTimeStampDontMove
 	| \NEF\20080601_020200.nef   |
 	| \NEF\20080601_020200_2.nef |
 
-	Scenario: DuplicateTimeStampMove
-	Given I create a copy of all test files in the folder 'DuplicateTimeStampMove'
-	And I copy the following files in the folder 'DuplicateTimeStampMove'
+	Scenario: DuplicateTimeStampMoveWithExistingFiles
+	Given I create a copy of all test files in the folder 'DuplicateTimeStampMoveWithExistingFiles'
+	And I copy the following files in the folder 'DuplicateTimeStampMoveWithExistingFiles'
          | SourceFolder | SourceFile | DestinationFolder | DestinationFile |
          | CR2          | good.cr2   | cr2               | Duplicate.cr2   |
          | jpg          | good.jpg   | jpg               | duplicate.jpg   |
          | JPG          | gps.jpg    | jpg               | Duplicate2.jpg  |
          | mov          | good.mov   | mov               | duplicate.Mov   |
+	And I copy the following files
+        | SourceFolder | SourceFile          | DestinationFolder                                        | DestinationFile       |
+        | CR2          | 20180408_122634.CR2 | DuplicateTimeStampMoveWithExistingFilesProcessed\2018\Q2 | 20180408_122634.CR2   |
+        | CR2          | 20180408_122634.CR2 | DuplicateTimeStampMoveWithExistingFilesProcessed\2018\Q2 | 20180408_122634_2.CR2 |
 	
-	Then the folder 'DuplicateTimeStampMove' with subfolders contains
+	Then the folder 'DuplicateTimeStampMoveWithExistingFiles' with subfolders contains
 	| Path                     |
 	| \CR2\20180408_122634.CR2 |
 	| \CR2\Good.CR2            |
@@ -187,14 +193,18 @@ Scenario: DuplicateTimeStampDontMove
 	| \JPG\duplicate.jpg       |
 	| \JPG\Duplicate2.jpg      |
 	| \mov\duplicate.Mov       |
+	Then the folder 'DuplicateTimeStampMoveWithExistingFilesProcessed' with subfolders contains
+	| Path                           |
+	| \2018\Q2\20180408_122634.CR2   |
+	| \2018\Q2\20180408_122634_2.CR2 |
 	
-	When I process the folder 'DuplicateTimeStampMove' with the following flags
-	| DebugDontRenameFile | MoveToProcessedByYear | ProcessedPath                   |
-	| false               | true                  | DuplicateTimeStampMoveProcessed |
-	Then the folder 'DuplicateTimeStampMove' with subfolders contains
+	When I process the folder 'DuplicateTimeStampMoveWithExistingFiles' with the following flags
+	| DebugDontRenameFile | MoveToProcessedByYear | ProcessedPath                                    |
+	| false               | true                  | DuplicateTimeStampMoveWithExistingFilesProcessed |
+	Then the folder 'DuplicateTimeStampMoveWithExistingFiles' with subfolders contains
 	| Path         |
 	| \JPG\Bad.jpg |
-	Then the folder 'DuplicateTimeStampMoveProcessed' with subfolders contains
+	And the folder 'DuplicateTimeStampMoveWithExistingFilesProcessed' with subfolders contains
 	| Path                           |
 	| \2008\Q2\20080601_020200.nef   |
 	| \2008\Q2\20080601_020200_2.nef |
@@ -209,3 +219,5 @@ Scenario: DuplicateTimeStampDontMove
 	| \2018\Q2\20180408_122634.CR2   |
 	| \2020\Q1\20200127_115041.jpg   |
 	| \2020\Q1\20200127_115041_2.jpg |
+	| \2018\Q2\20180408_122634_2.CR2 |
+	| \2018\Q2\20180408_122634_3.CR2 |

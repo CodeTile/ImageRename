@@ -72,7 +72,5 @@ namespace ImageRename.Tests.Steps
             var actual = Directory.GetDirectories(fullPath).Length;
             Assert.Equal(0, actual);
         }
-
-
     }
 }
