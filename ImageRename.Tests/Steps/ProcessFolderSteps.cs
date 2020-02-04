@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using ImageRename.Standard;
 using ImageRename.Tests.Context;
+using ImageRename.Tests.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using Xunit;
 
 namespace ImageRename.Tests.Steps
 {
-    internal struct PathResult
-    {
-        public string Path { get; set; }
-    }
 
     [Binding]
     public class ProcessFolderSteps : BaseSteps
