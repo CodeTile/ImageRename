@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using ImageRename.Standard;
 using ImageRename.Tests.Context;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using Xunit;
 
 namespace ImageRename.Tests.Steps
 {
     [Binding]
-    public class ImageGpsSteps : BaseSteps
+    public partial class ImageGpsSteps : BaseSteps
     {
         public ImageGpsSteps(BaseContext context) : base(context)
         {
@@ -20,12 +18,12 @@ namespace ImageRename.Tests.Steps
         public void ThenTheFollowingFilesHaveTheValuesInTheImageObject(Table table)
         {
             var target = new ProcessFolder();
-            var results = new List<Result1>();
+            var results = new List<ImageResult>();
             foreach (var row in table.Rows)
             {
                 var path = Path.Combine(TestFileFolder, row["TestFolder"], row["TestFile"]);
                 var actual = target.ProcessFile(path);
-                results.Add(new Result1()
+                results.Add(new ImageResult()
                 {
                     TestFolder = row["TestFolder"],
                     TestFile = row["TestFile"],
@@ -34,22 +32,11 @@ namespace ImageRename.Tests.Steps
                     ImageTaken = actual.ImageCreated?.ToString("dd MMM yyyy hh:mm:ss"),
                     ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy hh:mm:ss"),
                     GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy hh:mm:ss"),
-                    DestinationFileName = actual.DestinationFileName
+                    DestinationFileName = actual.DestinationFileName,
+                    KeyWords = row["KeyWords"]
                 });
             }
-            table.CompareToSet<Result1>(results);
+            table.CompareToSet<ImageResult>(results);
         }
-
-        private struct Result1
-        {
-            public string ImageTaken { get; internal set; }
-            public string ImageCreatedOriginal { get; internal set; }
-            public string GPSImageTaken { get; internal set; }
-            public string Latitude { get; internal set; }
-            public string Longitude { get; internal set; }
-            public string TestFile { get; internal set; }
-            public string TestFolder { get; internal set; }
-            public string DestinationFileName { get; internal set; }
-        };
     }
 }

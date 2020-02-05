@@ -134,17 +134,17 @@ this.FeatureBackground();
                 table6.AddRow(new string[] {
                             "JPG",
                             "GPS.jpg",
-                            "GPSTest\\CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates",
                             "GPS.jpg"});
                 table6.AddRow(new string[] {
                             "JPG",
                             "Good.jpg",
-                            "GPSTest\\CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates",
                             "Good.jpg"});
                 table6.AddRow(new string[] {
                             "JPG",
                             "Bad.jpg",
-                            "GPSTest\\CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates",
                             "Bad.jpg"});
 #line 10
  testRunner.And("I copy the following files", ((string)(null)), table6, "And ");
@@ -157,28 +157,32 @@ this.FeatureBackground();
                             "ImageCreatedOriginal",
                             "ImageTaken",
                             "GPSImageTaken",
-                            "DestinationFileName"});
+                            "DestinationFileName",
+                            "KeyWords"});
                 table7.AddRow(new string[] {
-                            "GPSTest\\CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates",
                             "GPS.jpg",
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
                             "27 Jan 2020 12:50:42",
                             "27 Jan 2020 11:50:41",
                             "27 Jan 2020 11:50:41",
-                            "20200127_115041"});
+                            "20200127_115041",
+                            ""});
                 table7.AddRow(new string[] {
-                            "GPSTest\\CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates",
                             "Good.jpg",
                             "",
                             "",
                             "10 Mar 2018 11:53:53",
                             "10 Mar 2018 11:53:53",
                             "",
-                            "20180310_115353"});
+                            "20180310_115353",
+                            ""});
                 table7.AddRow(new string[] {
-                            "GPSTest\\CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates",
                             "Bad.jpg",
+                            "",
                             "",
                             "",
                             "",
