@@ -19,7 +19,7 @@ namespace ImageRename.Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ImageGPSFeature : Xunit.IClassFixture<ImageGPSFeature.FixtureData>, System.IDisposable
+    public partial class ImageGPSFeature : object, Xunit.IClassFixture<ImageGPSFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -79,12 +79,12 @@ namespace ImageRename.Tests.Features
         {
 #line 3
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Path"});
-            table5.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "CheckTheImageHasGPSCoridinates"});
 #line 4
- testRunner.Given("I delete the folders", ((string)(null)), table5, "Given ");
+ testRunner.Given("I delete the folders", ((string)(null)), table2, "Given ");
 #line hidden
         }
         
@@ -123,33 +123,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 9
- testRunner.Given("I clear the testfiles folder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "SourceFolder",
                             "SourceFile",
                             "DestinationFolder",
                             "DestinationFile"});
-                table6.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "JPG",
                             "GPS.jpg",
                             "CheckTheImageHasGPSCoridinates",
                             "GPS.jpg"});
-                table6.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "JPG",
                             "Good.jpg",
                             "CheckTheImageHasGPSCoridinates",
                             "Good.jpg"});
-                table6.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "JPG",
                             "Bad.jpg",
                             "CheckTheImageHasGPSCoridinates",
                             "Bad.jpg"});
-#line 10
- testRunner.And("I copy the following files", ((string)(null)), table6, "And ");
+#line 9
+ testRunner.Given("I copy the following files", ((string)(null)), table3, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "TestFolder",
                             "TestFile",
                             "Longitude",
@@ -159,7 +156,7 @@ this.FeatureBackground();
                             "GPSImageTaken",
                             "DestinationFileName",
                             "KeyWords"});
-                table7.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "CheckTheImageHasGPSCoridinates",
                             "GPS.jpg",
                             "5.00°21.04\'0.00\" W",
@@ -169,7 +166,7 @@ this.FeatureBackground();
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
                             ""});
-                table7.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "CheckTheImageHasGPSCoridinates",
                             "Good.jpg",
                             "",
@@ -179,7 +176,7 @@ this.FeatureBackground();
                             "",
                             "20180310_115353",
                             ""});
-                table7.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "CheckTheImageHasGPSCoridinates",
                             "Bad.jpg",
                             "",
@@ -189,8 +186,8 @@ this.FeatureBackground();
                             "",
                             "",
                             ""});
-#line 15
- testRunner.Then("the following files have the values in the ImageFile object", ((string)(null)), table7, "Then ");
+#line 14
+ testRunner.Then("the following files have the values in the ImageFile object", ((string)(null)), table4, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

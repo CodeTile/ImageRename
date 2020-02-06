@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using ImageRename.Standard;
 using ImageRename.Tests.Context;
 using TechTalk.SpecFlow;
@@ -8,7 +9,7 @@ using TechTalk.SpecFlow.Assist;
 namespace ImageRename.Tests.Steps
 {
     [Binding]
-    public partial class ImageGpsSteps : BaseSteps
+    public class ImageGpsSteps : BaseSteps
     {
         public ImageGpsSteps(BaseContext context) : base(context)
         {
@@ -17,7 +18,7 @@ namespace ImageRename.Tests.Steps
         [Then(@"the following files have the values in the ImageFile object")]
         public void ThenTheFollowingFilesHaveTheValuesInTheImageObject(Table table)
         {
-            var target = new ProcessFolder();
+            var target = new ProcessFolder(Helper.GetConfiguration());
             var results = new List<ImageResult>();
             foreach (var row in table.Rows)
             {
@@ -33,7 +34,7 @@ namespace ImageRename.Tests.Steps
                     ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy hh:mm:ss"),
                     GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy hh:mm:ss"),
                     DestinationFileName = actual.DestinationFileName,
-                    KeyWords = row["KeyWords"]
+                    KeyWords = string.Empty
                 });
             }
             table.CompareToSet<ImageResult>(results);

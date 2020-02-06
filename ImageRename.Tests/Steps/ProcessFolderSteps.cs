@@ -22,14 +22,14 @@ namespace ImageRename.Tests.Steps
         [Given(@"I process the folder '(.*)' with the following flags")]
         public void GivenIProcessTheFolderWithTheFollowingFlags(string foldername, Table table)
         {
-            var originalPath = Path.Combine(Helper.TestFilesFolder, foldername);
+            var originalPath = Path.Combine(TestFileFolder, foldername);
 
             var row = table.Rows[0];
-            var target = new ProcessFolder()
+            var target = new ProcessFolder(Helper.GetConfiguration())
             {
                 DebugDontRenameFile = Convert.ToBoolean(row["DebugDontRenameFile"]),
                 MoveToProcessedByYear = Convert.ToBoolean(row["MoveToProcessedByYear"]),
-                ProcessedPath = string.IsNullOrEmpty(row["ProcessedPath"]) ? null : Path.Combine(Helper.TestFilesFolder, row["ProcessedPath"])
+                ProcessedPath = string.IsNullOrEmpty(row["ProcessedPath"]) ? null : Path.Combine(TestFileFolder, row["ProcessedPath"])
             };
             target.Process(originalPath);
             Wait(640);
@@ -40,7 +40,7 @@ namespace ImageRename.Tests.Steps
         public void GivenTheFolderWithSubfoldersContains(string path, Table table)
         {
             Wait(124);
-            var fullPath = Path.Combine(Helper.TestFilesFolder, path);
+            var fullPath = Path.Combine(TestFileFolder, path);
             var actual = Directory.GetFiles(fullPath, "*.*", SearchOption.AllDirectories);
             ComparePaths(table, fullPath, actual);
         }
@@ -59,7 +59,7 @@ namespace ImageRename.Tests.Steps
         [Then(@"the folder '(.*)' has subfolders")]
         public void ThenTheFolderHasSubfolder(string path, Table table)
         {
-            var fullPath = Path.Combine(Helper.TestFilesFolder, path);
+            var fullPath = Path.Combine(TestFileFolder, path);
             var actual = Directory.GetDirectories(fullPath, "*.*", SearchOption.AllDirectories);
 
             ComparePaths(table, fullPath, actual);
@@ -68,7 +68,7 @@ namespace ImageRename.Tests.Steps
         [Then(@"there are no subfolders in '(.*)'")]
         public void ThenThereAreNoSubfoldersIn(string folder)
         {
-            var fullPath = Path.Combine(Helper.TestFilesFolder, folder);
+            var fullPath = Path.Combine(TestFileFolder, folder);
             var actual = Directory.GetDirectories(fullPath).Length;
             Assert.Equal(0, actual);
         }

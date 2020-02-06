@@ -1,41 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace ImageRename.Test
+namespace ImageRename.Tests
 {
     public static class Helper
     {
+        public static string TestFilesFolder { get; } = Path.GetFullPath("..\\Test Files");
 
-        /// <summary>
-        /// Delete a test file.
-        /// </summary>
-        public static void DeleteDirectory(string path, bool isRelative = true)
-        {
-            if (isRelative)
-            {
-                path = Path.GetFullPath(path);
-            }
-            if (Directory.Exists(path))
-            {
-                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Delete ==> {path}");
-                Directory.Delete(path, true);
-            }
-        }
-
-        /// <summary>
-        /// Create a copy of all test files.
-        /// </summary>
-        /// <param name="destinationFolder"></param>
-        public static void CopyTestFilesTo(string destinationFolder)
-        {
-            // DeleteDirectory(destinationFolder, true);
-            var originalPath = Path.GetFullPath(".\\Test Files");
-            var fullDestination = Path.GetFullPath(destinationFolder);
-            DirectoryCopy(originalPath, fullDestination);
-            RemoveFilesNotInSource(originalPath, fullDestination);
-        }
+        public static string TestFilesSourceFolder { get; } = Path.GetFullPath(".\\..\\..\\..\\Test Files");
 
         /// <summary>
         /// Remove any files that do not exist in the source folder
@@ -58,6 +36,145 @@ namespace ImageRename.Test
             }
         }
 
+        internal static DateTime ConvertToDateTime(string value)
+        {
+            return ConvertToDateTime(value, Convert.ToDateTime(TimeProvider.Current.Now));
+        }
+
+        internal static DateTime ConvertToDateTime(string value, DateTime currentDateTime)
+        {
+            DateTime retVal;
+            switch (value.ToLower())
+            {
+                case "<<today>>":
+                case "<<now>>":
+                    retVal = currentDateTime;
+                    break;
+
+                case "<<yesterday>>":
+                    retVal = currentDateTime.AddDays(-1);
+                    break;
+
+                case "<<yearstart>>":
+                    retVal = new DateTime(currentDateTime.Year, 1, 1);
+                    break;
+
+                case "<<monthstart>>":
+                    retVal = new DateTime(currentDateTime.Year, currentDateTime.Month, 1);
+                    break;
+
+                case "<<mondaylastweek>>":
+                    retVal = currentDateTime.AddDays(-7).GetDayInWeek(DayOfWeek.Monday);
+                    break;
+
+                case "<<fridaylastweek>>":
+                    retVal = currentDateTime.AddDays(-7).GetDayInWeek(DayOfWeek.Friday);
+                    break;
+
+                default:
+                    retVal = Convert.ToDateTime(value);
+                    break;
+            }
+
+            if (retVal.Year == 1)
+            {
+                throw new ArgumentOutOfRangeException(value, $"parameter '{nameof(value)}' value '{value}' is out of range");
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// Create a copy of a test file
+        /// </summary>
+        internal static void CopyTestFileTo(string source, string destination)
+        {
+            var target = new FileInfo(destination);
+            CreateDirectory(target.DirectoryName);
+
+            if (!target.Exists)
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {target.FullName}");
+                File.Copy(source, target.FullName, false);
+            }
+        }
+
+        internal static void DeleteFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
+        /// <summary>
+        /// Duplicate a testfile
+        /// </summary>
+        internal static void DuplicateFile(string root, string original, string duplicate)
+        {
+            var originalPath = new FileInfo(Path.Combine(root, original));
+            var duplicatePath = new FileInfo(Path.Combine(root, duplicate));
+            if (!originalPath.Exists)
+            {
+                throw new FileNotFoundException($"\r\nSource file does not exist.\r\n\t{originalPath.FullName}");
+            }
+            CreateDirectory(duplicatePath.DirectoryName);
+
+            if (!duplicatePath.Exists)
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {duplicatePath}");
+                originalPath.CopyTo(duplicatePath.FullName, false);
+            }
+        }
+
+        internal static IConfiguration GetConfiguration(string settingsFileName = "appsettings.json")
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), settingsFileName);
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(path);
+            }
+            var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(path, optional: false, reloadOnChange: true)
+                    .AddEnvironmentVariables();
+
+#if DEBUG
+            path = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
+            if (File.Exists(path))
+            {
+                builder.AddJsonFile(path, optional: false, reloadOnChange: true);
+            }
+#endif
+            return builder.Build();
+        }
+
+        internal static ILogger<T> GetILoggerFactory<T>()
+        {
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .AddFilter("Microsoft", LogLevel.Warning)
+                    .AddFilter("System", LogLevel.Warning)
+                    .AddConsole();
+                //.AddEventLog();
+            });
+
+            return loggerFactory.CreateLogger<T>();
+        }
+
+        /// <summary>
+        /// Create a copy of all test files.
+        /// </summary>
+        /// <param name="destinationFolder"></param>
+        public static void CopyTestFilesTo(string destinationFolder)
+        {
+            // DeleteDirectory(destinationFolder, true);
+            var originalPath = Path.GetFullPath(".\\Test Files");
+            var fullDestination = Path.GetFullPath(destinationFolder);
+            DirectoryCopy(originalPath, fullDestination);
+            RemoveFilesNotInSource(originalPath, fullDestination);
+        }
+
         /// <summary>
         /// Create a directory if it does not exist.
         /// </summary>
@@ -67,6 +184,22 @@ namespace ImageRename.Test
             {
                 Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Create  ==> {path}");
                 Directory.CreateDirectory(path);
+            }
+        }
+
+        /// <summary>
+        /// Delete a test file.
+        /// </summary>
+        public static void DeleteDirectory(string path, bool isRelative = true)
+        {
+            if (isRelative)
+            {
+                path = Path.GetFullPath(path);
+            }
+            if (Directory.Exists(path))
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Delete ==> {path}");
+                Directory.Delete(path, true);
             }
         }
 
@@ -109,39 +242,14 @@ namespace ImageRename.Test
             }
         }
 
-        /// <summary>
-        /// Create a copy of a test file
-        /// </summary>
-        internal static void CopyTestFileTo(string source, string destination)
+        public static List<T> ToList<T>(dynamic[] source)
         {
-            var target = new FileInfo(destination);
-            CreateDirectory(target.DirectoryName);
-
-            if (!target.Exists)
+            var retVal = new List<T>();
+            foreach (var item in source)
             {
-                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {target.FullName}");
-                File.Copy(source, target.FullName, false);
+                retVal.Add(JsonSerializer.Deserialize<T>(item.ToString()));
             }
-        }
-
-        /// <summary>
-        /// Duplicate a testfile
-        /// </summary>
-        internal static void DuplicateFile(string root, string original, string duplicate)
-        {
-            var originalPath = new FileInfo(Path.Combine(root, original));
-            var duplicatePath = new FileInfo(Path.Combine(root, duplicate));
-            if (!originalPath.Exists)
-            {
-                throw new FileNotFoundException($"\r\nSource file does not exist.\r\n\t{originalPath.FullName}");
-            }
-            CreateDirectory(duplicatePath.DirectoryName);
-
-            if (!duplicatePath.Exists)
-            {
-                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {duplicatePath}");
-                originalPath.CopyTo(duplicatePath.FullName, false);
-            }
+            return retVal;
         }
     }
 }

@@ -16,7 +16,7 @@ Background:
 	| DuplicateTimeStampMoveWithExistingFilesProcessed |
 
 Scenario: DontMoveTest
-	Given I create a copy of all test files in the folder 'ProcessFolderDontMoveTest'
+	Given I create a copy of all test files into the folder 'ProcessFolderDontMoveTest'
 	And the folder 'ProcessFolderDontMoveTest' with subfolders contains
 	| Path                     |
 	| \CR2\20180408_122634.CR2 |
@@ -48,7 +48,7 @@ Scenario: DontMoveTest
 	| \NEF\20080601_020200_2.nef |
 
 Scenario: MoveTest1
-	Given I create a copy of all test files in the folder 'ProcessFolderMoveTest'
+	Given I create a copy of all test files into the folder 'ProcessFolderMoveTest'
 	And the folder 'ProcessFolderMoveTest' with subfolders contains
 	| Path                     |
 	| \CR2\20180408_122634.CR2 |
@@ -85,7 +85,7 @@ Scenario: MoveTest1
 	| \JPG |
 	
 	Scenario: MoveTest2
-	Given I create a copy of all test files in the folder 'ProcessFolderMoveTest2'
+	Given I create a copy of all test files into the folder 'ProcessFolderMoveTest2'
 	And in the folder 'ProcessFolderMoveTest2' I delete the files
 	| Path         |
 	| JPG\Bad.jpg |
@@ -119,7 +119,7 @@ Scenario: MoveTest1
 	And there are no subfolders in 'ProcessFolderMoveTest2'
 
 Scenario: DuplicateTimeStampDontMove
-	Given I create a copy of all test files in the folder 'DuplicateTimeStampDontMove'
+	Given I create a copy of all test files into the folder 'DuplicateTimeStampDontMove'
 	And I copy the following files in the folder 'DuplicateTimeStampDontMove'
          | SourceFolder | SourceFile | DestinationFolder | DestinationFile |
          | CR2          | good.cr2   | cr2               | Duplicate.cr2   |
@@ -165,7 +165,7 @@ Scenario: DuplicateTimeStampDontMove
 	| \NEF\20080601_020200_2.nef |
 
 	Scenario: DuplicateTimeStampMoveWithExistingFiles
-	Given I create a copy of all test files in the folder 'DuplicateTimeStampMoveWithExistingFiles'
+	Given I create a copy of all test files into the folder 'DuplicateTimeStampMoveWithExistingFiles'
 	And I copy the following files in the folder 'DuplicateTimeStampMoveWithExistingFiles'
          | SourceFolder | SourceFile | DestinationFolder | DestinationFile |
          | CR2          | good.cr2   | cr2               | Duplicate.cr2   |

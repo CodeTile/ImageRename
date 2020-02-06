@@ -17,7 +17,7 @@ namespace ImageRename.Tests.Steps
         public string TestFileFolder => Helper.TestFilesFolder;
         public BaseSteps(BaseContext context)
         {
-            Configuration = TestHelper.GetConfiguration();
+            Configuration = Helper.GetConfiguration();
             Context = context;
         }
         public string GetFilesList(string header, string targetPath, ref string[] targetContent)

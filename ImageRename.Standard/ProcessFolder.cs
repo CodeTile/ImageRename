@@ -1,19 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using Geocoding;
+using Geocoding.MapQuest;
+using Geocoding.Microsoft;
 using ImageRename.Standard.Model;
+using Microsoft.Extensions.Configuration;
 
 namespace ImageRename.Standard
 {
     public class ProcessFolder
     {
-        private string _rootFolder;
+        private readonly IConfiguration Configuration;
+        public string SourcePath { get; set; }
         public ObservableCollection<IImageFile> _images;
         public bool DebugDontRenameFile { get; set; } = false;
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
+
+        public ProcessFolder(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
         #region RenameProgressEvent
 
@@ -82,7 +94,7 @@ namespace ImageRename.Standard
             var destinationFile = item.DestinationFilePath;
             if (File.Exists(destinationFile))
             {
-                ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ############# File Exists");
+                ReportRenamingProgress($"{sourceFile.Replace(SourcePath, string.Empty).PadRight(30)} ############# File Exists");
                 if (AreFilesTheSame(sourceFile, destinationFile))
                 {
                     destinationFile = destinationFile.Replace(item.SourceFileInfo.Extension, $"(Duplicate){item.SourceFileInfo.Extension}");
@@ -99,7 +111,7 @@ namespace ImageRename.Standard
             item.SourceFileInfo = new FileInfo(destinationFile);
             ReportFindFileProgress();
 
-            ReportRenamingProgress($"{sourceFile.Replace(_rootFolder, string.Empty).PadRight(30)} ==> {destinationFile.Replace(_rootFolder, string.Empty)}");
+            ReportRenamingProgress($"{sourceFile.Replace(SourcePath, string.Empty).PadRight(30)} ==> {destinationFile.Replace(SourcePath, string.Empty)}");
         }
 
         private void RenameFiles()
@@ -117,7 +129,7 @@ namespace ImageRename.Standard
                 }
                 catch (Exception ex)
                 {
-                    ReportRenamingProgress($"\r\n##############Error\r\n{item.SourceFileInfo.FullName.Replace(_rootFolder, string.Empty)}r\n{ex.Message}\r\n####################\n\n");
+                    ReportRenamingProgress($"\r\n##############Error\r\n{item.SourceFileInfo.FullName.Replace(SourcePath, string.Empty)}r\n{ex.Message}\r\n####################\n\n");
                 }
             }
         }
@@ -145,15 +157,74 @@ namespace ImageRename.Standard
 
         private void ReverseGeocode(IImageFile image, string fileName)
         {
-            return;
+            //return;
             var tagSet = string.Join(";", new string[] { "Hello", "Hello1" });
             var file = ExifLibrary.ImageFile.FromFile(fileName);
+            var existingKeyWords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
             var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
+            var locationKeyWords = GetKeywordsFromLocation(image.GPS);
+
             //foreach (var item in tagSet)
             //{
             file.Properties.Set(ExifLibrary.ExifTag.WindowsKeywords, tagSet);
             //}
-            file.Save(fileName);
+            //file.Save(fileName);
+
+        }
+        private IGeocoder _BingGeoCoder;
+        private IGeocoder GetBingGeoCoder()
+        {
+            if (_BingGeoCoder == null)
+            {
+                string apiKey = Configuration["MapKeys:Bing"];
+                _BingGeoCoder = new BingMapsGeocoder(apiKey)
+                { IncludeNeighborhood = true };
+            }
+            return _BingGeoCoder;
+        }
+
+        private IGeocoder _MapQuestGeoCoder;
+        private IGeocoder GetMapQuestGeoCoder()
+        {
+            if (_MapQuestGeoCoder == null)
+            {
+                string apiKey = Configuration["MapKeys:MapQuest"];
+                _MapQuestGeoCoder = new MapQuestGeocoder(apiKey);
+            }
+            return _MapQuestGeoCoder;
+        }
+
+        private string GetKeywordsFromLocation(GPSCoridates gps)
+        {
+            var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
+            IGeocoder geocoder;
+            var priorities = Configuration["MapKeys:Priority"].Split(',');
+            foreach (var geocoderKey in priorities)
+            {
+                string keyWords = null;
+                switch (geocoderKey.ToUpper())
+                {
+                    case "BING":
+                        geocoder = GetBingGeoCoder();
+                        break;
+                    case "MAPQUEST":
+                        geocoder = GetMapQuestGeoCoder();
+                        break;                   
+                    default:
+                        throw new ArgumentOutOfRangeException(geocoderKey);
+                }
+
+                var addresses =  Task.Run(async () => await  geocoder.ReverseGeocodeAsync(location));
+                if(addresses != null && addresses.Result.Any())
+                {
+                    var address = addresses.Result.First();
+                }
+                if(!string.IsNullOrEmpty(keyWords))
+                {
+                    continue;
+                }
+            }
+            return null;
         }
 
         internal bool AreFilesTheSame(string sourceFile, string destinationFile)
@@ -192,7 +263,6 @@ namespace ImageRename.Standard
             }
 
             foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
-
             {
                 _images.Add(ProcessFile(file));
             }
@@ -204,18 +274,20 @@ namespace ImageRename.Standard
             {
                 throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{root}");
             }
-            _rootFolder = root;
+            GetBingGeoCoder();
+            GetMapQuestGeoCoder();
+            SourcePath = root;
             _images = new ObservableCollection<IImageFile>();
             _images.CollectionChanged += _images_CollectionChanged;
             FindFiles(root);
             RenameFiles();
-            DeleteEmptySourceFolders(_rootFolder);
+            DeleteEmptySourceFolders(SourcePath);
         }
 
         public IImageFile ProcessFile(string filename)
         {
             if (!File.Exists(filename))
-            { 
+            {
                 throw new FileNotFoundException(filename);
             }
             string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
@@ -240,7 +312,7 @@ namespace ImageRename.Standard
 
                 if (image.GPS != null)
                 {
-                    ReverseGeocode(image, filename);
+                   ReverseGeocode(image, filename);
                 }
             }
             return image;

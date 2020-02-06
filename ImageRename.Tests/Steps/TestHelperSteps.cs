@@ -59,7 +59,7 @@ namespace ImageRename.Tests.Steps
                     actualDateFormat += " HH:mm:ss";
                 }
                 var testDateTime = Convert.ToDateTime(row["CurrentDate"]);
-                var actual = TestHelper.ConvertToDateTime(value, testDateTime).ToString(actualDateFormat);
+                var actual = Helper.ConvertToDateTime(value, testDateTime).ToString(actualDateFormat);
                 results.Add(new ExpectedTimeResults1 { Value = value, Result = actual, IncludeTime = row["IncludeTime"], CurrentDate = testDateTime });
             }
 

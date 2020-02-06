@@ -19,7 +19,7 @@ namespace ImageRename.Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class TestHelperFeature : Xunit.IClassFixture<TestHelperFeature.FixtureData>, System.IDisposable
+    public partial class TestHelperFeature : object, Xunit.IClassFixture<TestHelperFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -110,68 +110,68 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
  testRunner.Given("I reset the TimeProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Result",
                             "IncludeTime",
                             "CurrentDate"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "1 Feb 2000",
                             "1 Feb 2000",
                             "false",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "December 1 2222",
                             "1 Dec 2222",
                             "false",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "1 Feb 2000 13:34:43",
                             "1 Feb 2000 13:34:43",
                             "true",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "December 1 2222 09:23:48",
                             "1 Dec 2222 09:23:48",
                             "true",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "<<now>>",
                             "6 Nov 2019 13:34:56",
                             "true",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "<<today>>",
                             "6 Nov 2019",
                             "false",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "<<yesterday>>",
                             "5 Nov 2019",
                             "false",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "<<yearstart>>",
                             "1 Jan 2019",
                             "false",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "<<monthstart>>",
                             "1 Nov 2019",
                             "false",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "<<mondaylastweek>>",
                             "28 Oct 2019",
                             "false",
                             "6 Nov 2019 13:34:56"});
-                table32.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "<<fridaylastweek>>",
                             "1 Nov 2019",
                             "false",
                             "6 Nov 2019 13:34:56"});
 #line 6
- testRunner.And("I TestHelper function convertToDateTime with the following", ((string)(null)), table32, "And ");
+ testRunner.And("I TestHelper function convertToDateTime with the following", ((string)(null)), table33, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -207,68 +207,68 @@ this.ScenarioInitialize(scenarioInfo);
 #line 21
  testRunner.Given("I reset the TimeProvider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                             "Value",
                             "Result",
                             "IncludeTime",
                             "CurrentDate"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "1 Feb 2000",
                             "1 Feb 2000",
                             "false",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "December 1 2222",
                             "1 Dec 2222",
                             "false",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "1 Feb 2000 13:34:43",
                             "1 Feb 2000 13:34:43",
                             "true",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "December 1 2222 09:23:48",
                             "1 Dec 2222 09:23:48",
                             "true",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "<<now>>",
                             "4 Feb 2020 23:14:59",
                             "true",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "<<today>>",
                             "4 Feb 2020",
                             "false",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "<<yesterday>>",
                             "3 Feb 2020",
                             "false",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "<<yearstart>>",
                             "1 Jan 2020",
                             "false",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "<<monthstart>>",
                             "1 Feb 2020",
                             "false",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "<<mondaylastweek>>",
                             "27 Jan 2020",
                             "false",
                             "4 Feb 2020 23:14:59"});
-                table33.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "<<fridaylastweek>>",
                             "31 Jan 2020",
                             "false",
                             "4 Feb 2020 23:14:59"});
 #line 22
- testRunner.And("I TestHelper function convertToDateTime with the following", ((string)(null)), table33, "And ");
+ testRunner.And("I TestHelper function convertToDateTime with the following", ((string)(null)), table34, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

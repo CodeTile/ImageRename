@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using ImageRename.Standard;
+using Microsoft.Extensions.Configuration;
 
 namespace ImageRename
 {
@@ -15,9 +17,12 @@ namespace ImageRename
         private ProcessFolder _processor;
         private BackgroundWorker _backgroundWorker;
 
-        public MainWindow()
+        public IConfiguration Configuration { get; }
+
+        public MainWindow(IConfiguration config)
         {
             InitializeComponent();
+            Configuration = config;
         }
 
         private void btnProcess_Click(object sender, RoutedEventArgs e)
@@ -117,7 +122,7 @@ namespace ImageRename
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var parameters = (ProcessParameters)e.Argument;
-            _processor = new ProcessFolder();
+            _processor = new ProcessFolder(Configuration);
 
             _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
             _processor.MoveToProcessedByYear = parameters.SortByYear;

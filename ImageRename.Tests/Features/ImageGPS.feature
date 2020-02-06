@@ -6,8 +6,7 @@ Background:
 	| CheckTheImageHasGPSCoridinates |
 
 Scenario: CheckTheImageHasGPSCoridinates
-	Given I clear the testfiles folder
-	And I copy the following files
+	Given I copy the following files
 	| SourceFolder | SourceFile | DestinationFolder              | DestinationFile |
 	| JPG          | GPS.jpg    | CheckTheImageHasGPSCoridinates | GPS.jpg         |
 	| JPG          | Good.jpg   | CheckTheImageHasGPSCoridinates | Good.jpg        |

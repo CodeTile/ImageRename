@@ -12,13 +12,7 @@ namespace ImageRename.Tests.Steps
         public TestFileHandlingSteps(BaseContext context) : base(context)
         {
         }
-        [Given(@"I clear the testfiles folder")]
-        public void GivenIClearTheTestfilesFolder()
-        {
-            Helper.DeleteDirectory(TestFileFolder);
-            // let the file system catch up
-            System.Threading.Thread.Sleep(543);
-        }
+      
 
         [Given(@"I copy the following files")]
         public void GivenICopyTheFollowingFiles(Table table)
@@ -34,12 +28,12 @@ namespace ImageRename.Tests.Steps
             System.Threading.Thread.Sleep(543);
         }
 
-        [Given(@"I create a copy of all test files in the folder '(.*)'")]
+        [Given(@"I create a copy of all test files into the folder '(.*)'")]
         public void GivenICreateACopyOfAllTestFilesInTheFolder(string destinationFolder)
         {
             var destinationPath = Path.Combine(TestFileFolder, destinationFolder);
             Helper.DirectoryCopy(Helper.TestFilesSourceFolder, destinationPath);
-            Helper.CopyTestFilesTo(destinationPath);
+            //Helper.CopyTestFilesTo(destinationPath);
             // let the file system catch up
             System.Threading.Thread.Sleep(543);
         }
