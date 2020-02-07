@@ -80,15 +80,15 @@ namespace ImageRename.Tests.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="TestLongitude")]
+        [Xunit.SkippableFactAttribute(DisplayName="TestCordinates")]
         [Xunit.TraitAttribute("FeatureTitle", "Extensions")]
-        [Xunit.TraitAttribute("Description", "TestLongitude")]
+        [Xunit.TraitAttribute("Description", "TestCordinates")]
         [Xunit.TraitAttribute("Category", "mytag")]
-        public virtual void TestLongitude()
+        public virtual void TestCordinates()
         {
             string[] tagsOfScenario = new string[] {
                     "mytag"};
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TestLongitude", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TestCordinates", null, new string[] {
                         "mytag"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);
@@ -113,25 +113,49 @@ this.ScenarioInitialize(scenarioInfo);
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "Coordinates",
                             "Degrees",
-                            "Notes"});
-                table1.AddRow(new string[] {
-                            "5.00°21.04\'0.00\" W",
-                            "",
-                            ""});
+                            "KeyWords"});
                 table1.AddRow(new string[] {
                             "36.00°7.08\'0.00\" N",
-                            "",
-                            ""});
+                            "36.11667",
+                            "Camp Bay, Gibraltar"});
+                table1.AddRow(new string[] {
+                            "5.00°21.04\'0.00\" W",
+                            "-5.35000",
+                            "Camp Bay, Gibraltar"});
                 table1.AddRow(new string[] {
                             "25°20′42″S",
-                            "",
-                            "Uluru"});
+                            "-25.34500",
+                            "Uluru, Base Walk South, Mutitjulu NT, Australia"});
                 table1.AddRow(new string[] {
                             "131°02′10″E",
-                            "",
-                            "Uluru"});
+                            "131.03611",
+                            "Uluru, Base Walk South, Mutitjulu NT, Australia"});
+                table1.AddRow(new string[] {
+                            "50° 39\' 45.62\" N",
+                            "50.66267",
+                            "The Needles Lighthouse, T25, Alum Bay PO39 0JH, United Kingdom"});
+                table1.AddRow(new string[] {
+                            "1° 35\' 21.124\" W",
+                            "-1.58920",
+                            "The Needles Lighthouse, T25, Alum Bay PO39 0JH, United Kingdom"});
+                table1.AddRow(new string[] {
+                            "53° 32\' 30.44\"n",
+                            "53.54179",
+                            "St. Pauli-Elbtunnel, 20457 Hamburg, Germany"});
+                table1.AddRow(new string[] {
+                            "9° 57\' 59.653\"e",
+                            "9.96657",
+                            "St. Pauli-Elbtunnel, 20457 Hamburg, Germany"});
+                table1.AddRow(new string[] {
+                            "15° 52\' 2.8\"s",
+                            "-15.86744",
+                            "Sagres, Estrada Parque Aeroporto, Lago Sul - Federal District, 70610-100, Brazil"});
+                table1.AddRow(new string[] {
+                            "47° 55\' 52.345\"w",
+                            "-47.93121",
+                            "Sagres, Estrada Parque Aeroporto, Lago Sul - Federal District, 70610-100, Brazil"});
 #line 6
-testRunner.Given("I test the coridantes", ((string)(null)), table1, "Given ");
+testRunner.Given("I test the coordinates", ((string)(null)), table1, "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
