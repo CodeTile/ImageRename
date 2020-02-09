@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
-    <PackageReference Include="Geocoding.MapQuest" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="MetadataExtractor" Version="2.3.0" />

@@ -164,12 +164,12 @@ this.FeatureBackground();
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
                             "-5.35",
-                            "",
+                            "36.11666666666667",
                             "27 Jan 2020 12:50:42",
                             "27 Jan 2020 11:50:41",
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
-                            "Camp Bay, Gibraltar"});
+                            "Gibraltar;"});
                 table4.AddRow(new string[] {
                             "CheckTheImageHasGPSCoridinates",
                             "Good.jpg",

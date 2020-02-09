@@ -6,7 +6,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Geocoding;
-using Geocoding.MapQuest;
+
 using Geocoding.Microsoft;
 using ImageRename.Standard.Model;
 using Microsoft.Extensions.Configuration;
@@ -98,22 +98,22 @@ namespace ImageRename.Standard
             foreach (var geocoderKey in priorities)
             {
                 Address address = null;
-                
+
                 #region get the GeoCoder object
+
                 switch (geocoderKey.ToUpper())
                 {
                     case "BING":
                         geocoder = GetBingGeoCoder();
                         break;
 
-                    case "MAPQUEST":
-                        geocoder = GetMapQuestGeoCoder();
-                        break;
+                
 
                     default:
                         throw new ArgumentOutOfRangeException(geocoderKey);
                 }
-                #endregion
+
+                #endregion get the GeoCoder object
 
                 if (geocoder == null)
                 {
@@ -123,21 +123,22 @@ namespace ImageRename.Standard
                 if (addresses != null && addresses.Result.Any())
                 {
                     address = addresses.Result?.First();
-                }   
+                }
                 else
-                { 
+                {
                     continue;
                 }
                 switch (address.Provider.ToUpper())
                 {
                     case "BING":
-                        BingAddress a =(BingAddress)address;
+                        BingAddress a = (BingAddress)address;
                         keyWords = a.CountryRegion;
-                            break;
+                        break;
+
+
                     default:
                         break;
                 }
-                // keyWords = address.CountryRegion
                 if (!string.IsNullOrEmpty(keyWords))
                 {
                     break;
@@ -146,14 +147,7 @@ namespace ImageRename.Standard
             return keyWords;
         }
 
-        private IGeocoder GetMapQuestGeoCoder()
-        {
-            if (_MapQuestGeoCoder == null && !string.IsNullOrEmpty(Configuration["MapKeys:MapQuest"]) && HasInternet)
-            {
-                _MapQuestGeoCoder = new MapQuestGeocoder(Configuration["MapKeys:MapQuest"]);
-            }
-            return _MapQuestGeoCoder;
-        }
+      
 
         private string GetSequenceFilename(FileInfo file)
         {
@@ -243,9 +237,9 @@ namespace ImageRename.Standard
             }
             var file = ExifLibrary.ImageFile.FromFile(fileName);
             var existingKeyWords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
-            var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords) + ";" + GetKeywordsFromLocation(image.GPS);
-            var newKeywords= (String.Join(";",keywords.Split(';').Distinct().ToList())+";").Replace(";;",";");
-            if(newKeywords.StartsWith(";"))
+            var keywords = existingKeyWords + ";" + GetKeywordsFromLocation(image.GPS);
+            var newKeywords = (String.Join(";", keywords.Split(';').Distinct().ToList()) + ";").Replace(";;", ";");
+            if (newKeywords.StartsWith(";"))
             {
                 newKeywords = newKeywords.Substring(1);
             }
@@ -320,7 +314,7 @@ namespace ImageRename.Standard
             }
 
             GetBingGeoCoder();
-            GetMapQuestGeoCoder();
+           
             SourcePath = root;
             _images = new ObservableCollection<IImageFile>();
             _images.CollectionChanged += _images_CollectionChanged;
