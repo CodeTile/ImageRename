@@ -12,6 +12,8 @@
             public string DestinationFileName { get; internal set; }
             public string KeyWords { get; internal set; }
             public string NeedRenaming { get; internal set; }
-            public string NeedMoving { get; internal set; }        
+            public string NeedMoving { get; internal set; }
+        public double? DegreesLatitude { get; internal set; }
+        public double? DegreesLongitude { get; internal set; }
     };
 }

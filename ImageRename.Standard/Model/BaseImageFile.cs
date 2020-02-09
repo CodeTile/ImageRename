@@ -173,6 +173,7 @@ namespace ImageRename.Standard.Model
             }
         }
 
+        public string KeyWords { get;set; }
 
         public BaseImageFile(string path, string processedPath = null)
         {

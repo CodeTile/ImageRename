@@ -151,6 +151,8 @@ this.FeatureBackground();
                             "TestFile",
                             "Longitude",
                             "Latitude",
+                            "DegreesLongitude",
+                            "DegreesLatitude",
                             "ImageCreatedOriginal",
                             "ImageTaken",
                             "GPSImageTaken",
@@ -161,14 +163,18 @@ this.FeatureBackground();
                             "GPS.jpg",
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
+                            "-5.35",
+                            "",
                             "27 Jan 2020 12:50:42",
                             "27 Jan 2020 11:50:41",
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
-                            ""});
+                            "Camp Bay, Gibraltar"});
                 table4.AddRow(new string[] {
                             "CheckTheImageHasGPSCoridinates",
                             "Good.jpg",
+                            "",
+                            "",
                             "",
                             "",
                             "10 Mar 2018 11:53:53",
@@ -179,6 +185,8 @@ this.FeatureBackground();
                 table4.AddRow(new string[] {
                             "CheckTheImageHasGPSCoridinates",
                             "Bad.jpg",
+                            "",
+                            "",
                             "",
                             "",
                             "",

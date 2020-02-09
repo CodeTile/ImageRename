@@ -8,8 +8,8 @@ namespace ImageRename.Standard.Model
         public string Latitude { get; set; }
 
         public string Longitude { get; set; }
-        public double DegreesLongitude { get { return Longitude.ToDegreesLongitude(); } }
-        public double DegreesLatitude { get { return Longitude.ToDegreesLatitude(); } }
+        public double DegreesLongitude { get { return Longitude.ToDegrees(); } }
+        public double DegreesLatitude { get { return Latitude.ToDegrees(); } }
     }
 
     public class IGPSCoridates

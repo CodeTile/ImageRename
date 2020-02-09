@@ -80,15 +80,15 @@ namespace ImageRename.Tests.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="TestCordinates")]
+        [Xunit.SkippableFactAttribute(DisplayName="CoordinatesToDegrees")]
         [Xunit.TraitAttribute("FeatureTitle", "Extensions")]
-        [Xunit.TraitAttribute("Description", "TestCordinates")]
+        [Xunit.TraitAttribute("Description", "CoordinatesToDegrees")]
         [Xunit.TraitAttribute("Category", "mytag")]
-        public virtual void TestCordinates()
+        public virtual void CoordinatesToDegrees()
         {
             string[] tagsOfScenario = new string[] {
                     "mytag"};
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TestCordinates", null, new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CoordinatesToDegrees", null, new string[] {
                         "mytag"});
 #line 5
 this.ScenarioInitialize(scenarioInfo);

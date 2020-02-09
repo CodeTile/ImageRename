@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Geocoding;
@@ -16,11 +16,15 @@ namespace ImageRename.Standard
     public class ProcessFolder
     {
         private readonly IConfiguration Configuration;
-        public string SourcePath { get; set; }
+        private IGeocoder _BingGeoCoder;
+        private IGeocoder _MapQuestGeoCoder;
         public ObservableCollection<IImageFile> _images;
+
         public bool DebugDontRenameFile { get; set; } = false;
+        public bool HasInternet => CheckForInternetConnection();
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
+        public string SourcePath { get; set; }
 
         public ProcessFolder(IConfiguration configuration)
         {
@@ -73,6 +77,82 @@ namespace ImageRename.Standard
                     Directory.Delete(directory, false);
                 }
             }
+        }
+
+        private IGeocoder GetBingGeoCoder()
+        {
+            if (_BingGeoCoder == null && !string.IsNullOrEmpty(Configuration["MapKeys:Bing"]) && HasInternet)
+            {
+                _BingGeoCoder = new BingMapsGeocoder(Configuration["MapKeys:Bing"])
+                { IncludeNeighborhood = true };
+            }
+            return _BingGeoCoder;
+        }
+
+        private string GetKeywordsFromLocation(GPSCoridates gps)
+        {
+            var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
+            IGeocoder geocoder;
+            string keyWords = null;
+            var priorities = Configuration["MapKeys:Priority"].Split(',');
+            foreach (var geocoderKey in priorities)
+            {
+                Address address = null;
+                
+                #region get the GeoCoder object
+                switch (geocoderKey.ToUpper())
+                {
+                    case "BING":
+                        geocoder = GetBingGeoCoder();
+                        break;
+
+                    case "MAPQUEST":
+                        geocoder = GetMapQuestGeoCoder();
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(geocoderKey);
+                }
+                #endregion
+
+                if (geocoder == null)
+                {
+                    continue;
+                }
+                var addresses = Task.Run(async () => await geocoder.ReverseGeocodeAsync(location));
+                if (addresses != null && addresses.Result.Any())
+                {
+                    address = addresses.Result?.First();
+                }   
+                else
+                { 
+                    continue;
+                }
+                switch (address.Provider.ToUpper())
+                {
+                    case "BING":
+                        BingAddress a =(BingAddress)address;
+                        keyWords = a.CountryRegion;
+                            break;
+                    default:
+                        break;
+                }
+                // keyWords = address.CountryRegion
+                if (!string.IsNullOrEmpty(keyWords))
+                {
+                    break;
+                }
+            }
+            return keyWords;
+        }
+
+        private IGeocoder GetMapQuestGeoCoder()
+        {
+            if (_MapQuestGeoCoder == null && !string.IsNullOrEmpty(Configuration["MapKeys:MapQuest"]) && HasInternet)
+            {
+                _MapQuestGeoCoder = new MapQuestGeocoder(Configuration["MapKeys:MapQuest"]);
+            }
+            return _MapQuestGeoCoder;
         }
 
         private string GetSequenceFilename(FileInfo file)
@@ -157,74 +237,24 @@ namespace ImageRename.Standard
 
         private void ReverseGeocode(IImageFile image, string fileName)
         {
-            //return;
-            var tagSet = string.Join(";", new string[] { "Hello", "Hello1" });
+            if (!HasInternet)
+            {
+                return;
+            }
             var file = ExifLibrary.ImageFile.FromFile(fileName);
             var existingKeyWords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
-            var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
-            var locationKeyWords = GetKeywordsFromLocation(image.GPS);
-
+            var keywords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords) + ";" + GetKeywordsFromLocation(image.GPS);
+            var newKeywords= (String.Join(";",keywords.Split(';').Distinct().ToList())+";").Replace(";;",";");
+            if(newKeywords.StartsWith(";"))
+            {
+                newKeywords = newKeywords.Substring(1);
+            }
+            image.KeyWords = newKeywords;
             //foreach (var item in tagSet)
             //{
-            file.Properties.Set(ExifLibrary.ExifTag.WindowsKeywords, tagSet);
+            // file.Properties.Set(ExifLibrary.ExifTag.WindowsKeywords, tagSet);
             //}
             //file.Save(fileName);
-
-        }
-        private IGeocoder _BingGeoCoder;
-        private IGeocoder GetBingGeoCoder()
-        {
-            if (_BingGeoCoder == null)
-            {
-                string apiKey = Configuration["MapKeys:Bing"];
-                _BingGeoCoder = new BingMapsGeocoder(apiKey)
-                { IncludeNeighborhood = true };
-            }
-            return _BingGeoCoder;
-        }
-
-        private IGeocoder _MapQuestGeoCoder;
-        private IGeocoder GetMapQuestGeoCoder()
-        {
-            if (_MapQuestGeoCoder == null)
-            {
-                string apiKey = Configuration["MapKeys:MapQuest"];
-                _MapQuestGeoCoder = new MapQuestGeocoder(apiKey);
-            }
-            return _MapQuestGeoCoder;
-        }
-
-        private string GetKeywordsFromLocation(GPSCoridates gps)
-        {
-            var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
-            IGeocoder geocoder;
-            var priorities = Configuration["MapKeys:Priority"].Split(',');
-            foreach (var geocoderKey in priorities)
-            {
-                string keyWords = null;
-                switch (geocoderKey.ToUpper())
-                {
-                    case "BING":
-                        geocoder = GetBingGeoCoder();
-                        break;
-                    case "MAPQUEST":
-                        geocoder = GetMapQuestGeoCoder();
-                        break;                   
-                    default:
-                        throw new ArgumentOutOfRangeException(geocoderKey);
-                }
-
-                var addresses =  Task.Run(async () => await  geocoder.ReverseGeocodeAsync(location));
-                if(addresses != null && addresses.Result.Any())
-                {
-                    var address = addresses.Result.First();
-                }
-                if(!string.IsNullOrEmpty(keyWords))
-                {
-                    continue;
-                }
-            }
-            return null;
         }
 
         internal bool AreFilesTheSame(string sourceFile, string destinationFile)
@@ -251,6 +281,20 @@ namespace ImageRename.Standard
             }
         }
 
+        public bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead(Configuration["InternetConnectionTestURL"]))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public void FindFiles(string root)
         {
             if (MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
@@ -274,6 +318,7 @@ namespace ImageRename.Standard
             {
                 throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{root}");
             }
+
             GetBingGeoCoder();
             GetMapQuestGeoCoder();
             SourcePath = root;
@@ -312,7 +357,7 @@ namespace ImageRename.Standard
 
                 if (image.GPS != null)
                 {
-                   ReverseGeocode(image, filename);
+                    ReverseGeocode(image, filename);
                 }
             }
             return image;

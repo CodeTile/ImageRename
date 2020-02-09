@@ -34,7 +34,9 @@ namespace ImageRename.Tests.Steps
                     ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy hh:mm:ss"),
                     GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy hh:mm:ss"),
                     DestinationFileName = actual.DestinationFileName,
-                    KeyWords = string.Empty
+                    KeyWords = actual.KeyWords,
+                    DegreesLongitude = actual.GPS?.DegreesLongitude,
+                    DegreesLatitude = actual.GPS?.DegreesLatitude
                 });
             }
             table.CompareToSet<ImageResult>(results);

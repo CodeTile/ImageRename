@@ -13,6 +13,7 @@ namespace ImageRename.Standard.Model
         DateTime? ImageCreatedOriginal { get; }
         bool NeedsMoving { get; }
         bool NeedsRenaming { get; }
-        FileInfo SourceFileInfo { get; set; }       
+        FileInfo SourceFileInfo { get; set; }
+        string KeyWords { get; set; }
     }
 }

@@ -4,14 +4,13 @@ namespace ImageRename.Standard
 {
     public static class Extensions
     {
-       // private static double ToDegrees(this string coordinates, string negativeOrdination)
-            public static double ToDegrees(this string coordinates)
+        public static double ToDegrees(this string coordinates)
         {
             var signage = 1;
-            coordinates=coordinates
+            coordinates = coordinates
                     .Replace("′", "'")
                     .Replace('″', '"')
-                    .Replace("\"","\" ")
+                    .Replace("\"", "\" ")
                     .Replace("\"  ", "\" ")
                     .Replace("° ", "°")
                     .Replace("' ", "'")
@@ -31,33 +30,6 @@ namespace ImageRename.Standard
             var retval = signage * (degrees + (minutes / 60) + (seconds / 3600));
             Console.WriteLine($"{coordinates}  ==> {retval}");
             return retval;
-        }
-
-        //public static double ToDegrees(this string cordinates)
-        //{
-        //    if (cordinates.Contains("W"))
-        //    {
-        //        return cordinates.ToDegrees("W");
-        //    }
-        //    if (cordinates.Contains("S"))
-        //    {
-        //        return cordinates.ToDegrees("S");
-        //    }
-        //    else
-        //    {
-        //        return cordinates.ToDegrees(string.Empty);
-        //    }
-        //}
-
-        [Obsolete]
-        public static double ToDegreesLatitude(this string coordinates)
-        {
-            return coordinates.ToDegrees();
-        }
-        [Obsolete]
-        public static double ToDegreesLongitude(this string coordinates)
-        {
-            return coordinates.ToDegrees();
         }
     }
 }
