@@ -36,12 +36,12 @@ namespace ImageRename.Tests
             }
         }
 
-        internal static DateTime ConvertToDateTime(string value)
+        public static DateTime ConvertToDateTime(string value)
         {
             return ConvertToDateTime(value, Convert.ToDateTime(TimeProvider.Current.Now));
         }
 
-        internal static DateTime ConvertToDateTime(string value, DateTime currentDateTime)
+        public static DateTime ConvertToDateTime(string value, DateTime currentDateTime)
         {
             DateTime retVal;
             switch (value.ToLower())
@@ -84,85 +84,6 @@ namespace ImageRename.Tests
         }
 
         /// <summary>
-        /// Create a copy of a test file
-        /// </summary>
-        internal static void CopyTestFileTo(string source, string destination)
-        {
-            var target = new FileInfo(destination);
-            CreateDirectory(target.DirectoryName);
-
-            if (!target.Exists)
-            {
-                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {target.FullName}");
-                File.Copy(source, target.FullName, false);
-            }
-        }
-
-        internal static void DeleteFile(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-        }
-
-        /// <summary>
-        /// Duplicate a testfile
-        /// </summary>
-        internal static void DuplicateFile(string root, string original, string duplicate)
-        {
-            var originalPath = new FileInfo(Path.Combine(root, original));
-            var duplicatePath = new FileInfo(Path.Combine(root, duplicate));
-            if (!originalPath.Exists)
-            {
-                throw new FileNotFoundException($"\r\nSource file does not exist.\r\n\t{originalPath.FullName}");
-            }
-            CreateDirectory(duplicatePath.DirectoryName);
-
-            if (!duplicatePath.Exists)
-            {
-                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {duplicatePath}");
-                originalPath.CopyTo(duplicatePath.FullName, false);
-            }
-        }
-
-        internal static IConfiguration GetConfiguration(string settingsFileName = "appsettings.json")
-        {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), settingsFileName);
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException(path);
-            }
-            var builder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(path, optional: false, reloadOnChange: true)
-                    .AddEnvironmentVariables();
-
-#if DEBUG
-            path = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
-            if (File.Exists(path))
-            {
-                builder.AddJsonFile(path, optional: false, reloadOnChange: true);
-            }
-#endif
-            return builder.Build();
-        }
-
-        internal static ILogger<T> GetILoggerFactory<T>()
-        {
-            var loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder
-                    .AddFilter("Microsoft", LogLevel.Warning)
-                    .AddFilter("System", LogLevel.Warning)
-                    .AddConsole();
-                //.AddEventLog();
-            });
-
-            return loggerFactory.CreateLogger<T>();
-        }
-
-        /// <summary>
         /// Create a copy of all test files.
         /// </summary>
         /// <param name="destinationFolder"></param>
@@ -173,6 +94,21 @@ namespace ImageRename.Tests
             var fullDestination = Path.GetFullPath(destinationFolder);
             DirectoryCopy(originalPath, fullDestination);
             RemoveFilesNotInSource(originalPath, fullDestination);
+        }
+
+        /// <summary>
+        /// Create a copy of a test file
+        /// </summary>
+        public static void CopyTestFileTo(string source, string destination)
+        {
+            var target = new FileInfo(destination);
+            CreateDirectory(target.DirectoryName);
+
+            if (!target.Exists)
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {target.FullName}");
+                File.Copy(source, target.FullName, false);
+            }
         }
 
         /// <summary>
@@ -200,6 +136,14 @@ namespace ImageRename.Tests
             {
                 Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Delete ==> {path}");
                 Directory.Delete(path, true);
+            }
+        }
+
+        public static void DeleteFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
             }
         }
 
@@ -240,6 +184,62 @@ namespace ImageRename.Tests
                 string temppath = Path.Combine(destDirName, subdir.Name);
                 DirectoryCopy(subdir.FullName, temppath);
             }
+        }
+
+        /// <summary>
+        /// Duplicate a testfile
+        /// </summary>
+        public static void DuplicateFile(string root, string original, string duplicate)
+        {
+            var originalPath = new FileInfo(Path.Combine(root, original));
+            var duplicatePath = new FileInfo(Path.Combine(root, duplicate));
+            if (!originalPath.Exists)
+            {
+                throw new FileNotFoundException($"\r\nSource file does not exist.\r\n\t{originalPath.FullName}");
+            }
+            CreateDirectory(duplicatePath.DirectoryName);
+
+            if (!duplicatePath.Exists)
+            {
+                Debug.WriteLine($"{DateTime.Now.ToLongTimeString()} Copy to ==> {duplicatePath}");
+                originalPath.CopyTo(duplicatePath.FullName, false);
+            }
+        }
+
+        public static IConfiguration GetConfiguration(string settingsFileName = "appsettings.json")
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), settingsFileName);
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException(path);
+            }
+            var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(path, optional: false, reloadOnChange: true)
+                    .AddEnvironmentVariables();
+
+#if DEBUG
+            path = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
+            if (File.Exists(path))
+            {
+                builder.AddJsonFile(path, optional: false, reloadOnChange: true);
+            }
+#endif
+            return builder.Build();
+        }
+
+        public static ILogger<T> GetILoggerFactory<T>()
+        {
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .AddFilter("Microsoft", LogLevel.Warning)
+                    .AddFilter("System", LogLevel.Warning)
+                    .AddConsole();
+                //.AddEventLog();
+            });
+
+            return loggerFactory.CreateLogger<T>();
         }
 
         public static List<T> ToList<T>(dynamic[] source)

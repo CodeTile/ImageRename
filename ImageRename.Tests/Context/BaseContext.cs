@@ -18,7 +18,7 @@ namespace ImageRename.Tests.Context
         }
     }
 
-    internal interface IBaseContext
+    public interface IBaseContext
     {
         TimeProvider TimeProvider { get;  set; }
         dynamic SUT { get; set; }

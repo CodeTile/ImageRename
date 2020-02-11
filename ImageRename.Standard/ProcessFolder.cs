@@ -20,16 +20,17 @@ namespace ImageRename.Standard
         private IGeocoder _MapQuestGeoCoder;
         public ObservableCollection<IImageFile> _images;
 
-        public bool DebugDontRenameFile { get; set; } = false;
-        public bool HasInternet => CheckForInternetConnection();
-        public bool MoveToProcessedByYear { get; set; }
-        public string ProcessedPath { get; set; }
-        public string SourcePath { get; set; }
-
         public ProcessFolder(IConfiguration configuration)
         {
             Configuration = configuration;
         }
+
+        public bool DebugDontRenameFile { get; set; } = false;
+        public ExifLibrary.ImageFile ExifFileDetails { get; set; }
+        public bool HasInternet => CheckForInternetConnection();
+        public bool MoveToProcessedByYear { get; set; }
+        public string ProcessedPath { get; set; }
+        public string SourcePath { get; set; }
 
         #region RenameProgressEvent
 
@@ -89,7 +90,7 @@ namespace ImageRename.Standard
             return _BingGeoCoder;
         }
 
-        private string GetKeywordsFromLocation(GPSCoridates gps)
+        public string GetKeywordsFromLocation(IGPSCoridates gps)
         {
             var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
             IGeocoder geocoder;
@@ -106,8 +107,6 @@ namespace ImageRename.Standard
                     case "BING":
                         geocoder = GetBingGeoCoder();
                         break;
-
-                
 
                     default:
                         throw new ArgumentOutOfRangeException(geocoderKey);
@@ -135,7 +134,6 @@ namespace ImageRename.Standard
                         keyWords = a.CountryRegion;
                         break;
 
-
                     default:
                         break;
                 }
@@ -146,8 +144,6 @@ namespace ImageRename.Standard
             }
             return keyWords;
         }
-
-      
 
         private string GetSequenceFilename(FileInfo file)
         {
@@ -229,28 +225,6 @@ namespace ImageRename.Standard
             OnReportRenaimingProgress(e);
         }
 
-        private void ReverseGeocode(IImageFile image, string fileName)
-        {
-            if (!HasInternet)
-            {
-                return;
-            }
-            var file = ExifLibrary.ImageFile.FromFile(fileName);
-            var existingKeyWords = file.Properties.Get(ExifLibrary.ExifTag.WindowsKeywords);
-            var keywords = existingKeyWords + ";" + GetKeywordsFromLocation(image.GPS);
-            var newKeywords = (String.Join(";", keywords.Split(';').Distinct().ToList()) + ";").Replace(";;", ";");
-            if (newKeywords.StartsWith(";"))
-            {
-                newKeywords = newKeywords.Substring(1);
-            }
-            image.KeyWords = newKeywords;
-            //foreach (var item in tagSet)
-            //{
-            // file.Properties.Set(ExifLibrary.ExifTag.WindowsKeywords, tagSet);
-            //}
-            //file.Save(fileName);
-        }
-
         internal bool AreFilesTheSame(string sourceFile, string destinationFile)
         {
             bool retval = false;
@@ -314,7 +288,7 @@ namespace ImageRename.Standard
             }
 
             GetBingGeoCoder();
-           
+
             SourcePath = root;
             _images = new ObservableCollection<IImageFile>();
             _images.CollectionChanged += _images_CollectionChanged;
@@ -349,12 +323,26 @@ namespace ImageRename.Standard
                         break;
                 }
 
-                if (image.GPS != null)
-                {
-                    ReverseGeocode(image, filename);
-                }
+                ReverseGeocode(image);
+                
             }
             return image;
+        }
+
+        public void ReverseGeocode(IImageFile image)
+        {
+            if (!HasInternet || image.GPS==null)
+            {
+                return;
+            }
+            var keywords = image.KeyWords + ";" + GetKeywordsFromLocation(image.GPS);
+            var newKeywords = (String.Join(";", keywords.Split(';').Distinct().ToList()) + ";").Replace(";;", ";");
+            if (newKeywords.StartsWith(";"))
+            {
+                newKeywords = newKeywords.Substring(1);
+            }
+            image.KeyWords = newKeywords;
+            
         }
     }
 }

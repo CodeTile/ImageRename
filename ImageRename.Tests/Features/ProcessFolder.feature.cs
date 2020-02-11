@@ -79,30 +79,30 @@ namespace ImageRename.Tests.Features
         {
 #line 4
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Path"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "ProcessFolderDontMoveTest"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "ProcessFolderMoveTest"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "ProcessFolderMoveTestProcessed"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "ProcessFolderMoveTest2"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "ProcessFolderMoveTest2Processed"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "DuplicateTimeStampDontMove"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "DuplicateTimeStampMove"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "DuplicateTimeStampMoveProcessed"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "DuplicateTimeStampMoveWithExistingFiles"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "DuplicateTimeStampMoveWithExistingFilesProcessed"});
 #line 5
- testRunner.Given("I delete the folders", ((string)(null)), table5, "Given ");
+ testRunner.Given("I delete the folders", ((string)(null)), table7, "Given ");
 #line hidden
         }
         
@@ -144,66 +144,66 @@ this.FeatureBackground();
 #line 19
  testRunner.Given("I create a copy of all test files into the folder \'ProcessFolderDontMoveTest\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\CR2\\20180408_122634.CR2"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\CR2\\Good.CR2"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\JPG\\Bad.jpg"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\JPG\\Good.jpg"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\JPG\\GPS.jpg"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\mov\\20160124_141023.MOV"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\mov\\Good.MOV"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\mov\\Good2.MOV"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\NEF\\20080601_020200.nef"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "\\NEF\\Good.nef"});
 #line 20
- testRunner.And("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table6, "And ");
+ testRunner.And("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table8, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                             "DebugDontRenameFile",
                             "MoveToProcessedByYear",
                             "ProcessedPath"});
-                table7.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "false",
                             "false",
                             ""});
 #line 33
- testRunner.When("I process the folder \'ProcessFolderDontMoveTest\' with the following flags", ((string)(null)), table7, "When ");
+ testRunner.When("I process the folder \'ProcessFolderDontMoveTest\' with the following flags", ((string)(null)), table9, "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\CR2\\20180408_072740.CR2"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\CR2\\20180408_122634.CR2"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\JPG\\20180310_115353.jpg"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\JPG\\Bad.jpg"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\JPG\\20200127_115041.jpg"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\mov\\20151129_093543.MOV"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\mov\\20160124_141020.MOV"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\mov\\20160124_141023.MOV"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\NEF\\20080601_020200.nef"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "\\NEF\\20080601_020200_2.nef"});
 #line 37
- testRunner.Then("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table8, "Then ");
+ testRunner.Then("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table10, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -242,78 +242,78 @@ this.FeatureBackground();
 #line 51
  testRunner.Given("I create a copy of all test files into the folder \'ProcessFolderMoveTest\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\CR2\\20180408_122634.CR2"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\CR2\\Good.CR2"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\JPG\\Bad.jpg"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\JPG\\Good.jpg"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\JPG\\GPS.jpg"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\mov\\20160124_141023.MOV"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\mov\\Good.MOV"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\mov\\Good2.MOV"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\NEF\\20080601_020200.nef"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "\\NEF\\Good.nef"});
 #line 52
- testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table9, "And ");
+ testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table11, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                             "DebugDontRenameFile",
                             "MoveToProcessedByYear",
                             "ProcessedPath"});
-                table10.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "false",
                             "true",
                             "ProcessFolderMoveTestProcessed"});
 #line 65
- testRunner.When("I process the folder \'ProcessFolderMoveTest\' with the following flags", ((string)(null)), table10, "When ");
-#line hidden
-                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Path"});
-                table11.AddRow(new string[] {
-                            "\\2008\\Q2\\20080601_020200.nef"});
-                table11.AddRow(new string[] {
-                            "\\2008\\Q2\\20080601_020200_2.nef"});
-                table11.AddRow(new string[] {
-                            "\\2015\\Q4\\20151129_093543.MOV"});
-                table11.AddRow(new string[] {
-                            "\\2016\\Q1\\20160124_141020.MOV"});
-                table11.AddRow(new string[] {
-                            "\\2016\\Q1\\20160124_141023.MOV"});
-                table11.AddRow(new string[] {
-                            "\\2018\\Q1\\20180310_115353.jpg"});
-                table11.AddRow(new string[] {
-                            "\\2018\\Q2\\20180408_072740.CR2"});
-                table11.AddRow(new string[] {
-                            "\\2018\\Q2\\20180408_122634.CR2"});
-                table11.AddRow(new string[] {
-                            "\\2020\\Q1\\20200127_115041.jpg"});
-#line 69
- testRunner.Then("the folder \'ProcessFolderMoveTestProcessed\' with subfolders contains", ((string)(null)), table11, "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Path"});
-                table12.AddRow(new string[] {
-                            "\\JPG\\Bad.jpg"});
-#line 80
- testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table12, "And ");
+ testRunner.When("I process the folder \'ProcessFolderMoveTest\' with the following flags", ((string)(null)), table12, "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
                 table13.AddRow(new string[] {
+                            "\\2008\\Q2\\20080601_020200.nef"});
+                table13.AddRow(new string[] {
+                            "\\2008\\Q2\\20080601_020200_2.nef"});
+                table13.AddRow(new string[] {
+                            "\\2015\\Q4\\20151129_093543.MOV"});
+                table13.AddRow(new string[] {
+                            "\\2016\\Q1\\20160124_141020.MOV"});
+                table13.AddRow(new string[] {
+                            "\\2016\\Q1\\20160124_141023.MOV"});
+                table13.AddRow(new string[] {
+                            "\\2018\\Q1\\20180310_115353.jpg"});
+                table13.AddRow(new string[] {
+                            "\\2018\\Q2\\20180408_072740.CR2"});
+                table13.AddRow(new string[] {
+                            "\\2018\\Q2\\20180408_122634.CR2"});
+                table13.AddRow(new string[] {
+                            "\\2020\\Q1\\20200127_115041.jpg"});
+#line 69
+ testRunner.Then("the folder \'ProcessFolderMoveTestProcessed\' with subfolders contains", ((string)(null)), table13, "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table14.AddRow(new string[] {
+                            "\\JPG\\Bad.jpg"});
+#line 80
+ testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table14, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table15.AddRow(new string[] {
                             "\\JPG"});
 #line 83
- testRunner.And("the folder \'ProcessFolderMoveTest\' has subfolders", ((string)(null)), table13, "And ");
+ testRunner.And("the folder \'ProcessFolderMoveTest\' has subfolders", ((string)(null)), table15, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -352,69 +352,69 @@ this.FeatureBackground();
 #line 88
  testRunner.Given("I create a copy of all test files into the folder \'ProcessFolderMoveTest2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table14.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "JPG\\Bad.jpg"});
 #line 89
- testRunner.And("in the folder \'ProcessFolderMoveTest2\' I delete the files", ((string)(null)), table14, "And ");
-#line hidden
-                TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Path"});
-                table15.AddRow(new string[] {
-                            "\\CR2\\20180408_122634.CR2"});
-                table15.AddRow(new string[] {
-                            "\\CR2\\Good.CR2"});
-                table15.AddRow(new string[] {
-                            "\\JPG\\Good.jpg"});
-                table15.AddRow(new string[] {
-                            "\\JPG\\GPS.jpg"});
-                table15.AddRow(new string[] {
-                            "\\mov\\20160124_141023.MOV"});
-                table15.AddRow(new string[] {
-                            "\\mov\\Good.MOV"});
-                table15.AddRow(new string[] {
-                            "\\mov\\Good2.MOV"});
-                table15.AddRow(new string[] {
-                            "\\NEF\\20080601_020200.nef"});
-                table15.AddRow(new string[] {
-                            "\\NEF\\Good.nef"});
-#line 92
- testRunner.And("the folder \'ProcessFolderMoveTest2\' with subfolders contains", ((string)(null)), table15, "And ");
-#line hidden
-                TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
-                            "DebugDontRenameFile",
-                            "MoveToProcessedByYear",
-                            "ProcessedPath"});
-                table16.AddRow(new string[] {
-                            "false",
-                            "true",
-                            "ProcessFolderMoveTest2Processed"});
-#line 104
- testRunner.When("I process the folder \'ProcessFolderMoveTest2\' with the following flags", ((string)(null)), table16, "When ");
+ testRunner.And("in the folder \'ProcessFolderMoveTest2\' I delete the files", ((string)(null)), table16, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
                 table17.AddRow(new string[] {
+                            "\\CR2\\20180408_122634.CR2"});
+                table17.AddRow(new string[] {
+                            "\\CR2\\Good.CR2"});
+                table17.AddRow(new string[] {
+                            "\\JPG\\Good.jpg"});
+                table17.AddRow(new string[] {
+                            "\\JPG\\GPS.jpg"});
+                table17.AddRow(new string[] {
+                            "\\mov\\20160124_141023.MOV"});
+                table17.AddRow(new string[] {
+                            "\\mov\\Good.MOV"});
+                table17.AddRow(new string[] {
+                            "\\mov\\Good2.MOV"});
+                table17.AddRow(new string[] {
+                            "\\NEF\\20080601_020200.nef"});
+                table17.AddRow(new string[] {
+                            "\\NEF\\Good.nef"});
+#line 92
+ testRunner.And("the folder \'ProcessFolderMoveTest2\' with subfolders contains", ((string)(null)), table17, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                            "DebugDontRenameFile",
+                            "MoveToProcessedByYear",
+                            "ProcessedPath"});
+                table18.AddRow(new string[] {
+                            "false",
+                            "true",
+                            "ProcessFolderMoveTest2Processed"});
+#line 104
+ testRunner.When("I process the folder \'ProcessFolderMoveTest2\' with the following flags", ((string)(null)), table18, "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table19.AddRow(new string[] {
                             "\\2008\\Q2\\20080601_020200.nef"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2008\\Q2\\20080601_020200_2.nef"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2015\\Q4\\20151129_093543.MOV"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2016\\Q1\\20160124_141020.MOV"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2016\\Q1\\20160124_141023.MOV"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2018\\Q1\\20180310_115353.jpg"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_072740.CR2"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634.CR2"});
-                table17.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "\\2020\\Q1\\20200127_115041.jpg"});
 #line 108
- testRunner.Then("the folder \'ProcessFolderMoveTest2Processed\' with subfolders contains", ((string)(null)), table17, "Then ");
+ testRunner.Then("the folder \'ProcessFolderMoveTest2Processed\' with subfolders contains", ((string)(null)), table19, "Then ");
 #line hidden
 #line 119
  testRunner.And("there are no subfolders in \'ProcessFolderMoveTest2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -456,110 +456,110 @@ this.FeatureBackground();
 #line 122
  testRunner.Given("I create a copy of all test files into the folder \'DuplicateTimeStampDontMove\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "SourceFolder",
                             "SourceFile",
                             "DestinationFolder",
                             "DestinationFile"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "CR2",
                             "good.cr2",
                             "cr2",
                             "Duplicate.cr2"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "jpg",
                             "good.jpg",
                             "jpg",
                             "duplicate.jpg"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "JPG",
                             "gps.jpg",
                             "jpg",
                             "Duplicate2.jpg"});
-                table18.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "mov",
                             "good.mov",
                             "mov",
                             "duplicate.Mov"});
 #line 123
- testRunner.And("I copy the following files in the folder \'DuplicateTimeStampDontMove\'", ((string)(null)), table18, "And ");
-#line hidden
-                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Path"});
-                table19.AddRow(new string[] {
-                            "\\CR2\\20180408_122634.CR2"});
-                table19.AddRow(new string[] {
-                            "\\CR2\\Good.CR2"});
-                table19.AddRow(new string[] {
-                            "\\JPG\\Good.jpg"});
-                table19.AddRow(new string[] {
-                            "\\JPG\\GPS.jpg"});
-                table19.AddRow(new string[] {
-                            "\\mov\\20160124_141023.MOV"});
-                table19.AddRow(new string[] {
-                            "\\mov\\Good.MOV"});
-                table19.AddRow(new string[] {
-                            "\\mov\\Good2.MOV"});
-                table19.AddRow(new string[] {
-                            "\\NEF\\20080601_020200.nef"});
-                table19.AddRow(new string[] {
-                            "\\NEF\\Good.nef"});
-                table19.AddRow(new string[] {
-                            "\\CR2\\Duplicate.cr2"});
-                table19.AddRow(new string[] {
-                            "\\JPG\\Bad.jpg"});
-                table19.AddRow(new string[] {
-                            "\\JPG\\duplicate.jpg"});
-                table19.AddRow(new string[] {
-                            "\\JPG\\Duplicate2.jpg"});
-                table19.AddRow(new string[] {
-                            "\\mov\\duplicate.Mov"});
-#line 130
- testRunner.Then("the folder \'DuplicateTimeStampDontMove\' with subfolders contains", ((string)(null)), table19, "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                            "DebugDontRenameFile",
-                            "MoveToProcessedByYear",
-                            "ProcessedPath"});
-                table20.AddRow(new string[] {
-                            "false",
-                            "false",
-                            ""});
-#line 147
- testRunner.When("I process the folder \'DuplicateTimeStampDontMove\' with the following flags", ((string)(null)), table20, "When ");
+ testRunner.And("I copy the following files in the folder \'DuplicateTimeStampDontMove\'", ((string)(null)), table20, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
                 table21.AddRow(new string[] {
                             "\\CR2\\20180408_122634.CR2"});
                 table21.AddRow(new string[] {
-                            "\\CR2\\20180408_072740.cr2"});
+                            "\\CR2\\Good.CR2"});
                 table21.AddRow(new string[] {
-                            "\\CR2\\20180408_072740_2.CR2"});
+                            "\\JPG\\Good.jpg"});
                 table21.AddRow(new string[] {
-                            "\\JPG\\20180310_115353.jpg"});
-                table21.AddRow(new string[] {
-                            "\\JPG\\20180310_115353_2.jpg"});
-                table21.AddRow(new string[] {
-                            "\\JPG\\20200127_115041.jpg"});
-                table21.AddRow(new string[] {
-                            "\\JPG\\20200127_115041_2.jpg"});
-                table21.AddRow(new string[] {
-                            "\\JPG\\Bad.jpg"});
-                table21.AddRow(new string[] {
-                            "\\mov\\20151129_093543.MOV"});
-                table21.AddRow(new string[] {
-                            "\\mov\\20160124_141020.Mov"});
-                table21.AddRow(new string[] {
-                            "\\mov\\20160124_141020_2.MOV"});
+                            "\\JPG\\GPS.jpg"});
                 table21.AddRow(new string[] {
                             "\\mov\\20160124_141023.MOV"});
                 table21.AddRow(new string[] {
+                            "\\mov\\Good.MOV"});
+                table21.AddRow(new string[] {
+                            "\\mov\\Good2.MOV"});
+                table21.AddRow(new string[] {
                             "\\NEF\\20080601_020200.nef"});
                 table21.AddRow(new string[] {
+                            "\\NEF\\Good.nef"});
+                table21.AddRow(new string[] {
+                            "\\CR2\\Duplicate.cr2"});
+                table21.AddRow(new string[] {
+                            "\\JPG\\Bad.jpg"});
+                table21.AddRow(new string[] {
+                            "\\JPG\\duplicate.jpg"});
+                table21.AddRow(new string[] {
+                            "\\JPG\\Duplicate2.jpg"});
+                table21.AddRow(new string[] {
+                            "\\mov\\duplicate.Mov"});
+#line 130
+ testRunner.Then("the folder \'DuplicateTimeStampDontMove\' with subfolders contains", ((string)(null)), table21, "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                            "DebugDontRenameFile",
+                            "MoveToProcessedByYear",
+                            "ProcessedPath"});
+                table22.AddRow(new string[] {
+                            "false",
+                            "false",
+                            ""});
+#line 147
+ testRunner.When("I process the folder \'DuplicateTimeStampDontMove\' with the following flags", ((string)(null)), table22, "When ");
+#line hidden
+                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Path"});
+                table23.AddRow(new string[] {
+                            "\\CR2\\20180408_122634.CR2"});
+                table23.AddRow(new string[] {
+                            "\\CR2\\20180408_072740.cr2"});
+                table23.AddRow(new string[] {
+                            "\\CR2\\20180408_072740_2.CR2"});
+                table23.AddRow(new string[] {
+                            "\\JPG\\20180310_115353.jpg"});
+                table23.AddRow(new string[] {
+                            "\\JPG\\20180310_115353_2.jpg"});
+                table23.AddRow(new string[] {
+                            "\\JPG\\20200127_115041.jpg"});
+                table23.AddRow(new string[] {
+                            "\\JPG\\20200127_115041_2.jpg"});
+                table23.AddRow(new string[] {
+                            "\\JPG\\Bad.jpg"});
+                table23.AddRow(new string[] {
+                            "\\mov\\20151129_093543.MOV"});
+                table23.AddRow(new string[] {
+                            "\\mov\\20160124_141020.Mov"});
+                table23.AddRow(new string[] {
+                            "\\mov\\20160124_141020_2.MOV"});
+                table23.AddRow(new string[] {
+                            "\\mov\\20160124_141023.MOV"});
+                table23.AddRow(new string[] {
+                            "\\NEF\\20080601_020200.nef"});
+                table23.AddRow(new string[] {
                             "\\NEF\\20080601_020200_2.nef"});
 #line 150
- testRunner.Then("the folder \'DuplicateTimeStampDontMove\' with subfolders contains", ((string)(null)), table21, "Then ");
+ testRunner.Then("the folder \'DuplicateTimeStampDontMove\' with subfolders contains", ((string)(null)), table23, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -599,150 +599,150 @@ this.FeatureBackground();
  testRunner.Given("I create a copy of all test files into the folder \'DuplicateTimeStampMoveWithExis" +
                         "tingFiles\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                             "SourceFolder",
                             "SourceFile",
                             "DestinationFolder",
                             "DestinationFile"});
-                table22.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "CR2",
                             "good.cr2",
                             "cr2",
                             "Duplicate.cr2"});
-                table22.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "jpg",
                             "good.jpg",
                             "jpg",
                             "duplicate.jpg"});
-                table22.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "JPG",
                             "gps.jpg",
                             "jpg",
                             "Duplicate2.jpg"});
-                table22.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "mov",
                             "good.mov",
                             "mov",
                             "duplicate.Mov"});
 #line 169
  testRunner.And("I copy the following files in the folder \'DuplicateTimeStampMoveWithExistingFiles" +
-                        "\'", ((string)(null)), table22, "And ");
+                        "\'", ((string)(null)), table24, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                             "SourceFolder",
                             "SourceFile",
                             "DestinationFolder",
                             "DestinationFile"});
-                table23.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "CR2",
                             "20180408_122634.CR2",
                             "DuplicateTimeStampMoveWithExistingFilesProcessed\\2018\\Q2",
                             "20180408_122634.CR2"});
-                table23.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "CR2",
                             "20180408_122634.CR2",
                             "DuplicateTimeStampMoveWithExistingFilesProcessed\\2018\\Q2",
                             "20180408_122634_2.CR2"});
 #line 175
- testRunner.And("I copy the following files", ((string)(null)), table23, "And ");
+ testRunner.And("I copy the following files", ((string)(null)), table25, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\CR2\\20180408_122634.CR2"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\CR2\\Good.CR2"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\JPG\\Good.jpg"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\JPG\\GPS.jpg"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\mov\\20160124_141023.MOV"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\mov\\Good.MOV"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\mov\\Good2.MOV"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\NEF\\20080601_020200.nef"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\NEF\\Good.nef"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\CR2\\Duplicate.cr2"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\JPG\\Bad.jpg"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\JPG\\duplicate.jpg"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\JPG\\Duplicate2.jpg"});
-                table24.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "\\mov\\duplicate.Mov"});
 #line 180
- testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFiles\' with subfolders contains", ((string)(null)), table24, "Then ");
+ testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFiles\' with subfolders contains", ((string)(null)), table26, "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table25.AddRow(new string[] {
+                table27.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634.CR2"});
-                table25.AddRow(new string[] {
+                table27.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634_2.CR2"});
 #line 196
  testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFilesProcessed\' with subfolders con" +
-                        "tains", ((string)(null)), table25, "Then ");
+                        "tains", ((string)(null)), table27, "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                             "DebugDontRenameFile",
                             "MoveToProcessedByYear",
                             "ProcessedPath"});
-                table26.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "false",
                             "true",
                             "DuplicateTimeStampMoveWithExistingFilesProcessed"});
 #line 201
  testRunner.When("I process the folder \'DuplicateTimeStampMoveWithExistingFiles\' with the following" +
-                        " flags", ((string)(null)), table26, "When ");
+                        " flags", ((string)(null)), table28, "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table27.AddRow(new string[] {
+                table29.AddRow(new string[] {
                             "\\JPG\\Bad.jpg"});
 #line 204
- testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFiles\' with subfolders contains", ((string)(null)), table27, "Then ");
+ testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFiles\' with subfolders contains", ((string)(null)), table29, "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2008\\Q2\\20080601_020200.nef"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2008\\Q2\\20080601_020200_2.nef"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2015\\Q4\\20151129_093543.MOV"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2016\\Q1\\20160124_141020.Mov"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2016\\Q1\\20160124_141020_2.MOV"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2016\\Q1\\20160124_141023.MOV"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2018\\Q1\\20180310_115353.jpg"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2018\\Q1\\20180310_115353_2.jpg"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_072740.cr2"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_072740_2.CR2"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634.CR2"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2020\\Q1\\20200127_115041.jpg"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2020\\Q1\\20200127_115041_2.jpg"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634_2.CR2"});
-                table28.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634_3.CR2"});
 #line 207
  testRunner.And("the folder \'DuplicateTimeStampMoveWithExistingFilesProcessed\' with subfolders con" +
-                        "tains", ((string)(null)), table28, "And ");
+                        "tains", ((string)(null)), table30, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

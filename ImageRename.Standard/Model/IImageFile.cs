@@ -8,7 +8,7 @@ namespace ImageRename.Standard.Model
         FileInfo DestinationFileInfo { get; }
         string DestinationFileName { get; }
         string DestinationFilePath { get; }
-        GPSCoridates GPS { get; set; }
+        IGPSCoridates GPS { get; set; }
         DateTime? ImageCreated { get; }
         DateTime? ImageCreatedOriginal { get; }
         bool NeedsMoving { get; }

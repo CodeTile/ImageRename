@@ -1,6 +1,6 @@
 ﻿namespace ImageRename.Tests.Models
 {
-    internal struct PathResult
+    public struct PathResult
     {
         public string Path { get; set; }
     }
