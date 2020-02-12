@@ -1,6 +1,6 @@
 ﻿namespace ImageRename.Tests.Steps
 {
-    public partial class ImageResult
+    public class ImageResult
     {
         public double? DegreesLatitude { get; set; }
         public double? DegreesLongitude { get; set; }
@@ -15,5 +15,6 @@
         public string NeedRenaming { get; set; }
         public string TestFile { get; set; }
         public string TestFolder { get; set; }
+        public bool HasInternet { get; internal set; }
     };
 }

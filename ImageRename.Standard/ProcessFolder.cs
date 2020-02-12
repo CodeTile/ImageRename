@@ -17,6 +17,7 @@ namespace ImageRename.Standard
     {
         private readonly IConfiguration Configuration;
         private IGeocoder _BingGeoCoder;
+        private bool? _hasInternet;
         private IGeocoder _MapQuestGeoCoder;
         public ObservableCollection<IImageFile> _images;
 
@@ -27,7 +28,22 @@ namespace ImageRename.Standard
 
         public bool DebugDontRenameFile { get; set; } = false;
         public ExifLibrary.ImageFile ExifFileDetails { get; set; }
-        public bool HasInternet => CheckForInternetConnection();
+
+        public bool HasInternet
+        {
+            get
+            {
+                if (_hasInternet == null)
+                {
+                    HasInternet = CheckForInternetConnection();
+                }
+                return (bool)_hasInternet;
+            }
+            set
+
+            { _hasInternet = value; }
+        }
+
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
         public string SourcePath { get; set; }
@@ -88,61 +104,6 @@ namespace ImageRename.Standard
                 { IncludeNeighborhood = true };
             }
             return _BingGeoCoder;
-        }
-
-        public string GetKeywordsFromLocation(IGPSCoridates gps)
-        {
-            var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
-            IGeocoder geocoder;
-            string keyWords = null;
-            var priorities = Configuration["MapKeys:Priority"].Split(',');
-            foreach (var geocoderKey in priorities)
-            {
-                Address address = null;
-
-                #region get the GeoCoder object
-
-                switch (geocoderKey.ToUpper())
-                {
-                    case "BING":
-                        geocoder = GetBingGeoCoder();
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(geocoderKey);
-                }
-
-                #endregion get the GeoCoder object
-
-                if (geocoder == null)
-                {
-                    continue;
-                }
-                var addresses = Task.Run(async () => await geocoder.ReverseGeocodeAsync(location));
-                if (addresses != null && addresses.Result.Any())
-                {
-                    address = addresses.Result?.First();
-                }
-                else
-                {
-                    continue;
-                }
-                switch (address.Provider.ToUpper())
-                {
-                    case "BING":
-                        BingAddress a = (BingAddress)address;
-                        keyWords = a.CountryRegion;
-                        break;
-
-                    default:
-                        break;
-                }
-                if (!string.IsNullOrEmpty(keyWords))
-                {
-                    break;
-                }
-            }
-            return keyWords;
         }
 
         private string GetSequenceFilename(FileInfo file)
@@ -280,6 +241,61 @@ namespace ImageRename.Standard
             }
         }
 
+        public string GetKeywordsFromLocation(IGPSCoridates gps)
+        {
+            var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
+            IGeocoder geocoder;
+            string keyWords = null;
+            var priorities = Configuration["MapKeys:Priority"].Split(',');
+            foreach (var geocoderKey in priorities)
+            {
+                Address address = null;
+
+                #region get the GeoCoder object
+
+                switch (geocoderKey.ToUpper())
+                {
+                    case "BING":
+                        geocoder = GetBingGeoCoder();
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(geocoderKey);
+                }
+
+                #endregion get the GeoCoder object
+
+                if (geocoder == null)
+                {
+                    continue;
+                }
+                var addresses = Task.Run(async () => await geocoder.ReverseGeocodeAsync(location));
+                if (addresses != null && addresses.Result.Any())
+                {
+                    address = addresses.Result?.First();
+                }
+                else
+                {
+                    continue;
+                }
+                switch (address.Provider.ToUpper())
+                {
+                    case "BING":
+                        BingAddress a = (BingAddress)address;
+                        keyWords = a.CountryRegion;
+                        break;
+
+                    default:
+                        break;
+                }
+                if (!string.IsNullOrEmpty(keyWords))
+                {
+                    break;
+                }
+            }
+            return keyWords;
+        }
+
         public void Process(string root)
         {
             if (!Directory.Exists(root))
@@ -324,14 +340,13 @@ namespace ImageRename.Standard
                 }
 
                 ReverseGeocode(image);
-                
             }
             return image;
         }
 
         public void ReverseGeocode(IImageFile image)
         {
-            if (!HasInternet || image.GPS==null)
+            if (!HasInternet || image.GPS == null)
             {
                 return;
             }
@@ -342,7 +357,6 @@ namespace ImageRename.Standard
                 newKeywords = newKeywords.Substring(1);
             }
             image.KeyWords = newKeywords;
-            
         }
     }
 }

@@ -133,24 +133,78 @@ this.FeatureBackground();
                 table3.AddRow(new string[] {
                             "JPG",
                             "GPS.jpg",
-                            "CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates\\Internet",
                             "GPS.jpg"});
                 table3.AddRow(new string[] {
                             "JPG",
+                            "GPS.jpg",
+                            "CheckTheImageHasGPSCoridinates\\Internet",
+                            "GPS2.jpg"});
+                table3.AddRow(new string[] {
+                            "JPG",
                             "Good.jpg",
-                            "CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates\\Internet",
                             "Good.jpg"});
                 table3.AddRow(new string[] {
                             "JPG",
+                            "Good.jpg",
+                            "CheckTheImageHasGPSCoridinates\\Internet",
+                            "Good2.jpg"});
+                table3.AddRow(new string[] {
+                            "JPG",
                             "Bad.jpg",
-                            "CheckTheImageHasGPSCoridinates",
+                            "CheckTheImageHasGPSCoridinates\\Internet",
+                            "Bad.jpg"});
+                table3.AddRow(new string[] {
+                            "JPG",
+                            "GPS.jpg",
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "GPS.jpg"});
+                table3.AddRow(new string[] {
+                            "JPG",
+                            "GPS.jpg",
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "GPS2.jpg"});
+                table3.AddRow(new string[] {
+                            "JPG",
+                            "Good.jpg",
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "Good.jpg"});
+                table3.AddRow(new string[] {
+                            "JPG",
+                            "Good.jpg",
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "Good2.jpg"});
+                table3.AddRow(new string[] {
+                            "JPG",
+                            "Bad.jpg",
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
                             "Bad.jpg"});
 #line 10
  testRunner.Given("I copy the following files", ((string)(null)), table3, "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Filename",
+                            "Keywords"});
+                table4.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\Internet\\GPS2.jpg",
+                            "Green;Blue;"});
+                table4.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\Internet\\Good2.jpg",
+                            "Red;Orange;"});
+                table4.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\NoInternet\\GPS2.jpg",
+                            "Green;Blue;"});
+                table4.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\NoInternet\\Good2.jpg",
+                            "Red;Orange;"});
+#line 23
+ testRunner.And("I add the keywords to the files", ((string)(null)), table4, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                             "TestFolder",
                             "TestFile",
+                            "HasInternet",
                             "Longitude",
                             "Latitude",
                             "DegreesLongitude",
@@ -160,9 +214,10 @@ this.FeatureBackground();
                             "GPSImageTaken",
                             "DestinationFileName",
                             "KeyWords"});
-                table4.AddRow(new string[] {
-                            "CheckTheImageHasGPSCoridinates",
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\Internet",
                             "GPS.jpg",
+                            "true",
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
                             "-5.35",
@@ -172,9 +227,10 @@ this.FeatureBackground();
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
                             "Gibraltar;"});
-                table4.AddRow(new string[] {
-                            "CheckTheImageHasGPSCoridinates",
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\Internet",
                             "Good.jpg",
+                            "true",
                             "",
                             "",
                             "",
@@ -184,9 +240,36 @@ this.FeatureBackground();
                             "",
                             "20180310_115353",
                             ""});
-                table4.AddRow(new string[] {
-                            "CheckTheImageHasGPSCoridinates",
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\Internet",
+                            "GPS2.jpg",
+                            "true",
+                            "5.00°21.04\'0.00\" W",
+                            "36.00°7.08\'0.00\" N",
+                            "-5.35",
+                            "36.11666666666667",
+                            "27 Jan 2020 12:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            "Green;Blue;Gibraltar;"});
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\Internet",
+                            "Good2.jpg",
+                            "true",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "10 Mar 2018 11:53:53",
+                            "10 Mar 2018 11:53:53",
+                            "",
+                            "20180310_115353",
+                            "Red;Orange;"});
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\Internet",
                             "Bad.jpg",
+                            "true",
                             "",
                             "",
                             "",
@@ -196,8 +279,73 @@ this.FeatureBackground();
                             "",
                             "",
                             ""});
-#line 15
- testRunner.Then("the following files have the values in the ImageFile object", ((string)(null)), table4, "Then ");
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "GPS.jpg",
+                            "false",
+                            "5.00°21.04\'0.00\" W",
+                            "36.00°7.08\'0.00\" N",
+                            "-5.35",
+                            "36.11666666666667",
+                            "27 Jan 2020 12:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            ""});
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "Good.jpg",
+                            "false",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "10 Mar 2018 11:53:53",
+                            "10 Mar 2018 11:53:53",
+                            "",
+                            "20180310_115353",
+                            ""});
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "GPS2.jpg",
+                            "false",
+                            "5.00°21.04\'0.00\" W",
+                            "36.00°7.08\'0.00\" N",
+                            "-5.35",
+                            "36.11666666666667",
+                            "27 Jan 2020 12:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            "Green;Blue;"});
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "Good2.jpg",
+                            "false",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "10 Mar 2018 11:53:53",
+                            "10 Mar 2018 11:53:53",
+                            "",
+                            "20180310_115353",
+                            "Red;Orange;"});
+                table5.AddRow(new string[] {
+                            "CheckTheImageHasGPSCoridinates\\NoInternet",
+                            "Bad.jpg",
+                            "false",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            ""});
+#line 29
+ testRunner.Then("the following files have the values in the ImageFile object", ((string)(null)), table5, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -210,7 +358,7 @@ this.FeatureBackground();
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GPSKeywords", null, ((string[])(null)));
-#line 21
+#line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -233,91 +381,197 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                             "Source",
                             "TestFolder",
+                            "HasInternet",
                             "TestFile",
                             "Longitude",
                             "Latitude",
                             "ImageCreatedOriginal",
+                            "ImageTaken",
                             "GPSImageTaken",
                             "Keywords"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "aaaa.jpg",
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
                             "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
                             "27 Jan 2020 11:50:41",
                             ""});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "bbbb.jpg",
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
                             "27 Jan 2020 10:50:42",
+                            "27 Jan 2020 10:50:42",
                             "27 Jan 2020 12:50:41",
-                            "BlueBell; Tinkerbell;"});
-                table5.AddRow(new string[] {
+                            "BlueBell;Tinkerbell;"});
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "cccc.jpg",
                             "4.00°8.00\'37.392\" W",
                             "50.00°7.21\'56.066\" N",
                             "27 Jan 2019 11:45:42",
+                            "27 Jan 2019 11:45:42",
                             "27 Jan 2019 13:45:42",
                             ""});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "dddd.jpg",
                             "4.00°8.00\'37.392\" W",
                             "50.00°7.21\'56.066\" N",
                             "27 Jan 2019 12:45:42",
+                            "27 Jan 2019 12:45:42",
                             "27 Jan 2019 14:45:42",
                             "rain;snow;sun;"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "eeee.jpg",
                             "",
                             "",
                             "27 Jan 2020 16:50:41",
+                            "27 Jan 2020 16:50:41",
                             "",
                             ""});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "ffff.jpg",
                             "",
                             "",
                             "27 Jan 2020 17:50:41",
+                            "27 Jan 2020 17:50:41",
                             "",
                             "rain;snow;sun;"});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "gggg.jpg",
                             "",
                             "",
                             "27 Jan 2020 18:50:41",
+                            "27 Jan 2020 18:50:41",
                             "",
                             ""});
-                table5.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "JPG\\Good.jpg",
                             "GPSKeywords",
+                            "true",
                             "hhhh.jpg",
                             "",
                             "",
                             "27 Jan 2020 19:50:41",
+                            "27 Jan 2020 19:50:41",
                             "",
-                            "BlueBell; Tinkerbell;"});
-#line 22
- testRunner.Given("I create image objects with the following properties", ((string)(null)), table5, "Given ");
+                            "BlueBell;Tinkerbell;"});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "iiii.jpg",
+                            "5.00°21.04\'0.00\" W",
+                            "36.00°7.08\'0.00\" N",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            ""});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "jjjj.jpg",
+                            "5.00°21.04\'0.00\" W",
+                            "36.00°7.08\'0.00\" N",
+                            "27 Jan 2020 10:50:42",
+                            "27 Jan 2020 10:50:42",
+                            "27 Jan 2020 12:50:41",
+                            "BlueBell;Tinkerbell;"});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "kkkk.jpg",
+                            "4.00°8.00\'37.392\" W",
+                            "50.00°7.21\'56.066\" N",
+                            "27 Jan 2019 11:45:42",
+                            "27 Jan 2019 11:45:42",
+                            "27 Jan 2019 13:45:42",
+                            ""});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "llll.jpg",
+                            "4.00°8.00\'37.392\" W",
+                            "50.00°7.21\'56.066\" N",
+                            "27 Jan 2019 12:45:42",
+                            "27 Jan 2019 12:45:42",
+                            "27 Jan 2019 14:45:42",
+                            "rain;snow;sun;"});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "mmmm.jpg",
+                            "",
+                            "",
+                            "27 Jan 2020 16:50:41",
+                            "27 Jan 2020 16:50:41",
+                            "",
+                            ""});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "nnnn.jpg",
+                            "",
+                            "",
+                            "27 Jan 2020 17:50:41",
+                            "27 Jan 2020 17:50:41",
+                            "",
+                            "rain;snow;sun;"});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "oooo.jpg",
+                            "",
+                            "",
+                            "27 Jan 2020 18:50:41",
+                            "27 Jan 2020 18:50:41",
+                            "",
+                            ""});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "false",
+                            "pppp.jpg",
+                            "",
+                            "",
+                            "27 Jan 2020 19:50:41",
+                            "27 Jan 2020 19:50:41",
+                            "",
+                            "BlueBell;Tinkerbell;"});
+#line 43
+ testRunner.Given("I create image objects with the following properties", ((string)(null)), table6, "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                             "TestFile",
                             "Longitude",
                             "Latitude",
@@ -328,7 +582,7 @@ this.FeatureBackground();
                             "GPSImageTaken",
                             "DestinationFileName",
                             "KeyWords"});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "aaaa.jpg",
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
@@ -337,9 +591,9 @@ this.FeatureBackground();
                             "27 Jan 2020 09:50:42",
                             "27 Jan 2020 09:50:42",
                             "27 Jan 2020 11:50:41",
-                            "20200127_095042",
+                            "20200127_115041",
                             "Gibraltar;"});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "bbbb.jpg",
                             "5.00°21.04\'0.00\" W",
                             "36.00°7.08\'0.00\" N",
@@ -348,9 +602,9 @@ this.FeatureBackground();
                             "27 Jan 2020 10:50:42",
                             "27 Jan 2020 10:50:42",
                             "27 Jan 2020 12:50:41",
-                            "20200127_105042",
-                            "BlueBell; Tinkerbell;Gibraltar;"});
-                table6.AddRow(new string[] {
+                            "20200127_125041",
+                            "BlueBell;Tinkerbell;Gibraltar;"});
+                table7.AddRow(new string[] {
                             "cccc.jpg",
                             "4.00°8.00\'37.392\" W",
                             "50.00°7.21\'56.066\" N",
@@ -358,10 +612,10 @@ this.FeatureBackground();
                             "50.132240555555555",
                             "27 Jan 2019 11:45:42",
                             "27 Jan 2019 11:45:42",
-                            "27 Jan 2019 01:45:42",
-                            "20190127_114542",
+                            "27 Jan 2019 13:45:42",
+                            "20190127_134542",
                             ""});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "dddd.jpg",
                             "4.00°8.00\'37.392\" W",
                             "50.00°7.21\'56.066\" N",
@@ -369,55 +623,143 @@ this.FeatureBackground();
                             "50.132240555555555",
                             "27 Jan 2019 12:45:42",
                             "27 Jan 2019 12:45:42",
-                            "27 Jan 2019 02:45:42",
-                            "20190127_124542",
+                            "27 Jan 2019 14:45:42",
+                            "20190127_144542",
                             "rain;snow;sun;"});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "eeee.jpg",
                             "",
                             "",
                             "",
                             "",
-                            "27 Jan 2020 04:50:41",
-                            "27 Jan 2020 04:50:41",
+                            "27 Jan 2020 16:50:41",
+                            "27 Jan 2020 16:50:41",
                             "",
                             "20200127_165041",
                             ""});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "ffff.jpg",
                             "",
                             "",
                             "",
                             "",
-                            "27 Jan 2020 05:50:41",
-                            "27 Jan 2020 05:50:41",
+                            "27 Jan 2020 17:50:41",
+                            "27 Jan 2020 17:50:41",
                             "",
                             "20200127_175041",
                             "rain;snow;sun;"});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "gggg.jpg",
                             "",
                             "",
                             "",
                             "",
-                            "27 Jan 2020 06:50:41",
-                            "27 Jan 2020 06:50:41",
+                            "27 Jan 2020 18:50:41",
+                            "27 Jan 2020 18:50:41",
                             "",
                             "20200127_185041",
                             ""});
-                table6.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "hhhh.jpg",
                             "",
                             "",
                             "",
                             "",
-                            "27 Jan 2020 07:50:41",
-                            "27 Jan 2020 07:50:41",
+                            "27 Jan 2020 19:50:41",
+                            "27 Jan 2020 19:50:41",
                             "",
                             "20200127_195041",
-                            "BlueBell; Tinkerbell;"});
-#line 32
- testRunner.Then("the image object list has following values", ((string)(null)), table6, "Then ");
+                            "BlueBell;Tinkerbell;"});
+                table7.AddRow(new string[] {
+                            "iiii.jpg",
+                            "5.00°21.04\'0.00\" W",
+                            "36.00°7.08\'0.00\" N",
+                            "-5.35",
+                            "36.11666666666667",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            ""});
+                table7.AddRow(new string[] {
+                            "jjjj.jpg",
+                            "5.00°21.04\'0.00\" W",
+                            "36.00°7.08\'0.00\" N",
+                            "-5.35",
+                            "36.11666666666667",
+                            "27 Jan 2020 10:50:42",
+                            "27 Jan 2020 10:50:42",
+                            "27 Jan 2020 12:50:41",
+                            "20200127_125041",
+                            "BlueBell;Tinkerbell;"});
+                table7.AddRow(new string[] {
+                            "kkkk.jpg",
+                            "4.00°8.00\'37.392\" W",
+                            "50.00°7.21\'56.066\" N",
+                            "-4.14372",
+                            "50.132240555555555",
+                            "27 Jan 2019 11:45:42",
+                            "27 Jan 2019 11:45:42",
+                            "27 Jan 2019 13:45:42",
+                            "20190127_134542",
+                            ""});
+                table7.AddRow(new string[] {
+                            "llll.jpg",
+                            "4.00°8.00\'37.392\" W",
+                            "50.00°7.21\'56.066\" N",
+                            "-4.14372",
+                            "50.132240555555555",
+                            "27 Jan 2019 12:45:42",
+                            "27 Jan 2019 12:45:42",
+                            "27 Jan 2019 14:45:42",
+                            "20190127_144542",
+                            "rain;snow;sun;"});
+                table7.AddRow(new string[] {
+                            "mmmm.jpg",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "27 Jan 2020 16:50:41",
+                            "27 Jan 2020 16:50:41",
+                            "",
+                            "20200127_165041",
+                            ""});
+                table7.AddRow(new string[] {
+                            "nnnn.jpg",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "27 Jan 2020 17:50:41",
+                            "27 Jan 2020 17:50:41",
+                            "",
+                            "20200127_175041",
+                            "rain;snow;sun;"});
+                table7.AddRow(new string[] {
+                            "oooo.jpg",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "27 Jan 2020 18:50:41",
+                            "27 Jan 2020 18:50:41",
+                            "",
+                            "20200127_185041",
+                            ""});
+                table7.AddRow(new string[] {
+                            "pppp.jpg",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "27 Jan 2020 19:50:41",
+                            "27 Jan 2020 19:50:41",
+                            "",
+                            "20200127_195041",
+                            "BlueBell;Tinkerbell;"});
+#line 63
+ testRunner.Then("the image object list has following values", ((string)(null)), table7, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

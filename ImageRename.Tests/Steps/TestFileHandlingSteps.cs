@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using ImageRename.Tests.Context;
 using TechTalk.SpecFlow;
 
@@ -12,7 +10,15 @@ namespace ImageRename.Tests.Steps
         public TestFileHandlingSteps(BaseContext context) : base(context)
         {
         }
-      
+
+        [Given(@"I add the keywords to the files")]
+        public void GivenIAddTheKeywordsToTheFiles(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                Helper.WriteKeywords(row["Filename"], row["Keywords"]);
+            }
+        }
 
         [Given(@"I copy the following files")]
         public void GivenICopyTheFollowingFiles(Table table)
@@ -26,26 +32,6 @@ namespace ImageRename.Tests.Steps
             }
             // let the file system catch up
             System.Threading.Thread.Sleep(543);
-        }
-
-        [Given(@"I create a copy of all test files into the folder '(.*)'")]
-        public void GivenICreateACopyOfAllTestFilesInTheFolder(string destinationFolder)
-        {
-            var destinationPath = Path.Combine(TestFileFolder, destinationFolder);
-            Helper.DirectoryCopy(Helper.TestFilesSourceFolder, destinationPath);
-            //Helper.CopyTestFilesTo(destinationPath);
-            // let the file system catch up
-            System.Threading.Thread.Sleep(543);
-        }
-
-        [Given(@"in the folder '(.*)' I delete the files")]
-        public void GivenInTheFolderIDeleteTheFiles(string rootPath, Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                var path = Path.Combine(TestFileFolder, rootPath, row["Path"]);
-                Helper.DeleteFile(path);
-            }
         }
 
         [Given(@"I copy the following files in the folder '(.*)'")]
@@ -62,6 +48,16 @@ namespace ImageRename.Tests.Steps
             Wait(345);
         }
 
+        [Given(@"I create a copy of all test files into the folder '(.*)'")]
+        public void GivenICreateACopyOfAllTestFilesInTheFolder(string destinationFolder)
+        {
+            var destinationPath = Path.Combine(TestFileFolder, destinationFolder);
+            Helper.DirectoryCopy(Helper.TestFilesSourceFolder, destinationPath);
+            //Helper.CopyTestFilesTo(destinationPath);
+            // let the file system catch up
+            System.Threading.Thread.Sleep(543);
+        }
+
         [Given(@"I delete the folders")]
         public void GivenIDeleteTheFolders(Table table)
         {
@@ -69,6 +65,16 @@ namespace ImageRename.Tests.Steps
             {
                 var path = Path.Combine(TestFileFolder, row["Path"]);
                 Helper.DeleteDirectory(path);
+            }
+        }
+
+        [Given(@"in the folder '(.*)' I delete the files")]
+        public void GivenInTheFolderIDeleteTheFiles(string rootPath, Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var path = Path.Combine(TestFileFolder, rootPath, row["Path"]);
+                Helper.DeleteFile(path);
             }
         }
     }

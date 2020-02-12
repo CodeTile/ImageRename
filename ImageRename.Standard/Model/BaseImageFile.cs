@@ -59,6 +59,10 @@ namespace ImageRename.Standard.Model
                 }
 
                 DateTime imageDate = (DateTime)ImageCreated;
+                if(GPS?.GpsDateTime!=null)
+                {
+                    imageDate = (DateTime)GPS.GpsDateTime;
+                }
 
                 return string.Format("{0}{1}{2}_{3}{4}{5}",
                                         imageDate.Year.ToString("0000"),

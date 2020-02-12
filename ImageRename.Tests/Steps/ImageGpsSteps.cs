@@ -4,7 +4,6 @@ using System.IO;
 using ImageRename.Standard;
 using ImageRename.Standard.Model;
 using ImageRename.Tests.Context;
-using Moq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
@@ -20,11 +19,15 @@ namespace ImageRename.Tests.Steps
         [Given(@"I create image objects with the following properties")]
         public void GivenICreateImageObjectsWithTheFollowingProperties(Table table)
         {
-           var target = new ProcessFolder(Helper.GetConfiguration());
+            var target = new ProcessFolder(Helper.GetConfiguration());
             var images = new List<ImageFile>();
             foreach (var row in table.Rows)
             {
-                var image = new ImageFile(Path.Combine("<<DEBUG>>",row["TestFile"]));
+                target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
+                var image = new ImageFile(Path.Combine("<<DEBUG>>", row["TestFile"]));
+                image.KeyWords = row["Keywords"];
+                image.ImageCreatedOriginal = Convert.ToDateTime(row["ImageCreatedOriginal"]);
+                image.ImageCreated = Convert.ToDateTime(row["ImageTaken"]);
                 if (!string.IsNullOrEmpty(row["Latitude"]))
                 {
                     image.GPS = new GPSCoridates()
@@ -35,10 +38,6 @@ namespace ImageRename.Tests.Steps
                     };
                 }
 
-                image.KeyWords= row["Keywords"];
-                image.ImageCreatedOriginal = Convert.ToDateTime(row["ImageCreatedOriginal"]);
-                image.ImageCreated = Convert.ToDateTime(row["ImageCreatedOriginal"]);
-                image.KeyWords=row["Keywords"];
                 target.ReverseGeocode(image);
                 images.Add(image);
             }
@@ -53,6 +52,7 @@ namespace ImageRename.Tests.Steps
             foreach (var row in table.Rows)
             {
                 var path = Path.Combine(TestFileFolder, row["TestFolder"], row["TestFile"]);
+                target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
                 var actual = target.ProcessFile(path);
                 results.Add(new ImageResult()
                 {
@@ -60,13 +60,14 @@ namespace ImageRename.Tests.Steps
                     TestFile = row["TestFile"],
                     Longitude = actual.GPS?.Longitude,
                     Latitude = actual.GPS?.Latitude,
-                    ImageTaken = actual.ImageCreated?.ToString("dd MMM yyyy hh:mm:ss"),
-                    ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy hh:mm:ss"),
-                    GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy hh:mm:ss"),
+                    ImageTaken = actual.ImageCreated?.ToString("dd MMM yyyy HH:mm:ss"),
+                    ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy HH:mm:ss"),
+                    GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy HH:mm:ss"),
                     DestinationFileName = actual.DestinationFileName,
                     KeyWords = actual.KeyWords,
                     DegreesLongitude = actual.GPS?.DegreesLongitude,
-                    DegreesLatitude = actual.GPS?.DegreesLatitude
+                    DegreesLatitude = actual.GPS?.DegreesLatitude,
+                    HasInternet = Convert.ToBoolean(row["HasInternet"])
                 });
             }
             table.CompareToSet<ImageResult>(results);
@@ -75,30 +76,28 @@ namespace ImageRename.Tests.Steps
         [Then(@"the image object list has following values")]
         public void ThenTheImageObjectListHasFollowingValues(Table table)
         {
-
             var images = (IEnumerable<IImageFile>)Context.SUT;
             var results = new List<ImageResult>();
-           
 
             foreach (var image in images)
             {
                 results.Add(new ImageResult()
                 {
-                    TestFile =image.SourceFileInfo.Name,
-                    Longitude = image.GPS?.Longitude,
-                    Latitude = image.GPS?.Latitude,
-                    ImageTaken = image.ImageCreated?.ToString("dd MMM yyyy hh:mm:ss"),
-                    ImageCreatedOriginal = image.ImageCreatedOriginal?.ToString("dd MMM yyyy hh:mm:ss"),
-                    GPSImageTaken = image.GPS?.GpsDateTime?.ToString("dd MMM yyyy hh:mm:ss"),
-                    DestinationFileName = image.DestinationFileName,
-                    KeyWords = image.KeyWords,
+                    DegreesLatitude = image.GPS?.DegreesLatitude,
                     DegreesLongitude = image.GPS?.DegreesLongitude,
-                    DegreesLatitude = image.GPS?.DegreesLatitude
+                    DestinationFileName = image.DestinationFileName,
+                    GPSImageTaken = image.GPS?.GpsDateTime?.ToString("dd MMM yyyy HH:mm:ss"),
+                    ImageCreatedOriginal = image.ImageCreatedOriginal?.ToString("dd MMM yyyy HH:mm:ss"),
+                    ImageTaken = image.ImageCreated?.ToString("dd MMM yyyy HH:mm:ss"),
+                    KeyWords = image.KeyWords,
+                    Latitude = image.GPS?.Latitude,
+                    Longitude = image.GPS?.Longitude,
+                    TestFile = image.SourceFileInfo.Name
                 });
             }
-
 
             table.CompareToSet(results);
         }
     }
+
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using ExifLibrary;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -81,6 +82,18 @@ namespace ImageRename.Tests
                 throw new ArgumentOutOfRangeException(value, $"parameter '{nameof(value)}' value '{value}' is out of range");
             }
             return retVal;
+        }
+
+        internal static void WriteKeywords(string filename, string keywords)
+        {
+            if (filename.Contains("<<DEBUG>>"))
+            {
+                return;
+            }
+            var filePath = Path.Combine(TestFilesFolder, filename);
+            var file = ExifLibrary.ImageFile.FromFile(filePath);
+            file.Properties.Set(ExifTag.WindowsKeywords, keywords);
+            file.Save(filePath);
         }
 
         /// <summary>
