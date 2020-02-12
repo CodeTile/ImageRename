@@ -29,4 +29,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ExifLibrary\ExifLibrary.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Countries.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -282,7 +283,7 @@ namespace ImageRename.Standard
                 {
                     case "BING":
                         BingAddress a = (BingAddress)address;
-                        keyWords = a.CountryRegion;
+                        keyWords = a.CountryRegion+";"+GetContinent(a.CountryRegion);
                         break;
 
                     default:
@@ -294,6 +295,43 @@ namespace ImageRename.Standard
                 }
             }
             return keyWords;
+        }
+
+        private List<ContinentDescription> _continents;
+        private string GetContinent(string countryRegion)
+        {
+            if(_continents==null)
+            {
+                ReadContinetsFromFile();
+            }
+            return _continents.Single(s => s.Country.Equals(countryRegion, StringComparison.CurrentCultureIgnoreCase)).Continent+";";
+
+        }
+
+        private void ReadContinetsFromFile()
+        {
+            if(_continents!=null && !_continents.Any())
+            {
+                return;
+            }
+            var filename = "countries.csv";
+            if(!File.Exists(filename))
+            {
+                throw new FileNotFoundException(filename);
+            }
+            _continents = new List<ContinentDescription>();
+            foreach (var line in File.ReadAllLines(filename))
+            {
+                var fields = line.Split(',');
+                var cd = new ContinentDescription()
+                {
+                    Country = fields[0],
+                    Region1 = fields[1],
+                    Continent = fields[2]
+                };
+                _continents.Add(cd);
+            }
+
         }
 
         public void Process(string root)
