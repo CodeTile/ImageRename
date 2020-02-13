@@ -632,6 +632,50 @@ this.FeatureBackground();
                             "27 Jan 2020 09:50:42",
                             "27 Jan 2020 11:50:41",
                             "Gibraltar;Europe;"});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "true",
+                            "ssss.jpg",
+                            "4.00°41.00\'59.279\" W",
+                            "51.00°41.00\'39.24\" N",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            ""});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "true",
+                            "tttt.jpg",
+                            "12.00°30.00\'21.763\" E",
+                            "55.00°52.00\'25.54\" N",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            ""});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "true",
+                            "uuuu.jpg",
+                            "6.00°42.00\'37.335\" E",
+                            "45.00°48.00\'15.45\" N",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            ""});
+                table6.AddRow(new string[] {
+                            "JPG\\Good.jpg",
+                            "GPSKeywords",
+                            "true",
+                            "vvvv.jpg",
+                            "9.00°52.00\'4.4\" E",
+                            "53.00°33.00\'38.652\" N",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            ""});
 #line 49
  testRunner.Given("I create image objects with the following properties", ((string)(null)), table6, "Given ");
 #line hidden
@@ -844,7 +888,51 @@ this.FeatureBackground();
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
                             "Gibraltar;Europe;"});
-#line 71
+                table7.AddRow(new string[] {
+                            "ssss.jpg",
+                            "4.00°41.00\'59.279\" W",
+                            "51.00°41.00\'39.24\" N",
+                            "-4.699799722222222",
+                            "51.69423333333333",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            "United Kingdom;Europe;Wales;Pembrokeshire;"});
+                table7.AddRow(new string[] {
+                            "tttt.jpg",
+                            "12.00°30.00\'21.763\" E",
+                            "55.00°52.00\'25.54\" N",
+                            "12.506045277777778",
+                            "55.873761111111115",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            "Denmark;Europe;Hørsholm;"});
+                table7.AddRow(new string[] {
+                            "uuuu.jpg",
+                            "6.00°42.00\'37.335\" E",
+                            "45.00°48.00\'15.45\" N",
+                            "6.710370833333333",
+                            "45.804291666666664",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            "France;Europe;Auvergne-Rhone-Alpes;Haute-Savoie;"});
+                table7.AddRow(new string[] {
+                            "vvvv.jpg",
+                            "9.00°52.00\'4.4\" E",
+                            "53.00°33.00\'38.652\" N",
+                            "9.867888888888888",
+                            "53.56073666666666",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 09:50:42",
+                            "27 Jan 2020 11:50:41",
+                            "20200127_115041",
+                            "Germany;Europe;Hamburg;"});
+#line 75
  testRunner.Then("the image object list has following values", ((string)(null)), table7, "Then ");
 #line hidden
             }

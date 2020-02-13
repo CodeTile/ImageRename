@@ -283,7 +283,7 @@ namespace ImageRename.Standard
                 {
                     case "BING":
                         BingAddress a = (BingAddress)address;
-                        keyWords = a.CountryRegion+";"+GetContinent(a.CountryRegion);
+                        keyWords = $"{a.CountryRegion};{GetContinent(a.CountryRegion)};{a.AdminDistrict};{a.AdminDistrict2};".Replace(";Capital;",";").Replace($";Stadt {a.AdminDistrict};",";");
                         break;
 
                     default:
@@ -294,7 +294,7 @@ namespace ImageRename.Standard
                     break;
                 }
             }
-            return keyWords;
+            return keyWords?.Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", "");
         }
 
         private List<ContinentDescription> _continents;
