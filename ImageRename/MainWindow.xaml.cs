@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Forms;
 using ImageRename.Standard;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace ImageRename
 {
@@ -17,12 +18,12 @@ namespace ImageRename
         private ProcessFolder _processor;
         private BackgroundWorker _backgroundWorker;
 
-        public IConfiguration Configuration { get; }
+      
 
-        public MainWindow(IConfiguration config)
+        public MainWindow()
         {
             InitializeComponent();
-            Configuration = config;
+            
         }
 
         private void btnProcess_Click(object sender, RoutedEventArgs e)
@@ -122,7 +123,7 @@ namespace ImageRename
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var parameters = (ProcessParameters)e.Argument;
-            _processor = new ProcessFolder(Configuration);
+            _processor = new ProcessFolder(Helper.GetConfiguration());
 
             _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
             _processor.MoveToProcessedByYear = parameters.SortByYear;
@@ -153,7 +154,7 @@ namespace ImageRename
                 txtProcessedPath.Text = Path.GetFullPath(Path.Combine(txtPath.Text, "..\\ProcessedPhotos"));
             }
         }
-
+    
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtPath.Text = Settings.Default.SourceFolder;

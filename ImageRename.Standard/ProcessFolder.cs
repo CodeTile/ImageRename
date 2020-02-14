@@ -172,7 +172,7 @@ namespace ImageRename.Standard
             if (_images != null)
             {
                 e.TotalFileCount = _images.Count();
-                e.FilesToRename = _images.Count(c => c.NeedsRenaming);
+                e.FilesToRename = _images.Count(c => c!=null && c.NeedsRenaming==true);
             }
 
             OnReportFilesFoundProgress(e);
@@ -238,7 +238,11 @@ namespace ImageRename.Standard
 
             foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
             {
-                _images.Add(ProcessFile(file));
+                var processed = ProcessFile(file);
+                if (processed != null)
+                {
+                    _images.Add(ProcessFile(file));
+                }
             }
         }
 
