@@ -287,7 +287,7 @@ namespace ImageRename.Standard
                 {
                     case "BING":
                         BingAddress a = (BingAddress)address;
-                        keyWords = $"{a.CountryRegion};{GetContinent(a.CountryRegion)};{a.AdminDistrict};{a.AdminDistrict2};".Replace(";Capital;",";").Replace($";Stadt {a.AdminDistrict};",";");
+                        keyWords = $"{a.CountryRegion};{GetContinent(a.CountryRegion)};{a.Locality};{a.AdminDistrict};{a.AdminDistrict2};".Replace(";Capital;",";").Replace($";Stadt {a.AdminDistrict};",";");
                         break;
 
                     default:

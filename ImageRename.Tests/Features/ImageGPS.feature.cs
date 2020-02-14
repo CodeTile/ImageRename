@@ -920,7 +920,7 @@ this.FeatureBackground();
                             "27 Jan 2020 09:50:42",
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
-                            "France;Europe;Auvergne-Rhone-Alpes;Haute-Savoie;"});
+                            "France;Europe;Les Contamines-Montjoie;Auvergne-Rhone-Alpes;Haute-Savoie;"});
                 table7.AddRow(new string[] {
                             "vvvv.jpg",
                             "9.00°52.00\'4.4\" E",
