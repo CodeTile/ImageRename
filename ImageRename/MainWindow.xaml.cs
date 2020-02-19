@@ -37,10 +37,15 @@ namespace ImageRename
                 Settings.Default.Save();
                 var processParams = new ProcessParameters()
                 {
-                    ProcessedPath = txtProcessedPath.Text,
+                    ProcessedPath =  txtProcessedPath.Text,
                     SourcePath = txtPath.Text,
                     SortByYear = (bool)chkMoveToProcessedByYear.IsChecked
                 };
+                if ((bool)chkMoveToProcessedFolder.IsChecked)
+                {
+                    processParams.SortByYear = false;
+                    processParams.ProcessedPath = string.Empty;
+                }
                 _backgroundWorker.RunWorkerAsync(processParams);
             }
         }
@@ -80,6 +85,7 @@ namespace ImageRename
             public string ProcessedPath { get; set; }
             public bool SortByYear { get; set; }
             public string SourcePath { get; set; }
+            public object MoveToProcessed { get; internal set; }
         }
 
         private enum ProgressReporting
@@ -128,6 +134,7 @@ namespace ImageRename
             _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
             _processor.MoveToProcessedByYear = parameters.SortByYear;
             _processor.ProcessedPath = parameters.ProcessedPath;
+            _processor.MoveToprocessed = parameters.MoveToProcessed;
             _processor.ReportRenameProgress += _processor_ReportRenameProgress;
             _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
             _backgroundWorker.ReportProgress(0, "Starting");

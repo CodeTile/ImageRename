@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="25" />
             <RowDefinition Height="50" />
             <RowDefinition Height="35" />
@@ -27,8 +27,12 @@
         <Label Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
         <TextBox Grid.Column="1" TextAlignment="Left" VerticalContentAlignment="Center"  TextWrapping="NoWrap" Text="c:\" HorizontalAlignment="Stretch" Name="txtPath" TextChanged="txtPath_TextChanged" />
         <Button Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnFindPath" Click="btnFindPath_Click" Height="25" VerticalAlignment="Top" />
-        <CheckBox Grid.Row="1" Grid.Column="1" Content="Move File to processed by year." IsChecked="True" VerticalAlignment="Center"   Name="chkMoveToProcessedByYear" />
+        <StackPanel  Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" >
 
+            <CheckBox Content="Move File to processed by year." IsChecked="True" VerticalAlignment="Center"   Name="chkMoveToProcessedByYear" />
+            <CheckBox Content="Rename Only" IsChecked="False" VerticalAlignment="Center"   Name="chkMoveToProcessedFolder" />
+        </StackPanel>
+        
         <Label Grid.Row="2" Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
         <TextBox  Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" TextAlignment="Left"   TextWrapping="NoWrap" Text="c:\xxx" HorizontalAlignment="Stretch" Name="txtProcessedPath" />
         <Button  Grid.Row="2" Grid.Column="2" Content="..."    Width="30" FontWeight="Bold" HorizontalAlignment="Center" Name="btnProcessedBrowse" Click="btnProcessedBrowse_Click" />
