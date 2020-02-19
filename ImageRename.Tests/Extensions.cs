@@ -4,6 +4,55 @@ namespace ImageRename.Tests
 {
     public static class Extensions
     {
+        public static string ToGpsSector(this string dms)
+        {
+            string retval = null; ;
+            dms = dms.ToUpper();
+            if(dms.Contains("N"))
+            {
+                retval = "N";
+            }
+            else if (dms.Contains("E"))
+            {
+                retval = "E";
+            }
+            if (dms.Contains("S"))
+            {
+                retval = "S";
+            }
+            if (dms.Contains("W"))
+            {
+                retval = "W";
+            }
+
+            return retval;
+        }
+        public static float ToGpsDegrees(this string dms)
+        {
+            if (string.IsNullOrEmpty(dms))
+            {
+                throw new ArgumentOutOfRangeException(nameof(dms));
+            }
+         
+            return (float)Convert.ToDecimal(dms.Split('°')[0]);
+        }
+
+        public static float ToGpsMinutes(this string dms)
+        {
+            if (string.IsNullOrEmpty(dms))
+            {
+                throw new ArgumentOutOfRangeException(nameof(dms));
+            }
+            return (float)Convert.ToDecimal(dms.Split('°')[1].Split("'")[0]);
+        }
+        public static float ToGpsSeconds(this string dms)
+        {
+            if (string.IsNullOrEmpty(dms))
+            {
+                throw new ArgumentOutOfRangeException(nameof(dms));
+            }
+            return (float)Convert.ToDecimal(dms.Split("'")[1].Split("\"")[0]);
+        }
         public static DateTime GetDayInWeek(this DateTime dt, DayOfWeek dayOfWeek)
         {
             var firstDateOfWeek = dt.GetFirstDayOfWeek().AddDays(dayOfWeek.ToInt());

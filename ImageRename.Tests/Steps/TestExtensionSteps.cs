@@ -119,5 +119,57 @@ namespace ImageRename.Tests.Steps
             public string Expected { get; set; }
             public string Value { get; set; }
         }
+        public struct ValueExpectedFloat
+        {
+            public float Expected { get; set; }
+            public string Value { get; set; }
+        }
+        [Given(@"I check ToGpsSector")]
+        public void GivenICheckToGpsSector(Table table)
+        {
+            var results = new List<ValueExpected>();
+            foreach (var row in table.Rows)
+            {
+                var actual = row["Value"].ToGpsSector();
+                results.Add(new ValueExpected() { Value = row["Value"], Expected = actual });
+            }
+            table.CompareToSet(results);
+        }
+        [Given(@"I check ToGpsDegrees")]
+        public void GivenICheckToGpsDegrees(Table table)
+        {
+            var results = new List<ValueExpectedFloat>();
+            foreach (var row in table.Rows)
+            {
+                float actual = row["Value"].ToGpsDegrees();
+                results.Add(new ValueExpectedFloat() { Value = row["Value"], Expected = actual });
+            }
+            table.CompareToSet(results);
+        }
+
+        [Given(@"I check ToGpsMinutes")]
+        public void GivenICheckToGpsMinutes(Table table)
+        {
+            var results = new List<ValueExpectedFloat>();
+            foreach (var row in table.Rows)
+            {
+                float actual = row["Value"].ToGpsMinutes();
+                results.Add(new ValueExpectedFloat() { Value = row["Value"], Expected = actual });
+            }
+            table.CompareToSet(results);
+        }
+
+        [Given(@"I check ToGpsSeconds")]
+        public void GivenICheckToGpsSeconds(Table table)
+        {
+            var results = new List<ValueExpectedFloat>();
+            foreach (var row in table.Rows)
+            {
+                float actual = row["Value"].ToGpsSeconds();
+                results.Add(new ValueExpectedFloat() { Value = row["Value"], Expected = actual });
+            }
+            table.CompareToSet(results);
+        }
+
     }
 }

@@ -73,3 +73,45 @@ Given I check the date time extenstion GetFirstDayOfWeek
 | 28 Feb 2012 | 27 Feb 2012 |
 | 29 Feb 2012 | 27 Feb 2012 |
 
+Scenario:ToGpsSector
+Given I check ToGpsSector
+| Value              | Expected |
+| 5.00°21.04'0.00" N | N        |
+| 5.00°21.04'0.00" E | E        |
+| 5.00°21.04'0.00" S | S        |
+| 5.00°21.04'0.00" W | W        |
+| 5.00°21.04'0.00" X |          |
+|                    |          |
+
+
+Scenario:ToGpsDegrees
+Given I check ToGpsDegrees
+| Value              | Expected |
+| 5.11°21.12'1.45" N | 5.11     |
+| 5.22°21.22'2.56" E | 5.22     |
+| 5.33°21.23'3.78" S | 5.33     |
+| 5.44°21.34'4.12" W | 5.44     |
+| 5.55°21.56'5.34" X | 5.55     |
+
+
+
+Scenario:ToGpsMinutes
+Given I check ToGpsMinutes
+| Value               | Expected |
+| 5.11°21.11'1.45" N  | 21.11    |
+| 5.22°21.22'2.56" E  | 21.22    |
+| 5.33°21.33'3.78" S  | 21.33    |
+| 5.44°21.44'4.12" W  | 21.44    |
+| 5.55°21.55'5.34" X  | 21.55    |
+| 5.55°21.666'5.34" X | 21.666   |
+
+
+
+Scenario:ToGpsSeconds
+Given I check ToGpsSeconds
+| Value              | Expected |
+| 5.11°21.12'1.45" N | 1.45     |
+| 5.22°21.22'2.56" E | 2.56     |
+| 5.33°21.23'3.78" S | 3.78     |
+| 5.44°21.34'4.12" W | 4.12     |
+| 5.55°21.56'5.34" X | 5.34     |
