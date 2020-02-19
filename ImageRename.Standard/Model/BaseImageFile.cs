@@ -4,7 +4,7 @@ using ExifLibrary;
 
 namespace ImageRename.Standard.Model
 {
-    public abstract partial class BaseImageFile : IImageFile
+    public abstract partial class BaseImageFile : IImageDetails
     {
         private readonly DirectoryInfo _processedRoot;
         private DateTime? _imageCreated;
@@ -138,6 +138,7 @@ namespace ImageRename.Standard.Model
         }
 
         public virtual DateTime? ImageCreatedOriginal { get; set; }
+        public string OriginalKeywords { get;  set; }
         public virtual string KeyWords { get; set; }
 
         /// <summary>
@@ -230,7 +231,8 @@ namespace ImageRename.Standard.Model
                     return;
                 }
                 var file = ExifLibrary.ImageFile.FromFile(SourceFileInfo.FullName);
-                KeyWords = file.Properties.Get<ExifProperty>(ExifTag.WindowsKeywords)?.Value?.ToString();
+                OriginalKeywords = file.Properties.Get<ExifProperty>(ExifTag.WindowsKeywords)?.Value?.ToString();
+                KeyWords = OriginalKeywords;
                 ImageCreated = Convert.ToDateTime(file.Properties.Get<ExifProperty>(ExifTag.DateTime).Value);
                 ImageCreatedOriginal = ImageCreated;
 
@@ -241,9 +243,13 @@ namespace ImageRename.Standard.Model
                     var longRefTag = file.Properties.Get(ExifTag.GPSLongitudeRef).Value.ToString().Substring(0, 1);
                     var latRefTag = file.Properties.Get(ExifTag.GPSLatitudeRef).Value.ToString().Substring(0, 1);
 
-                    var gpsDate = Convert.ToDateTime(file.Properties.Get(ExifTag.GPSDateStamp).Value).ToString("dd MMMM yyyy");
-                    var gpsTime = (GPSTimeStamp)file.Properties.Get(ExifTag.GPSTimeStamp);
-                    ImageCreated = Convert.ToDateTime($"{gpsDate} {gpsTime.Hour.Numerator}:{gpsTime.Minute.Numerator}:{gpsTime.Second.Numerator}");
+                    var gDate = file.Properties.Get(ExifTag.GPSDateStamp);
+                    if (gDate != null && gDate.Value != null)
+                    {
+                        var gpsDate = Convert.ToDateTime(file.Properties.Get(ExifTag.GPSDateStamp).Value).ToString("dd MMMM yyyy");
+                        var gpsTime = (GPSTimeStamp)file.Properties.Get(ExifTag.GPSTimeStamp);
+                        ImageCreated = Convert.ToDateTime($"{gpsDate} {gpsTime.Hour.Numerator}:{gpsTime.Minute.Numerator}:{gpsTime.Second.Numerator}");
+                    }
                     GPS = new GPSCoridates()
                     {
                         Longitude = $"{longTag} {longRefTag}",

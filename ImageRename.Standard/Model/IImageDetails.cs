@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ImageRename.Standard.Model
 {
-    public interface IImageFile
+    public interface IImageDetails
     {
         FileInfo DestinationFileInfo { get; }
         string DestinationFileName { get; }
@@ -11,9 +11,10 @@ namespace ImageRename.Standard.Model
         IGPSCoridates GPS { get; set; }
         DateTime? ImageCreated { get; }
         DateTime? ImageCreatedOriginal { get; }
+        string KeyWords { get; set; }
         bool NeedsMoving { get; }
         bool NeedsRenaming { get; }
+        string OriginalKeywords { get; set; }
         FileInfo SourceFileInfo { get; set; }
-        string KeyWords { get; set; }
     }
 }

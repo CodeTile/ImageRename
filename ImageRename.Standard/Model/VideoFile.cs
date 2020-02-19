@@ -5,7 +5,7 @@ using MetadataExtractor;
 
 namespace ImageRename.Standard.Model
 {
-    public class VideoFile : BaseImageFile, IImageFile
+    public class VideoFile : BaseImageFile, IImageDetails
     {
         public VideoFile(string path, string processedPath = null) : base(path, processedPath)
         {

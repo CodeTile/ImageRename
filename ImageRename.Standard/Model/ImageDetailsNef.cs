@@ -4,9 +4,9 @@ using System.Linq;
 using MetadataExtractor;
 namespace ImageRename.Standard.Model
 {
-    public class ImageFileNEF : BaseImageFile, IImageFile
+    public class ImageDetailsNef : BaseImageFile, IImageDetails
     {
-        public ImageFileNEF(string path, string processedPath = null) : base(path, processedPath)
+        public ImageDetailsNef(string path, string processedPath = null) : base(path, processedPath)
         {
         }
 
