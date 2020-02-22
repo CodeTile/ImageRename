@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using ImageRename.Standard;
+﻿using ImageRename.Standard;
 using ImageRename.Standard.Model;
 using ImageRename.Tests.Context;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
@@ -20,14 +20,16 @@ namespace ImageRename.Tests.Steps
         public void GivenICreateImageObjectsWithTheFollowingProperties(Table table)
         {
             var target = new ProcessFolder(Helper.GetConfiguration());
-            var images = new List<ImageFile>();
+            var images = new List<ImageDetails>();
             foreach (var row in table.Rows)
             {
                 target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
-                var image = new ImageFile(Path.Combine("<<DEBUG>>", row["TestFile"]));
-                image.KeyWords = row["Keywords"];
-                image.ImageCreatedOriginal = Convert.ToDateTime(row["ImageCreatedOriginal"]);
-                image.ImageCreated = Convert.ToDateTime(row["ImageTaken"]);
+                var image = new ImageDetails(Path.Combine("<<DEBUG>>", row["TestFile"]))
+                {
+                    KeyWords = row["Keywords"],
+                    ImageCreatedOriginal = Convert.ToDateTime(row["ImageCreatedOriginal"]),
+                    ImageCreated = Convert.ToDateTime(row["ImageTaken"])
+                };
                 if (!string.IsNullOrEmpty(row["Latitude"]))
                 {
                     image.GPS = new GPSCoridates()
@@ -47,36 +49,45 @@ namespace ImageRename.Tests.Steps
         [Then(@"the following files have the values in the ImageFile object")]
         public void ThenTheFollowingFilesHaveTheValuesInTheImageObject(Table table)
         {
-            var target = new ProcessFolder(Helper.GetConfiguration());
-            var results = new List<ImageResult>();
-            foreach (var row in table.Rows)
+            string path="";
+            try
             {
-                var path = Path.Combine(TestFileFolder, row["TestFolder"], row["TestFile"]);
-                target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
-                var actual = target.ProcessFile(path);
-                results.Add(new ImageResult()
+                var target = new ProcessFolder(Helper.GetConfiguration());
+                var results = new List<ImageResult>();
+                foreach (var row in table.Rows)
                 {
-                    TestFolder = row["TestFolder"],
-                    TestFile = row["TestFile"],
-                    Longitude = actual.GPS?.Longitude,
-                    Latitude = actual.GPS?.Latitude,
-                    ImageTaken = actual.ImageCreated?.ToString("dd MMM yyyy HH:mm:ss"),
-                    ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy HH:mm:ss"),
-                    GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy HH:mm:ss"),
-                    DestinationFileName = actual.DestinationFileName,
-                    KeyWords = actual.KeyWords,
-                    DegreesLongitude = actual.GPS?.DegreesLongitude,
-                    DegreesLatitude = actual.GPS?.DegreesLatitude,
-                    HasInternet = Convert.ToBoolean(row["HasInternet"])
-                });
+                     path = Path.Combine(TestFileFolder, row["TestFolder"], row["TestFile"]);
+                    target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
+                    var actual = target.ProcessFile(path);
+                    results.Add(new ImageResult()
+                    {
+                        TestFolder = row["TestFolder"],
+                        TestFile = row["TestFile"],
+                        Longitude = actual.GPS?.Longitude,
+                        Latitude = actual.GPS?.Latitude,
+                        ImageTaken = actual.ImageCreated?.ToString("dd MMM yyyy HH:mm:ss"),
+                        ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy HH:mm:ss"),
+                        GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy HH:mm:ss"),
+                        DestinationFileName = actual.DestinationFileName,
+                        KeyWords = actual.KeyWords,
+                        DegreesLongitude = actual.GPS?.DegreesLongitude,
+                        DegreesLatitude = actual.GPS?.DegreesLatitude,
+                        HasInternet = Convert.ToBoolean(row["HasInternet"])
+                    });
+                }
+                table.CompareToSet<ImageResult>(results);
             }
-            table.CompareToSet<ImageResult>(results);
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{path}");
+                throw;
+            }
         }
 
         [Then(@"the image object list has following values")]
         public void ThenTheImageObjectListHasFollowingValues(Table table)
         {
-            var images = (IEnumerable<IImageFile>)Context.SUT;
+            var images = (IEnumerable<IImageDetails>)Context.SUT;
             var results = new List<ImageResult>();
 
             foreach (var image in images)
@@ -99,5 +110,4 @@ namespace ImageRename.Tests.Steps
             table.CompareToSet(results);
         }
     }
-
 }

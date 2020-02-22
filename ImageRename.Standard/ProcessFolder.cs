@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using ExifLibrary;
 using Geocoding;
 
 using Geocoding.Microsoft;
@@ -19,8 +20,7 @@ namespace ImageRename.Standard
         private readonly IConfiguration Configuration;
         private IGeocoder _BingGeoCoder;
         private bool? _hasInternet;
-        private IGeocoder _MapQuestGeoCoder;
-        public ObservableCollection<IImageFile> _images;
+        public ObservableCollection<IImageDetails> _images;
 
         public ProcessFolder(IConfiguration configuration)
         {
@@ -48,6 +48,7 @@ namespace ImageRename.Standard
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
         public string SourcePath { get; set; }
+        public object MoveToprocessed { get; set; }
 
         #region RenameProgressEvent
 
@@ -120,16 +121,17 @@ namespace ImageRename.Standard
             return retval;
         }
 
-        private void RenameFile(IImageFile item)
+        private void RenameFile(IImageDetails item)
         {
             var sourceFile = item.SourceFileInfo.FullName;
+            SetKeywordsInFile(item);
             var destinationFile = item.DestinationFilePath;
             if (File.Exists(destinationFile))
             {
                 ReportRenamingProgress($"{sourceFile.Replace(SourcePath, string.Empty).PadRight(30)} ############# File Exists");
                 if (AreFilesTheSame(sourceFile, destinationFile))
                 {
-                    destinationFile = destinationFile.Replace(item.SourceFileInfo.Extension, $"(Duplicate){item.SourceFileInfo.Extension}");
+                    _ = destinationFile.Replace(item.SourceFileInfo.Extension, $"(Duplicate){item.SourceFileInfo.Extension}");
                 }
                 destinationFile = GetSequenceFilename(item.DestinationFileInfo);
             }
@@ -146,6 +148,18 @@ namespace ImageRename.Standard
             ReportRenamingProgress($"{sourceFile.Replace(SourcePath, string.Empty).PadRight(30)} ==> {destinationFile.Replace(SourcePath, string.Empty)}");
         }
 
+        private void SetKeywordsInFile(IImageDetails image)
+        {
+            if(image.OriginalKeywords== image.KeyWords)
+            {
+                return;
+            }
+
+            var file = ExifLibrary.ImageFile.FromFile(image.SourceFileInfo.FullName); 
+            file.Properties.Set(ExifTag.WindowsKeywords, image.KeyWords);
+            file.Save(image.SourceFileInfo.FullName);
+        }
+
         private void RenameFiles()
         {
             if (_images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
@@ -153,7 +167,7 @@ namespace ImageRename.Standard
                 return;
             }
 
-            foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving))
+            foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving  || w.KeyWords!= w.OriginalKeywords))
             {
                 try
                 {
@@ -293,6 +307,7 @@ namespace ImageRename.Standard
                     default:
                         break;
                 }
+
                 if (!string.IsNullOrEmpty(keyWords))
                 {
                     break;
@@ -348,28 +363,28 @@ namespace ImageRename.Standard
             GetBingGeoCoder();
 
             SourcePath = root;
-            _images = new ObservableCollection<IImageFile>();
+            _images = new ObservableCollection<IImageDetails>();
             _images.CollectionChanged += _images_CollectionChanged;
             FindFiles(root);
             RenameFiles();
             DeleteEmptySourceFolders(SourcePath);
         }
 
-        public IImageFile ProcessFile(string filename)
+        public IImageDetails ProcessFile(string filename)
         {
             if (!File.Exists(filename))
             {
                 throw new FileNotFoundException(filename);
             }
             string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
-            IImageFile image = null;
+            IImageDetails image = null;
             var fileExtention = filename.Split('.').Last().ToLower();
             if (sFilter.Contains(fileExtention))
             {
                 switch (fileExtention)
                 {
                     case "nef":
-                        image = new ImageFileNEF(filename, ProcessedPath);
+                        image = new ImageDetailsNef(filename, ProcessedPath);
                         break;
 
                     case "mov":
@@ -377,7 +392,7 @@ namespace ImageRename.Standard
                         break;
 
                     default:
-                        image = new ImageFile(filename, ProcessedPath);
+                        image = new ImageDetails(filename, ProcessedPath);
                         break;
                 }
 
@@ -386,7 +401,7 @@ namespace ImageRename.Standard
             return image;
         }
 
-        public void ReverseGeocode(IImageFile image)
+        public void ReverseGeocode(IImageDetails image)
         {
             if (!HasInternet || image.GPS == null)
             {

@@ -7,43 +7,77 @@ Background:
 	| GPSKeywords                    |
 
 Scenario: CheckTheImageHasGPSCoridinates
-	Given I copy the following files
-	| SourceFolder | SourceFile | DestinationFolder                         | DestinationFile |
-	| JPG          | GPS.jpg    | CheckTheImageHasGPSCoridinates\Internet   | GPS.jpg         |
-	| JPG          | GPS.jpg    | CheckTheImageHasGPSCoridinates\Internet   | GPS2.jpg        |
-	| JPG          | GPS.jpg    | CheckTheImageHasGPSCoridinates\Internet   | GPS3.jpg        |
-	| JPG          | GPS.jpg    | CheckTheImageHasGPSCoridinates\Internet   | GPS4.jpg        |
-	| JPG          | Good.jpg   | CheckTheImageHasGPSCoridinates\Internet   | Good.jpg        |
-	| JPG          | Good.jpg   | CheckTheImageHasGPSCoridinates\Internet   | Good2.jpg       |
-	| JPG          | Bad.jpg    | CheckTheImageHasGPSCoridinates\Internet   | Bad.jpg         |
-	| JPG          | GPS.jpg    | CheckTheImageHasGPSCoridinates\NoInternet | GPS.jpg         |
-	| JPG          | GPS.jpg    | CheckTheImageHasGPSCoridinates\NoInternet | GPS2.jpg        |
-	| JPG          | Good.jpg   | CheckTheImageHasGPSCoridinates\NoInternet | Good.jpg        |
-	| JPG          | Good.jpg   | CheckTheImageHasGPSCoridinates\NoInternet | Good2.jpg       |
-	| JPG          | Bad.jpg    | CheckTheImageHasGPSCoridinates\NoInternet | Bad.jpg         |
+	Given I create the JPEG files
+	| Folder                                    | FileName | Keywords          | ImageCreatedOriginal | ImageTaken           | GPSImageTaken        | Longitude          | Latitude           |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa01.jpg |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa02.jpg | Green;Blue;       | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa03.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa04.jpg | Gibraltar;Europe; | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa05.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa06.jpg | Europe;           | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb01.jpg |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb02.jpg | Green;Blue;       | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb03.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb04.jpg | Gibraltar;Europe; | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb05.jpg | Europe;           | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc01.jpg |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 14:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc02.jpg | Green;Blue;       | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 15:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc03.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 16:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc04.jpg | Gibraltar;Europe; | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 17:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc05.jpg | Europe;           | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 18:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa01.jpg |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa02.jpg | Green;Blue;       | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa03.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa04.jpg | Gibraltar;Europe; | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa05.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa06.jpg | Europe;           | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      |                    |                    |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb01.jpg |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb02.jpg | Green;Blue;       | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb03.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb04.jpg | Gibraltar;Europe; | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb05.jpg | Europe;           | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc01.jpg |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 14:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc02.jpg | Green;Blue;       | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 15:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc03.jpg | Gibraltar;        | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 16:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc04.jpg | Gibraltar;Europe; | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 17:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc05.jpg | Europe;           | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 18:50:42 | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N |
 
-	And I add the keywords to the files
-	| Filename                                            | Keywords          |
-	| CheckTheImageHasGPSCoridinates\Internet\GPS2.jpg    | Green;Blue;       |
-	| CheckTheImageHasGPSCoridinates\Internet\GPS3.jpg    | Gibraltar;        |
-	| CheckTheImageHasGPSCoridinates\Internet\GPS4.jpg    | Gibraltar;Europe; |
-	| CheckTheImageHasGPSCoridinates\Internet\Good2.jpg   | Red;Orange;       |
-	| CheckTheImageHasGPSCoridinates\NoInternet\GPS2.jpg  | Green;Blue;       |
-	| CheckTheImageHasGPSCoridinates\NoInternet\Good2.jpg | Red;Orange;       |
+
 	Then the following files have the values in the ImageFile object
-	| TestFolder                                | TestFile  | HasInternet | Longitude          | Latitude           | DegreesLongitude | DegreesLatitude   | ImageCreatedOriginal | ImageTaken           | GPSImageTaken        | DestinationFileName | KeyWords                     |
-	| CheckTheImageHasGPSCoridinates\Internet   | GPS.jpg   | true        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 11:50:41 | 27 Jan 2020 11:50:41 | 20200127_115041     | Gibraltar;Europe;            |
-	| CheckTheImageHasGPSCoridinates\Internet   | GPS2.jpg  | true        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 11:50:41 | 27 Jan 2020 11:50:41 | 20200127_115041     | Green;Blue;Gibraltar;Europe; |
-	| CheckTheImageHasGPSCoridinates\Internet   | GPS3.jpg  | true        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 11:50:41 | 27 Jan 2020 11:50:41 | 20200127_115041     | Gibraltar;Europe;            |
-	| CheckTheImageHasGPSCoridinates\Internet   | GPS4.jpg  | true        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 11:50:41 | 27 Jan 2020 11:50:41 | 20200127_115041     | Gibraltar;Europe;            |
-	| CheckTheImageHasGPSCoridinates\Internet   | Good.jpg  | true        |                    |                    |                  |                   | 10 Mar 2018 11:53:53 | 10 Mar 2018 11:53:53 |                      | 20180310_115353     |                              |
-	| CheckTheImageHasGPSCoridinates\Internet   | Good2.jpg | true        |                    |                    |                  |                   | 10 Mar 2018 11:53:53 | 10 Mar 2018 11:53:53 |                      | 20180310_115353     | Red;Orange;                  |
-	| CheckTheImageHasGPSCoridinates\Internet   | Bad.jpg   | true        |                    |                    |                  |                   |                      |                      |                      |                     |                              |
-	| CheckTheImageHasGPSCoridinates\NoInternet | GPS.jpg   | false       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 11:50:41 | 27 Jan 2020 11:50:41 | 20200127_115041     |                              |
-	| CheckTheImageHasGPSCoridinates\NoInternet | Good.jpg  | false       |                    |                    |                  |                   | 10 Mar 2018 11:53:53 | 10 Mar 2018 11:53:53 |                      | 20180310_115353     |                              |
-	| CheckTheImageHasGPSCoridinates\NoInternet | GPS2.jpg  | false       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 11:50:41 | 27 Jan 2020 11:50:41 | 20200127_115041     | Green;Blue;                  |
-	| CheckTheImageHasGPSCoridinates\NoInternet | Good2.jpg | false       |                    |                    |                  |                   | 10 Mar 2018 11:53:53 | 10 Mar 2018 11:53:53 |                      | 20180310_115353     | Red;Orange;                  |
-	| CheckTheImageHasGPSCoridinates\NoInternet | Bad.jpg   | false       |                    |                    |                  |                   |                      |                      |                      |                     |                              |
+	| TestFolder                                | TestFile | HasInternet | Longitude          | Latitude           | DegreesLongitude | DegreesLatitude   | ImageCreatedOriginal | ImageTaken           | GPSImageTaken        | DestinationFileName | KeyWords                     |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa01.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     |                              |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa02.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Green;Blue;                  |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa04.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa04.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa05.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Gibraltar;                   |
+	| CheckTheImageHasGPSCoridinates\Internet   | aa06.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Europe;                      |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb01.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb02.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Green;Blue;Gibraltar;Europe; |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb03.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb04.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | bb05.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Europe;Gibraltar;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc01.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 14:50:42 | 27 Jan 2020 14:50:42 | 20200127_145042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc02.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 15:50:42 | 27 Jan 2020 15:50:42 | 20200127_155042     | Green;Blue;Gibraltar;Europe; |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc03.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 16:50:42 | 27 Jan 2020 16:50:42 | 20200127_165042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc04.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 17:50:42 | 27 Jan 2020 17:50:42 | 20200127_175042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\Internet   | cc05.jpg | True        | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 18:50:42 | 27 Jan 2020 18:50:42 | 20200127_185042     | Europe;Gibraltar;            |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa01.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     |                              |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa02.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Green;Blue;                  |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa04.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa04.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa05.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Gibraltar;                   |
+	| CheckTheImageHasGPSCoridinates\NoInternet | aa06.jpg | True        |                    |                    |                  |                   | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 |                      | 20200127_125042     | Europe;                      |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb01.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     |                              |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb02.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Green;Blue;                  |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb03.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Gibraltar;                   |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb04.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\NoInternet | bb05.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 27 Jan 2020 12:50:42 | 20200127_125042     | Europe;                      |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc01.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 14:50:42 | 27 Jan 2020 14:50:42 | 20200127_145042     |                              |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc02.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 15:50:42 | 27 Jan 2020 15:50:42 | 20200127_155042     | Green;Blue;                  |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc03.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 16:50:42 | 27 Jan 2020 16:50:42 | 20200127_165042     | Gibraltar;                   |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc04.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 17:50:42 | 27 Jan 2020 17:50:42 | 20200127_175042     | Gibraltar;Europe;            |
+	| CheckTheImageHasGPSCoridinates\NoInternet | cc05.jpg | False       | 5.00°21.04'0.00" W | 36.00°7.08'0.00" N | -5.35            | 36.11666666666667 | 27 Jan 2020 12:50:42 | 27 Jan 2020 18:50:42 | 27 Jan 2020 18:50:42 | 20200127_185042     | Europe;                      |
+    
 
 Scenario: GPSKeywords
 	Given I create image objects with the following properties
@@ -96,3 +130,5 @@ Scenario: GPSKeywords
 	| tttt.jpg | 12.00°30.00'21.763" E | 55.00°52.00'25.54" N  | 12.506045277777778 | 55.873761111111115 | 27 Jan 2020 09:50:42 | 27 Jan 2020 09:50:42 | 27 Jan 2020 11:50:41 | 20200127_115041     | Denmark;Europe;Hørsholm;                                                 |
 	| uuuu.jpg | 6.00°42.00'37.335" E  | 45.00°48.00'15.45" N  | 6.710370833333333  | 45.804291666666664 | 27 Jan 2020 09:50:42 | 27 Jan 2020 09:50:42 | 27 Jan 2020 11:50:41 | 20200127_115041     | France;Europe;Les Contamines-Montjoie;Auvergne-Rhone-Alpes;Haute-Savoie; |
 	| vvvv.jpg | 9.00°52.00'4.4" E     | 53.00°33.00'38.652" N | 9.867888888888888  | 53.56073666666666  | 27 Jan 2020 09:50:42 | 27 Jan 2020 09:50:42 | 27 Jan 2020 11:50:41 | 20200127_115041     | Germany;Europe;Hamburg;                                                  |
+
+	
