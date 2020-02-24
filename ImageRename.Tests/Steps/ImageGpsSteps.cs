@@ -26,6 +26,7 @@ namespace ImageRename.Tests.Steps
                 target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
                 var image = new ImageDetails(Path.Combine("<<DEBUG>>", row["TestFile"]))
                 {
+                    OriginalKeywords = row["Keywords"],
                     KeyWords = row["Keywords"],
                     ImageCreatedOriginal = Convert.ToDateTime(row["ImageCreatedOriginal"]),
                     ImageCreated = Convert.ToDateTime(row["ImageTaken"]),
@@ -53,7 +54,7 @@ namespace ImageRename.Tests.Steps
             string path="";
             try
             {
-                var target = new ProcessFolder(Helper.GetConfiguration());
+                var target = new ProcessFolder(base.Configuration);
                 var results = new List<ImageResult>();
                 foreach (var row in table.Rows)
                 {
@@ -62,20 +63,22 @@ namespace ImageRename.Tests.Steps
                     var actual = target.ProcessFile(path);
                     results.Add(new ImageResult()
                     {
-                        TestFolder = row["TestFolder"],
-                        TestFile = row["TestFile"],
-                        Longitude = actual.GPS?.Longitude,
-                        Latitude = actual.GPS?.Latitude,
-                        ImageTaken = actual.ImageCreated?.ToString("dd MMM yyyy HH:mm:ss"),
-                        ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy HH:mm:ss"),
-                        GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy HH:mm:ss"),
-                        DestinationFileName = actual.DestinationFileName,
-                        KeyWords = actual.KeyWords,
-                        DegreesLongitude = actual.GPS?.DegreesLongitude,
                         DegreesLatitude = actual.GPS?.DegreesLatitude,
+                        DegreesLongitude = actual.GPS?.DegreesLongitude,
+                        DestinationFileName = actual.DestinationFileName,
+                        GPSImageTaken = actual.GPS?.GpsDateTime?.ToString("dd MMM yyyy HH:mm:ss"),
                         HasInternet = actual.HasInternet,
-                        NeedsRenaming = actual.NeedsRenaming
-                    });
+                        HasNewKeywords = actual.HasNewKeywords,
+                        ImageCreatedOriginal = actual.ImageCreatedOriginal?.ToString("dd MMM yyyy HH:mm:ss"),
+                        ImageTaken = actual.ImageCreated?.ToString("dd MMM yyyy HH:mm:ss"),
+                        KeyWords = actual.KeyWords,
+                        Latitude = actual.GPS?.Latitude,
+                        Longitude = actual.GPS?.Longitude,
+                        NeedsRenaming = actual.NeedsRenaming,
+                        OriginalKeywords = actual.OriginalKeywords,
+                        TestFile = row["TestFile"],
+                        TestFolder = row["TestFolder"]
+                    }); ;
                 }
                 table.CompareToSet<ImageResult>(results);
             }
@@ -100,13 +103,15 @@ namespace ImageRename.Tests.Steps
                     DegreesLongitude = image.GPS?.DegreesLongitude,
                     DestinationFileName = image.DestinationFileName,
                     GPSImageTaken = image.GPS?.GpsDateTime?.ToString("dd MMM yyyy HH:mm:ss"),
+                    HasNewKeywords = image.HasNewKeywords,
                     ImageCreatedOriginal = image.ImageCreatedOriginal?.ToString("dd MMM yyyy HH:mm:ss"),
                     ImageTaken = image.ImageCreated?.ToString("dd MMM yyyy HH:mm:ss"),
                     KeyWords = image.KeyWords,
                     Latitude = image.GPS?.Latitude,
                     Longitude = image.GPS?.Longitude,
-                    TestFile = image.SourceFileInfo.Name,
-                    NeedsRenaming = image.NeedsRenaming
+                    NeedsRenaming = image.NeedsRenaming,
+                    OriginalKeywords = image.OriginalKeywords,
+                    TestFile = image.SourceFileInfo.Name
                     
                     
                 });

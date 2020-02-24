@@ -14,6 +14,7 @@ namespace ImageRename.Standard.Model
         string KeyWords { get; set; }
         bool NeedsMoving { get; }
         bool NeedsRenaming { get; }
+        bool HasNewKeywords { get; }
         string OriginalKeywords { get; set; }
         FileInfo SourceFileInfo { get; set; }
         bool HasInternet { get; set; }

@@ -16,5 +16,7 @@
         public string TestFile { get; set; }
         public string TestFolder { get; set; }
         public bool HasInternet { get; internal set; }
+        public bool HasNewKeywords { get; internal set; }
+        public string OriginalKeywords { get; internal set; }
     };
 }

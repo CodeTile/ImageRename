@@ -145,7 +145,14 @@ namespace ImageRename.Standard.Model
                 return retval;
             }
         }
-
+        public bool HasNewKeywords
+        {
+            get
+            {
+                
+                return !((KeyWords??"").Equals((OriginalKeywords??""),StringComparison.CurrentCultureIgnoreCase));
+            }
+        }
         /// <summary>
         /// Does the file need renaming
         /// </summary>
@@ -213,11 +220,10 @@ namespace ImageRename.Standard.Model
                     throw new FileNotFoundException(SourceFileInfo.FullName);
                 }
                 var file = ExifLibrary.ImageFile.FromFile(SourceFileInfo.FullName);
-                OriginalKeywords = GetExifValueAsString(file, ExifTag.WindowsKeywords);
+                OriginalKeywords=GetExifValueAsString(file, ExifTag.WindowsKeywords);
                 KeyWords = OriginalKeywords;
-                ImageCreated = Convert.ToDateTime(GetExifTag(file, ExifTag.DateTime).Value);
-                ImageCreatedOriginal = Convert.ToDateTime(GetExifTag(file, ExifTag.DateTimeOriginal).Value);
-
+                ImageCreated=GetExifDatetime(file, ExifTag.DateTime);
+                ImageCreatedOriginal=GetExifDatetime(file, ExifTag.DateTimeOriginal);
                 var latTag = GetExifGpsCoridianates(file, ExifTag.GPSLatitude);
                 if (latTag != null)
                 {
@@ -243,6 +249,24 @@ namespace ImageRename.Standard.Model
             {
                 System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
                 throw;
+            }
+        }
+
+        private DateTime? GetExifDatetime(ImageFile file, ExifTag tag)
+        {
+            try
+            {
+                   var exifProperty = GetExifTag(file, tag);
+                if(exifProperty==null || exifProperty.Value==null)
+                {
+                    return null;
+                }
+                return Convert.ToDateTime(exifProperty.Value);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"{ex.Message}\r\n\t  Tag    :{tag}",ex);
             }
         }
 
