@@ -1,15 +1,11 @@
-﻿using System;
+﻿using ExifLibrary;
+using System;
 using System.IO;
-using ExifLibrary;
 
 namespace ImageRename.Standard.Model
 {
     public abstract partial class BaseImageFile : IImageDetails
     {
-        private readonly DirectoryInfo _processedRoot;
-        private DateTime? _imageCreated;
-        private FileInfo _sourceFileInfo;
-
         public BaseImageFile(string path, string processedPath = null)
         {
             if (!File.Exists(path) && !path.StartsWith("<<DEBUG>>"))
@@ -26,20 +22,9 @@ namespace ImageRename.Standard.Model
             GetExifData();
         }
 
-        /// <summary>
-        /// Return the destination FilenameIncluding the extenstion
-        /// </summary>
-        private string FullDestinationFileName
-        {
-            get
-            {
-                if (DestinationFileName == null)
-                {
-                    return null;
-                }
-                return $"{DestinationFileName}{SourceFileInfo?.Extension}";
-            }
-        }
+        private readonly DirectoryInfo _processedRoot;
+        private DateTime? _imageCreated;
+        private FileInfo _sourceFileInfo;
 
         /// <summary>
         /// Get/Set the Destination FileInfo
@@ -59,7 +44,7 @@ namespace ImageRename.Standard.Model
                 }
 
                 DateTime imageDate = (DateTime)ImageCreated;
-                if(GPS?.GpsDateTime!=null)
+                if (GPS?.GpsDateTime != null)
                 {
                     imageDate = (DateTime)GPS.GpsDateTime;
                 }
@@ -124,6 +109,8 @@ namespace ImageRename.Standard.Model
 
         public virtual IGPSCoridates GPS { get; set; }
 
+        public bool HasInternet { get; set; }
+
         /// <summary>
         /// Get/set for image created.
         /// </summary>
@@ -138,7 +125,7 @@ namespace ImageRename.Standard.Model
         }
 
         public virtual DateTime? ImageCreatedOriginal { get; set; }
-        public string OriginalKeywords { get;  set; }
+
         public virtual string KeyWords { get; set; }
 
         /// <summary>
@@ -173,6 +160,8 @@ namespace ImageRename.Standard.Model
             }
         }
 
+        public string OriginalKeywords { get; set; }
+
         /// <summary>
         /// Get/Set the source FileInfo
         /// </summary>
@@ -191,6 +180,118 @@ namespace ImageRename.Standard.Model
                 }
                 OnInputParameterChanged();
             }
+        }
+
+        /// <summary>
+        /// Return the destination FilenameIncluding the extenstion
+        /// </summary>
+        private string FullDestinationFileName
+        {
+            get
+            {
+                if (DestinationFileName == null)
+                {
+                    return null;
+                }
+                return $"{DestinationFileName}{SourceFileInfo?.Extension}";
+            }
+        }
+
+        /// <summary>
+        /// Get the creation date of the file.
+        /// </summary>
+        public virtual void GetExifData()
+        {
+            try
+            {
+                if (SourceFileInfo.FullName.Contains("<<DEBUG>>"))
+                {
+                    return;
+                }
+                if (!SourceFileInfo.Exists)
+                {
+                    throw new FileNotFoundException(SourceFileInfo.FullName);
+                }
+                var file = ExifLibrary.ImageFile.FromFile(SourceFileInfo.FullName);
+                OriginalKeywords = GetExifValueAsString(file, ExifTag.WindowsKeywords);
+                KeyWords = OriginalKeywords;
+                ImageCreated = Convert.ToDateTime(GetExifTag(file, ExifTag.DateTime).Value);
+                ImageCreatedOriginal = Convert.ToDateTime(GetExifTag(file, ExifTag.DateTimeOriginal).Value);
+
+                var latTag = GetExifGpsCoridianates(file, ExifTag.GPSLatitude);
+                if (latTag != null)
+                {
+                    var longTag = GetExifGpsCoridianates(file, ExifTag.GPSLongitude);
+                    var longRefTag = GetExifValueAsString(file, ExifTag.GPSLongitudeRef)?.Substring(0, 1);
+                    var latRefTag = GetExifValueAsString(file, ExifTag.GPSLatitudeRef)?.Substring(0, 1);
+                    GPS = new GPSCoridates()
+                    {
+                        Longitude = $"{longTag} {longRefTag}",
+                        Latitude = $"{latTag} {latRefTag}"
+                    };
+                    var gDate = GetExifTag(file, ExifTag.GPSDateStamp);
+                    if (gDate != null && gDate.Value != null)
+                    {
+                        var gpsDate = Convert.ToDateTime(file.Properties.Get(ExifTag.GPSDateStamp).Value).ToString("dd MMMM yyyy");
+                        var gpsTime = (GPSTimeStamp)file.Properties.Get(ExifTag.GPSTimeStamp);
+                        ImageCreated = Convert.ToDateTime($"{gpsDate} {gpsTime.Hour.Numerator}:{gpsTime.Minute.Numerator}:{gpsTime.Second.Numerator}");
+                        GPS.GpsDateTime = ImageCreated;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
+                throw;
+            }
+        }
+
+        private object GetExifGpsCoridianates(ImageFile file, ExifTag tag)
+        {
+            string retval;
+            try
+            {
+                retval = file.Properties.Get<GPSLatitudeLongitude>(tag)?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}\r\n\t{nameof(tag)} = tag");
+                throw new Exception("${ex.Message}\r\n\t{nameof(tag)} = tag", ex);
+            }
+
+            return retval;
+        }
+
+        private ExifProperty GetExifTag(ImageFile file, ExifTag tag)
+        {
+            ExifProperty retval = null;
+            try
+            {
+                retval = file.Properties.Get(tag);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}\r\n\tTag = {nameof(tag)}");
+            }
+
+            return retval;
+        }
+
+        private string GetExifValueAsString(ImageFile file, ExifTag tag)
+        {
+            string retval;
+            try
+            {
+                var exif = GetExifTag(file, tag);
+                retval = exif?.Value?.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}\r\n\t{nameof(tag)} = tag");
+                throw new Exception("${ex.Message}\r\n\t{nameof(tag)} = tag", ex);
+            }
+
+            return retval;
         }
 
         /// <summary>
@@ -217,107 +318,6 @@ namespace ImageRename.Standard.Model
                                              FullDestinationFileName);
             }
             DestinationFileInfo = new FileInfo(newPath);
-        }
-
-        /// <summary>
-        /// Get the creation date of the file.
-        /// </summary>
-        public virtual void GetExifData()
-        {
-            try
-            {
-                if (SourceFileInfo.FullName.Contains("<<DEBUG>>"))
-                {
-                    return;
-                }
-                if(!SourceFileInfo.Exists)
-                {
-                    throw new FileNotFoundException(SourceFileInfo.FullName);
-                }
-                var file = ExifLibrary.ImageFile.FromFile(SourceFileInfo.FullName);
-                OriginalKeywords = GetExifValueAsString(file, ExifTag.WindowsKeywords);
-                KeyWords = OriginalKeywords;
-                ImageCreated = Convert.ToDateTime(GetExifTag(file,ExifTag.DateTime).Value);
-                ImageCreatedOriginal = Convert.ToDateTime(GetExifTag(file, ExifTag.DateTimeOriginal).Value); 
-
-                var latTag = GetExifGpsCoridianates(file,ExifTag.GPSLatitude);
-                if (latTag != null)
-                {
-                    var longTag = GetExifGpsCoridianates(file, ExifTag.GPSLongitude);
-                    var longRefTag = GetExifValueAsString(file, ExifTag.GPSLongitudeRef)?.Substring(0, 1);
-                    var latRefTag = GetExifValueAsString(file, ExifTag.GPSLatitudeRef)?.Substring(0, 1);
-                     GPS = new GPSCoridates()
-                                        {
-                                            Longitude = $"{longTag} {longRefTag}",
-                                            Latitude = $"{latTag} {latRefTag}"
-                                        };
-                    var gDate = GetExifTag(file,ExifTag.GPSDateStamp);
-                    if (gDate != null && gDate.Value != null)
-                    {
-                        var gpsDate = Convert.ToDateTime(file.Properties.Get(ExifTag.GPSDateStamp).Value).ToString("dd MMMM yyyy");
-                        var gpsTime = (GPSTimeStamp)file.Properties.Get(ExifTag.GPSTimeStamp);
-                        ImageCreated = Convert.ToDateTime($"{gpsDate} {gpsTime.Hour.Numerator}:{gpsTime.Minute.Numerator}:{gpsTime.Second.Numerator}");
-                        GPS.GpsDateTime = ImageCreated;
-                    }
-                   
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{SourceFileInfo?.FullName}");
-                throw;
-                
-            }
-        }
-
-        private object GetExifGpsCoridianates(ImageFile file, ExifTag tag )
-        {
-            string retval;
-            try
-            {
-
-                retval = file.Properties.Get<GPSLatitudeLongitude>(tag)?.ToString();
-                
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{ex.Message}\r\n\t{nameof(tag)} = tag");
-                throw new Exception("${ex.Message}\r\n\t{nameof(tag)} = tag", ex);
-            }
-
-            return retval;
-        }
-
-        private string GetExifValueAsString(ImageFile file, ExifTag tag)
-        {
-            string retval;
-            try
-            {
-                var exif = GetExifTag(file,tag);
-                retval = exif?.Value?.ToString();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{ex.Message}\r\n\t{nameof(tag)} = tag");
-                throw new Exception("${ex.Message}\r\n\t{nameof(tag)} = tag", ex);
-            }
-
-            return retval;
-        }
-
-        private ExifProperty GetExifTag(ImageFile file, ExifTag tag)
-        {
-            ExifProperty retval = null;
-            try
-            {
-                retval = file.Properties.Get(tag);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{ex.Message}\r\n\tTag = {nameof(tag)}");
-            }
-
-            return retval;
         }
     }
 }

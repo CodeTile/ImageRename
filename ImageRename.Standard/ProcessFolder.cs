@@ -384,18 +384,18 @@ namespace ImageRename.Standard
                 switch (fileExtention)
                 {
                     case "nef":
-                        image = new ImageDetailsNef(filename, ProcessedPath);
+                        image = new ImageDetailsNef(filename, ProcessedPath) { HasInternet = HasInternet };
                         break;
 
                     case "mov":
-                        image = new VideoFile(filename, ProcessedPath);
+                        image = new VideoFile(filename, ProcessedPath) { HasInternet = HasInternet };
                         break;
 
                     default:
-                        image = new ImageDetails(filename, ProcessedPath);
+                        image = new ImageDetails(filename, ProcessedPath) { HasInternet = HasInternet };
                         break;
                 }
-
+                
                 ReverseGeocode(image);
             }
             return image;
@@ -403,7 +403,7 @@ namespace ImageRename.Standard
 
         public void ReverseGeocode(IImageDetails image)
         {
-            if (!HasInternet || image.GPS == null)
+            if (!image.HasInternet || image.GPS == null)
             {
                 return;
             }

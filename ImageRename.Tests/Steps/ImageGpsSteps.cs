@@ -19,7 +19,7 @@ namespace ImageRename.Tests.Steps
         [Given(@"I create image objects with the following properties")]
         public void GivenICreateImageObjectsWithTheFollowingProperties(Table table)
         {
-            var target = new ProcessFolder(Helper.GetConfiguration());
+            var target = new ProcessFolder(Configuration);
             var images = new List<ImageDetails>();
             foreach (var row in table.Rows)
             {
@@ -28,7 +28,8 @@ namespace ImageRename.Tests.Steps
                 {
                     KeyWords = row["Keywords"],
                     ImageCreatedOriginal = Convert.ToDateTime(row["ImageCreatedOriginal"]),
-                    ImageCreated = Convert.ToDateTime(row["ImageTaken"])
+                    ImageCreated = Convert.ToDateTime(row["ImageTaken"]),
+                    HasInternet = target.HasInternet
                 };
                 if (!string.IsNullOrEmpty(row["Latitude"]))
                 {
@@ -72,7 +73,8 @@ namespace ImageRename.Tests.Steps
                         KeyWords = actual.KeyWords,
                         DegreesLongitude = actual.GPS?.DegreesLongitude,
                         DegreesLatitude = actual.GPS?.DegreesLatitude,
-                        HasInternet = Convert.ToBoolean(row["HasInternet"])
+                        HasInternet = actual.HasInternet,
+                        NeedsRenaming = actual.NeedsRenaming
                     });
                 }
                 table.CompareToSet<ImageResult>(results);
@@ -103,7 +105,10 @@ namespace ImageRename.Tests.Steps
                     KeyWords = image.KeyWords,
                     Latitude = image.GPS?.Latitude,
                     Longitude = image.GPS?.Longitude,
-                    TestFile = image.SourceFileInfo.Name
+                    TestFile = image.SourceFileInfo.Name,
+                    NeedsRenaming = image.NeedsRenaming
+                    
+                    
                 });
             }
 

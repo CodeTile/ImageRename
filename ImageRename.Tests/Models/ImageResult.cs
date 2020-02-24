@@ -12,7 +12,7 @@
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public string NeedMoving { get; set; }
-        public string NeedRenaming { get; set; }
+        public bool NeedsRenaming { get; set; }
         public string TestFile { get; set; }
         public string TestFolder { get; set; }
         public bool HasInternet { get; internal set; }
