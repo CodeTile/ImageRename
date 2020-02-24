@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRename.Standard", "Ima
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRename", "ImageRename\ImageRename.csproj", "{48F4BA56-274F-4395-94CB-AAA00BCD6956}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExifLibrary", "ExifLibrary\ExifLibrary.csproj", "{7B79BABB-FD78-404C-A89F-7896D560EBF0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRename.Tests", "ImageRename.Tests\ImageRename.Tests.csproj", "{9E6CDC44-F322-48F8-A1BE-D6011DBDE923}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{48F4BA56-274F-4395-94CB-AAA00BCD6956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48F4BA56-274F-4395-94CB-AAA00BCD6956}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48F4BA56-274F-4395-94CB-AAA00BCD6956}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B79BABB-FD78-404C-A89F-7896D560EBF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B79BABB-FD78-404C-A89F-7896D560EBF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B79BABB-FD78-404C-A89F-7896D560EBF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B79BABB-FD78-404C-A89F-7896D560EBF0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E6CDC44-F322-48F8-A1BE-D6011DBDE923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E6CDC44-F322-48F8-A1BE-D6011DBDE923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E6CDC44-F322-48F8-A1BE-D6011DBDE923}.Release|Any CPU.ActiveCfg = Release|Any CPU
