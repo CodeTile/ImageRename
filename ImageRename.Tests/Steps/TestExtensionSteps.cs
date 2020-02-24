@@ -13,43 +13,19 @@ namespace ImageRename.Tests.Steps
         {
         }
 
-        private DayOfWeek getDayOfWeek(string dayOfWeek)
+        private DayOfWeek GetDayOfWeek(string dayOfWeek)
         {
-            DayOfWeek day;
-            switch (dayOfWeek.ToLower())
+            var day = (dayOfWeek.ToLower()) switch
             {
-                case "monday":
-                    day = DayOfWeek.Monday;
-                    break;
-
-                case "tuesday":
-                    day = DayOfWeek.Tuesday;
-                    break;
-
-                case "wednesday":
-                    day = DayOfWeek.Wednesday;
-                    break;
-
-                case "thursday":
-                    day = DayOfWeek.Thursday;
-                    break;
-
-                case "friday":
-                    day = DayOfWeek.Friday;
-                    break;
-
-                case "saturday":
-                    day = DayOfWeek.Saturday;
-                    break;
-
-                case "sunday":
-                    day = DayOfWeek.Sunday;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(day));
-            }
-
+                "monday" => DayOfWeek.Monday,
+                "tuesday" => DayOfWeek.Tuesday,
+                "wednesday" => DayOfWeek.Wednesday,
+                "thursday" => DayOfWeek.Thursday,
+                "friday" => DayOfWeek.Friday,
+                "saturday" => DayOfWeek.Saturday,
+                "sunday" => DayOfWeek.Sunday,
+                _ => throw new ArgumentOutOfRangeException(nameof(dayOfWeek)),
+            };
             return day;
         }
         [Given(@"I wait (.*) second")]
@@ -100,7 +76,7 @@ namespace ImageRename.Tests.Steps
             var sut = Context.TimeProvider;
             foreach (var row in table.Rows)
             {
-                var dow = getDayOfWeek(row["Value"]);
+                var dow = GetDayOfWeek(row["Value"]);
                 var actual = sut.Now.GetDayInWeek(dow).ToString("d MMM yyyy");
                 results.Add(new ValueExpected() { Value = row["Value"], Expected = actual });
             }
