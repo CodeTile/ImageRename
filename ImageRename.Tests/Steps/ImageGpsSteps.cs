@@ -24,13 +24,14 @@ namespace ImageRename.Tests.Steps
             foreach (var row in table.Rows)
             {
                 target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
-                var image = new ImageDetails(Path.Combine("<<DEBUG>>", row["TestFile"]))
+                var image = new ImageDetails(Path.Combine("<<DEBUG>>", row["TestFile"]),row["ProcessedPath"])
                 {
                     OriginalKeywords = row["Keywords"],
                     KeyWords = row["Keywords"],
                     ImageCreatedOriginal = Convert.ToDateTime(row["ImageCreatedOriginal"]),
                     ImageCreated = Convert.ToDateTime(row["ImageTaken"]),
-                    HasInternet = target.HasInternet
+                    HasInternet = target.HasInternet,
+                    
                 };
                 if (!string.IsNullOrEmpty(row["Latitude"]))
                 {
@@ -60,6 +61,7 @@ namespace ImageRename.Tests.Steps
                 {
                      path = Path.Combine(TestFileFolder, row["TestFolder"], row["TestFile"]);
                     target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
+                    target.ProcessedPath = GetRowValue(row,"ProcessedPath");
                     var actual = target.ProcessFile(path);
                     results.Add(new ImageResult()
                     {
@@ -74,10 +76,12 @@ namespace ImageRename.Tests.Steps
                         KeyWords = actual.KeyWords,
                         Latitude = actual.GPS?.Latitude,
                         Longitude = actual.GPS?.Longitude,
+                        NeedsMoving = actual.NeedsMoving,
                         NeedsRenaming = actual.NeedsRenaming,
                         OriginalKeywords = actual.OriginalKeywords,
                         TestFile = row["TestFile"],
-                        TestFolder = row["TestFolder"]
+                        TestFolder = row["TestFolder"],
+                        ProcessedPath = target.ProcessedPath
                     }); ;
                 }
                 table.CompareToSet<ImageResult>(results);
@@ -86,6 +90,18 @@ namespace ImageRename.Tests.Steps
             {
                 System.Diagnostics.Debug.WriteLine($"{ex.Message}\r\n\t{path}");
                 throw;
+            }
+        }
+
+        private string GetRowValue(TableRow row, string columnName)
+        {
+            try
+            {
+                return row[columnName];
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
@@ -109,11 +125,10 @@ namespace ImageRename.Tests.Steps
                     KeyWords = image.KeyWords,
                     Latitude = image.GPS?.Latitude,
                     Longitude = image.GPS?.Longitude,
+                    NeedsMoving = image.NeedsMoving,
                     NeedsRenaming = image.NeedsRenaming,
                     OriginalKeywords = image.OriginalKeywords,
                     TestFile = image.SourceFileInfo.Name
-                    
-                    
                 });
             }
 
