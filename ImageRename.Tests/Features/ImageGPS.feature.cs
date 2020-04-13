@@ -4144,7 +4144,7 @@ this.FeatureBackground();
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
                             "",
-                            "France;Europe;Les Contamines-Montjoie;Auvergne-Rhone-Alpes;Haute-Savoie;",
+                            "France;Europe;Les Contamines-Montjoie;Auvergne-Rhône-Alpes;Haute-Savoie;",
                             "True",
                             "True",
                             "False"});
@@ -4474,7 +4474,7 @@ this.FeatureBackground();
                             "27 Jan 2020 11:50:41",
                             "20200127_115041",
                             "",
-                            "France;Europe;Les Contamines-Montjoie;Auvergne-Rhone-Alpes;Haute-Savoie;",
+                            "France;Europe;Les Contamines-Montjoie;Auvergne-Rhône-Alpes;Haute-Savoie;",
                             "True",
                             "True",
                             "True"});
