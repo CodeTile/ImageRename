@@ -49,6 +49,7 @@ namespace ImageRename.Standard
         public string ProcessedPath { get; set; }
         public string SourcePath { get; set; }
         public object MoveToprocessed { get; set; }
+        public bool FindOnly { get; set; }
 
         #region RenameProgressEvent
 
@@ -162,7 +163,8 @@ namespace ImageRename.Standard
 
         private void RenameFiles()
         {
-            if (_images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
+            
+            if (FindOnly==false|| _images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
             {
                 return;
             }
@@ -180,6 +182,11 @@ namespace ImageRename.Standard
             }
         }
 
+
+     
+
+      
+
         private void ReportFindFileProgress()
         {
             var e = new ReportFindFilesProgressEventArgs();
@@ -187,6 +194,7 @@ namespace ImageRename.Standard
             {
                 e.TotalFileCount = _images.Count();
                 e.FilesToRename = _images.Count(c => c!=null && c.NeedsRenaming==true);
+                
             }
 
             OnReportFilesFoundProgress(e);
@@ -397,9 +405,11 @@ namespace ImageRename.Standard
                 }
                 
                 ReverseGeocode(image);
+                ReportFoundFileToProcess(image);
             }
             return image;
         }
+
 
         public void ReverseGeocode(IImageDetails image)
         {

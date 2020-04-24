@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageRename"
         mc:Ignorable="d"
-        Title="Image Rename" Height="418.125" Width="800"
+        Title="Image Rename" Height="600" Width="1128"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
         MinWidth="500" Loaded="Window_Loaded">
@@ -39,12 +39,39 @@
 
         <Label Grid.Row="3" Grid.Column="0" Content="Images Found" />
         <Label Grid.Row="3" Grid.Column="1" Name="txtFileSummary" />
-
-        <Border Grid.Row="4" Grid.Column="1" Width="120" CornerRadius="16" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        <StackPanel  Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+            <Border Width="120" CornerRadius="16" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <Button  Content="Find" Width="90" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontSize="14" Name="btnFind" Click="btnFind_Click" Height="33" Margin="14,0,14,0" VerticalAlignment="Top" />
+            </Border>
+           <Border Width="120" CornerRadius="16" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
             <Button  Content="Process" Width="90" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" FontSize="14" Name="btnProcess" Click="btnProcess_Click" Height="33" Margin="14,0,14,0" VerticalAlignment="Top" />
-        </Border>
-        <ScrollViewer Grid.Row="5" Grid.Column="1" Margin="0,10,0,0">
-            <TextBox   TextAlignment="Left" Name="txtProgress" />
-        </ScrollViewer>
+            </Border>
+        </StackPanel>
+        <TabControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,0">
+            <TabItem Header="Console" >
+            <ScrollViewer >
+                    <TextBox   TextAlignment="Left" Name="txtProgress" Width="Auto" Margin="0,10,0,0" Background="Black" Foreground="White"/>
+            </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Files">
+                <ListView>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Relative Path"/>
+                            <GridViewColumn Header="Original Name"/>
+                            <GridViewColumn Header="New Name"/>
+                            <GridViewColumn Header="Rename"/>
+                            <GridViewColumn Header="GeoTag"/>
+                            <GridViewColumn Header="Longitude"/>
+                            <GridViewColumn Header="Latitude"/>
+                            <GridViewColumn Header="GeoTag Keywords"/>
+                            <GridViewColumn Header="Keywords"/>
+
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

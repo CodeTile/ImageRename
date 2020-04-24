@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Configuration;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using ImageRename.Standard;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using ImageRename.Standard.Model;
 
 namespace ImageRename
 {
@@ -15,39 +13,83 @@ namespace ImageRename
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ProcessFolder _processor;
-        private BackgroundWorker _backgroundWorker;
-
-      
-
         public MainWindow()
         {
             InitializeComponent();
-            
+        }
+
+        private BackgroundWorker _backgroundWorker;
+        private ProcessFolder _processor;
+
+        private enum ProgressReporting
+        {
+            FileCountProgress = 10,
+            RenameProgress = 20
+        }
+
+        private void _processor_ReportFoundFileProgress(object sender, ReportFindFilesProgressEventArgs e)
+        {
+            string msg = $"{e.FilesToRename}/ {e.TotalFileCount}";
+            _backgroundWorker.ReportProgress((int)ProgressReporting.FileCountProgress, msg);
+        }
+
+        
+
+        private void _processor_ReportRenameProgress(object sender, ReportRenameProgressEventArgs e)
+        {
+            var msg = e.Message.ToString();
+            _backgroundWorker.ReportProgress((int)ProgressReporting.RenameProgress, msg);
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var parameters = (ProcessParameters)e.Argument;
+            _processor = new ProcessFolder(Helper.GetConfiguration());
+
+            _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
+            _processor.MoveToProcessedByYear = parameters.SortByYear;
+            _processor.ProcessedPath = parameters.ProcessedPath;
+            _processor.MoveToprocessed = parameters.MoveToProcessed;
+            _processor.FindOnly = parameters.FindOnly;
+            _processor.ReportRenameProgress += _processor_ReportRenameProgress;
+            _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
+            _backgroundWorker.ReportProgress(0, "Starting");
+            _processor.Process(parameters.SourcePath);
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == (int)ProgressReporting.FileCountProgress)
+            {
+                txtFileSummary.Content = e.UserState.ToString();
+            }
+            else
+            {
+                txtProgress.AppendText($"{e.UserState.ToString()}\r\n");
+            }
+        }
+
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            txtProgress.AppendText("#######################################\r\n");
+            txtProgress.AppendText("###          Finished               ###\r\n");
+            txtProgress.AppendText("#######################################\r\n");
+            btnProcess.IsEnabled = false;
+        }
+
+        private void btnFind_click((object sender, RoutedEventArgs e))
+        {
+            StartProcessing(true);
+        }
+
+        private void btnFindPath_Click(object sender, RoutedEventArgs e)
+        {
+            txtPath.Text = ShowDialog(txtPath.Text);
         }
 
         private void btnProcess_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(txtPath.Text))
-            {
-                txtProgress.Text = string.Empty;
-                txtFileSummary.Content = string.Empty;
-                Settings.Default.SourceFolder = txtPath.Text;
-                Settings.Default.DestinationFolder = txtProcessedPath.Text;
-                Settings.Default.Save();
-                var processParams = new ProcessParameters()
-                {
-                    ProcessedPath =  txtProcessedPath.Text,
-                    SourcePath = txtPath.Text,
-                    SortByYear = (bool)chkMoveToProcessedByYear.IsChecked
-                };
-                if ((bool)chkMoveToProcessedFolder.IsChecked)
-                {
-                    processParams.SortByYear = false;
-                    processParams.ProcessedPath = string.Empty;
-                }
-                _backgroundWorker.RunWorkerAsync(processParams);
-            }
+            StartProcessing(false);
         }
 
         private void btnProcessedBrowse_Click(object sender, RoutedEventArgs e)
@@ -55,9 +97,20 @@ namespace ImageRename
             txtProcessedPath.Text = ShowDialog(txtProcessedPath.Text);
         }
 
-        private void btnFindPath_Click(object sender, RoutedEventArgs e)
+        private void SetDefaultProcessedPath()
         {
-            txtPath.Text = ShowDialog(txtPath.Text);
+            if (txtProcessedPath == null)
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(txtPath.Text))
+            {
+                txtProcessedPath.Clear();
+            }
+            else
+            {
+                txtProcessedPath.Text = Path.GetFullPath(Path.Combine(txtPath.Text, "..\\ProcessedPhotos"));
+            }
         }
 
         private string ShowDialog(string originalPath)
@@ -80,65 +133,28 @@ namespace ImageRename
             }
         }
 
-        private struct ProcessParameters
+        private void StartProcessing(bool findOnly)
         {
-            public string ProcessedPath { get; set; }
-            public bool SortByYear { get; set; }
-            public string SourcePath { get; set; }
-            public object MoveToProcessed { get; internal set; }
-        }
-
-        private enum ProgressReporting
-        {
-            FileCountProgress = 10,
-            RenameProgress = 20
-        }
-
-        private void _processor_ReportRenameProgress(object sender, ReportRenameProgressEventArgs e)
-        {
-            var msg = e.Message.ToString();
-            _backgroundWorker.ReportProgress((int)ProgressReporting.RenameProgress, msg);
-        }
-
-        private void _processor_ReportFoundFileProgress(object sender, ReportFindFilesProgressEventArgs e)
-        {
-            string msg = $"{e.FilesToRename}/ {e.TotalFileCount}";
-            _backgroundWorker.ReportProgress((int)ProgressReporting.FileCountProgress, msg);
-        }
-
-        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            txtProgress.AppendText("#######################################\r\n");
-            txtProgress.AppendText("###          Finished               ###\r\n");
-            txtProgress.AppendText("#######################################\r\n");
-            btnProcess.IsEnabled = false;
-        }
-
-        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.ProgressPercentage == (int)ProgressReporting.FileCountProgress)
+            if (!Directory.Exists(txtPath.Text))
+                return;
+            txtProgress.Text = string.Empty;
+            txtFileSummary.Content = string.Empty;
+            Settings.Default.SourceFolder = txtPath.Text;
+            Settings.Default.DestinationFolder = txtProcessedPath.Text;
+            Settings.Default.Save();
+            var processParams = new ProcessParameters()
             {
-                txtFileSummary.Content = e.UserState.ToString();
-            }
-            else
+                ProcessedPath = txtProcessedPath.Text,
+                SourcePath = txtPath.Text,
+                SortByYear = (bool)chkMoveToProcessedByYear.IsChecked,
+                FindOnly = findOnly,
+            };
+            if ((bool)chkMoveToProcessedFolder.IsChecked)
             {
-                txtProgress.AppendText($"{e.UserState.ToString()}\r\n");
+                processParams.SortByYear = false;
+                processParams.ProcessedPath = string.Empty;
             }
-        }
-
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            var parameters = (ProcessParameters)e.Argument;
-            _processor = new ProcessFolder(Helper.GetConfiguration());
-
-            _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
-            _processor.MoveToProcessedByYear = parameters.SortByYear;
-            _processor.ProcessedPath = parameters.ProcessedPath;
-            _processor.MoveToprocessed = parameters.MoveToProcessed;
-            _processor.ReportRenameProgress += _processor_ReportRenameProgress;
-            _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
-            _backgroundWorker.ReportProgress(0, "Starting");
-            _processor.Process(parameters.SourcePath);
+            _backgroundWorker.RunWorkerAsync(processParams);
         }
 
         private void txtPath_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -146,22 +162,6 @@ namespace ImageRename
             SetDefaultProcessedPath();
         }
 
-        private void SetDefaultProcessedPath()
-        {
-            if (txtProcessedPath == null)
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(txtPath.Text))
-            {
-                txtProcessedPath.Clear();
-            }
-            else
-            {
-                txtProcessedPath.Text = Path.GetFullPath(Path.Combine(txtPath.Text, "..\\ProcessedPhotos"));
-            }
-        }
-    
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtPath.Text = Settings.Default.SourceFolder;
@@ -171,6 +171,15 @@ namespace ImageRename
             _backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
             _backgroundWorker.WorkerReportsProgress = true;
             _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+        }
+
+        private struct ProcessParameters
+        {
+            public bool FindOnly { get; internal set; }
+            public object MoveToProcessed { get; internal set; }
+            public string ProcessedPath { get; set; }
+            public bool SortByYear { get; set; }
+            public string SourcePath { get; set; }
         }
     }
 }
