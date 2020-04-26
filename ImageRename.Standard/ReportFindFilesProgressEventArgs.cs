@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using ImageRename.Standard.Model;
 
 namespace ImageRename.Standard
 {
@@ -6,5 +8,6 @@ namespace ImageRename.Standard
     {
         public int TotalFileCount { get; set; }
         public int FilesToRename { get; set; }
+        public ObservableCollection<IImageDetails> Images { get; internal set; }
     }
 }

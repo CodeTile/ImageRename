@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -21,8 +22,11 @@ namespace ImageRename
         private BackgroundWorker _backgroundWorker;
         private ProcessFolder _processor;
 
+        public ObservableCollection<IImageDetails> ImagesFound { get; private set; }
+
         private enum ProgressReporting
         {
+            PassImageObject=-1,
             FileCountProgress = 10,
             RenameProgress = 20
         }
@@ -31,6 +35,7 @@ namespace ImageRename
         {
             string msg = $"{e.FilesToRename}/ {e.TotalFileCount}";
             _backgroundWorker.ReportProgress((int)ProgressReporting.FileCountProgress, msg);
+            //_backgroundWorker.ReportProgress(-1, e.Images);
         }
 
         
@@ -39,6 +44,7 @@ namespace ImageRename
         {
             var msg = e.Message.ToString();
             _backgroundWorker.ReportProgress((int)ProgressReporting.RenameProgress, msg);
+            
         }
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -59,6 +65,12 @@ namespace ImageRename
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            //if(e.ProgressPercentage == (int)ProgressReporting.PassImageObject)
+            //{
+            //    ImagesFound = (ObservableCollection < IImageDetails > )e.UserState;
+            //    lvFoundfiles.ItemsSource = ImagesFound;
+            //}
+           // else
             if (e.ProgressPercentage == (int)ProgressReporting.FileCountProgress)
             {
                 txtFileSummary.Content = e.UserState.ToString();
@@ -75,9 +87,11 @@ namespace ImageRename
             txtProgress.AppendText("###          Finished               ###\r\n");
             txtProgress.AppendText("#######################################\r\n");
             btnProcess.IsEnabled = false;
+
+            lvFoundfiles.ItemsSource = _processor._images;
         }
 
-        private void btnFind_click((object sender, RoutedEventArgs e))
+        private void btnFind_Click(object sender, RoutedEventArgs e)
         {
             StartProcessing(true);
         }

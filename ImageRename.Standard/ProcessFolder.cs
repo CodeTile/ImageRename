@@ -19,6 +19,7 @@ namespace ImageRename.Standard
     {
         private readonly IConfiguration Configuration;
         private IGeocoder _BingGeoCoder;
+        private List<ContinentDescription> _continents;
         private bool? _hasInternet;
         public ObservableCollection<IImageDetails> _images;
 
@@ -29,6 +30,8 @@ namespace ImageRename.Standard
 
         public bool DebugDontRenameFile { get; set; } = false;
         public ExifLibrary.ImageFile ExifFileDetails { get; set; }
+
+        public bool FindOnly { get; set; }
 
         public bool HasInternet
         {
@@ -45,11 +48,10 @@ namespace ImageRename.Standard
             { _hasInternet = value; }
         }
 
+        public object MoveToprocessed { get; set; }
         public bool MoveToProcessedByYear { get; set; }
         public string ProcessedPath { get; set; }
         public string SourcePath { get; set; }
-        public object MoveToprocessed { get; set; }
-        public bool FindOnly { get; set; }
 
         #region RenameProgressEvent
 
@@ -109,6 +111,15 @@ namespace ImageRename.Standard
             return _BingGeoCoder;
         }
 
+        private string GetContinent(string countryRegion)
+        {
+            if (_continents == null)
+            {
+                ReadContinetsFromFile();
+            }
+            return _continents.Single(s => s.Country.Equals(countryRegion, StringComparison.CurrentCultureIgnoreCase)).Continent + ";";
+        }
+
         private string GetSequenceFilename(FileInfo file)
         {
             var sequenceId = 2;
@@ -120,6 +131,31 @@ namespace ImageRename.Standard
             }
             var retval = string.Format(template, sequenceId);
             return retval;
+        }
+
+        private void ReadContinetsFromFile()
+        {
+            if (_continents != null && !_continents.Any())
+            {
+                return;
+            }
+            var filename = "countries.csv";
+            if (!File.Exists(filename))
+            {
+                throw new FileNotFoundException(filename);
+            }
+            _continents = new List<ContinentDescription>();
+            foreach (var line in File.ReadAllLines(filename))
+            {
+                var fields = line.Split(',');
+                var cd = new ContinentDescription()
+                {
+                    Country = fields[0],
+                    Region1 = fields[1],
+                    Continent = fields[2]
+                };
+                _continents.Add(cd);
+            }
         }
 
         private void RenameFile(IImageDetails item)
@@ -149,27 +185,14 @@ namespace ImageRename.Standard
             ReportRenamingProgress($"{sourceFile.Replace(SourcePath, string.Empty).PadRight(30)} ==> {destinationFile.Replace(SourcePath, string.Empty)}");
         }
 
-        private void SetKeywordsInFile(IImageDetails image)
-        {
-            if(image.OriginalKeywords== image.KeyWords)
-            {
-                return;
-            }
-
-            var file = ExifLibrary.ImageFile.FromFile(image.SourceFileInfo.FullName); 
-            file.Properties.Set(ExifTag.WindowsKeywords, image.KeyWords);
-            file.Save(image.SourceFileInfo.FullName);
-        }
-
         private void RenameFiles()
         {
-            
-            if (FindOnly==false|| _images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
+            if (FindOnly == false || _images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
             {
                 return;
             }
 
-            foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving  || w.KeyWords!= w.OriginalKeywords))
+            foreach (var item in _images.Where(w => w.NeedsRenaming == true || w.NeedsMoving || w.KeyWords != w.OriginalKeywords))
             {
                 try
                 {
@@ -182,19 +205,14 @@ namespace ImageRename.Standard
             }
         }
 
-
-     
-
-      
-
         private void ReportFindFileProgress()
         {
             var e = new ReportFindFilesProgressEventArgs();
             if (_images != null)
             {
                 e.TotalFileCount = _images.Count();
-                e.FilesToRename = _images.Count(c => c!=null && c.NeedsRenaming==true);
-                
+                e.FilesToRename = _images.Count(c => c != null && c.NeedsRenaming == true);
+                //e.Images = _images;
             }
 
             OnReportFilesFoundProgress(e);
@@ -207,6 +225,18 @@ namespace ImageRename.Standard
             { Message = message };
 
             OnReportRenaimingProgress(e);
+        }
+
+        private void SetKeywordsInFile(IImageDetails image)
+        {
+            if (image.OriginalKeywords == image.KeyWords)
+            {
+                return;
+            }
+
+            var file = ExifLibrary.ImageFile.FromFile(image.SourceFileInfo.FullName);
+            file.Properties.Set(ExifTag.WindowsKeywords, image.KeyWords);
+            file.Save(image.SourceFileInfo.FullName);
         }
 
         internal bool AreFilesTheSame(string sourceFile, string destinationFile)
@@ -309,7 +339,7 @@ namespace ImageRename.Standard
                 {
                     case "BING":
                         BingAddress a = (BingAddress)address;
-                        keyWords = $"{a.CountryRegion};{GetContinent(a.CountryRegion)};{a.Locality};{a.AdminDistrict};{a.AdminDistrict2};".Replace(";Capital;",";").Replace($";Stadt {a.AdminDistrict};",";");
+                        keyWords = $"{a.CountryRegion};{GetContinent(a.CountryRegion)};{a.Locality};{a.AdminDistrict};{a.AdminDistrict2};".Replace(";Capital;", ";").Replace($";Stadt {a.AdminDistrict};", ";");
                         break;
 
                     default:
@@ -322,43 +352,6 @@ namespace ImageRename.Standard
                 }
             }
             return keyWords?.Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", "");
-        }
-
-        private List<ContinentDescription> _continents;
-        private string GetContinent(string countryRegion)
-        {
-            if(_continents==null)
-            {
-                ReadContinetsFromFile();
-            }
-            return _continents.Single(s => s.Country.Equals(countryRegion, StringComparison.CurrentCultureIgnoreCase)).Continent+";";
-
-        }
-
-        private void ReadContinetsFromFile()
-        {
-            if(_continents!=null && !_continents.Any())
-            {
-                return;
-            }
-            var filename = "countries.csv";
-            if(!File.Exists(filename))
-            {
-                throw new FileNotFoundException(filename);
-            }
-            _continents = new List<ContinentDescription>();
-            foreach (var line in File.ReadAllLines(filename))
-            {
-                var fields = line.Split(',');
-                var cd = new ContinentDescription()
-                {
-                    Country = fields[0],
-                    Region1 = fields[1],
-                    Continent = fields[2]
-                };
-                _continents.Add(cd);
-            }
-
         }
 
         public void Process(string root)
@@ -403,13 +396,12 @@ namespace ImageRename.Standard
                         image = new ImageDetails(filename, ProcessedPath) { HasInternet = HasInternet };
                         break;
                 }
-                
+
                 ReverseGeocode(image);
-                ReportFoundFileToProcess(image);
+                
             }
             return image;
         }
-
 
         public void ReverseGeocode(IImageDetails image)
         {

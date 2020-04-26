@@ -54,18 +54,19 @@
             </ScrollViewer>
             </TabItem>
             <TabItem Header="Files">
-                <ListView>
+                <ListView ItemsSource="{Binding ImagesFound}" Name="lvFoundfiles">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Relative Path"/>
-                            <GridViewColumn Header="Original Name"/>
-                            <GridViewColumn Header="New Name"/>
-                            <GridViewColumn Header="Rename"/>
-                            <GridViewColumn Header="GeoTag"/>
-                            <GridViewColumn Header="Longitude"/>
-                            <GridViewColumn Header="Latitude"/>
-                            <GridViewColumn Header="GeoTag Keywords"/>
-                            <GridViewColumn Header="Keywords"/>
+                            <GridViewColumn Header="Year" DisplayMemberBinding="{Binding YearTaken}"/>
+                            <GridViewColumn Header="Quarter" DisplayMemberBinding="{Binding QuarterTaken}"/>
+                            <GridViewColumn Header="Original Name" DisplayMemberBinding="{Binding SourceFileInfo.Name}"/>
+                            <GridViewColumn Header="New Name" DisplayMemberBinding="{Binding DestinationFileName}"/>
+                            <GridViewColumn Header="Rename" DisplayMemberBinding="{Binding NeedsRenaming}"/>
+                            <GridViewColumn Header="New KeyWords" DisplayMemberBinding="{Binding HasNewKeywords}"/>
+                            <GridViewColumn Header="Longitude" DisplayMemberBinding="{Binding GPS.Longitude}"/>
+                            <GridViewColumn Header="Latitude" DisplayMemberBinding="{Binding GPS.Latitude}"/>
+                        
+                            <GridViewColumn Header="Keywords" DisplayMemberBinding="{Binding Keywords}"/>
 
                         </GridView>
                     </ListView.View>
