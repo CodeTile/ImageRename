@@ -187,7 +187,7 @@ namespace ImageRename.Standard
 
         private void RenameFiles()
         {
-            if (FindOnly == false || _images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
+            if (FindOnly == true || _images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
             {
                 return;
             }
