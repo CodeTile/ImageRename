@@ -52,7 +52,7 @@ namespace ImageRename
             var parameters = (ProcessParameters)e.Argument;
             _processor = new ProcessFolder(Helper.GetConfiguration());
 
-            //_processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
+            _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
             //_processor.MoveToProcessedByYear = parameters.SortByYear;
             //_processor.ProcessedPath = parameters.ProcessedPath;
             //_processor.MoveToprocessed = parameters.MoveToProcessed;
@@ -60,18 +60,12 @@ namespace ImageRename
             _processor.ReportRenameProgress += _processor_ReportRenameProgress;
             _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
             _backgroundWorker.ReportProgress(0, "Starting");
-            //_processor.Process(parameters.SourcePath);
             _processor.Process(parameters);
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            //if(e.ProgressPercentage == (int)ProgressReporting.PassImageObject)
-            //{
-            //    ImagesFound = (ObservableCollection < IImageDetails > )e.UserState;
-            //    lvFoundfiles.ItemsSource = ImagesFound;
-            //}
-            // else
+           
             if (e.ProgressPercentage == (int)ProgressReporting.FileCountProgress)
             {
                 txtFileSummary.Content = e.UserState.ToString();
@@ -164,6 +158,7 @@ namespace ImageRename
                 SortByYear = (bool)chkMoveToProcessedByYear.IsChecked,
                 FindOnly = findOnly,
                 WriteReverseGeotag = (bool)chkReverseGeotag.IsChecked,
+                OnlyShowfilesToChange = (bool)chkOnlyshowfilesToChange.IsChecked,
             };
             if ((bool)chkMoveToProcessedFolder.IsChecked)
             {

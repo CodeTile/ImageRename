@@ -32,6 +32,7 @@
             <CheckBox Content="Move File to processed by year." IsChecked="True" VerticalAlignment="Center"   Name="chkMoveToProcessedByYear" />
             <CheckBox Content="Rename Only" IsChecked="False" VerticalAlignment="Center"   Name="chkMoveToProcessedFolder" />
             <CheckBox Content="Reverse Geotag" IsChecked="True" VerticalAlignment="Center"   Name="chkReverseGeotag" />
+            <CheckBox Content="Only show files to change" IsChecked="True" VerticalAlignment="Center"   Name="chkOnlyshowfilesToChange" />
         </StackPanel>
         
         <Label Grid.Row="2" Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
@@ -62,8 +63,31 @@
                             <GridViewColumn Header="Quarter" DisplayMemberBinding="{Binding QuarterTaken}"/>
                             <GridViewColumn Header="Original Name" DisplayMemberBinding="{Binding SourceFileInfo.Name}"/>
                             <GridViewColumn Header="New Name" DisplayMemberBinding="{Binding DestinationFileName}"/>
-                            <GridViewColumn Header="Rename" DisplayMemberBinding="{Binding NeedsRenaming}"/>
-                            <GridViewColumn Header="New KeyWords" DisplayMemberBinding="{Binding HasNewKeywords}"/>
+                            <!--<GridViewColumn Header="Rename" DisplayMemberBinding="{Binding NeedsRenaming}"/>-->
+                            <GridViewColumn Header="Rename">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock x:Name="Txt" Text="{Binding NeedsRenaming}" />
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding NeedsRenaming}" Value="true">
+                                                <Setter TargetName="Txt" Property="Background" Value="#FFB3CCE0" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="New KeyWords">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock x:Name="Txt" Text="{Binding HasNewKeywords}" />
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding HasNewKeywords}" Value="true">
+                                                <Setter TargetName="Txt" Property="Background" Value="#FF91D9DC" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="Longitude" DisplayMemberBinding="{Binding GPS.Longitude}"/>
                             <GridViewColumn Header="Latitude" DisplayMemberBinding="{Binding GPS.Latitude}"/>
 

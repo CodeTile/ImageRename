@@ -49,7 +49,7 @@ namespace ImageRename.Standard
 
         //public object MoveToprocessed { get; set; }
         //public bool MoveToProcessedByYear { get; set; }
-        public ProcessParameters Parameters { get;  set; }
+        public ProcessParameters Parameters { get; set; }
         //public string ProcessedPath { get; set; }
         //public string SourcePath { get; set; }
         #region RenameProgressEvent
@@ -71,7 +71,7 @@ namespace ImageRename.Standard
 
         public event EventHandler<ReportFindFilesProgressEventArgs> ReportFoundFileProgress;
 
-        
+
 
         /// <summary>
         /// Event for a file has been found.
@@ -114,7 +114,17 @@ namespace ImageRename.Standard
                 var processed = ProcessFile(file);
                 if (processed != null)
                 {
-                    _images.Add(ProcessFile(file));
+                    if (Parameters.OnlyShowfilesToChange)
+                    {
+                        if (processed.NeedsRenaming || processed.HasNewKeywords)
+                        {
+                            _images.Add(processed);
+                        }
+                    }
+                    else
+                    {
+                        _images.Add(processed);
+                    }
                 }
             }
         }
@@ -182,9 +192,12 @@ namespace ImageRename.Standard
                 throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{parameters.SourcePath}");
             }
 
-            GetBingGeoCoder();
+            if (parameters.WriteReverseGeotag)
+            {
+                GetBingGeoCoder();
+            }
 
-         
+
             _images = new ObservableCollection<IImageDetails>();
             _images.CollectionChanged += _images_CollectionChanged;
             FindFiles(parameters.SourcePath);
@@ -409,7 +422,7 @@ namespace ImageRename.Standard
 
         private void SetKeywordsInFile(IImageDetails image)
         {
-            if (image.OriginalKeywords == image.KeyWords)
+            if (Parameters.WriteReverseGeotag || image.OriginalKeywords == image.KeyWords)
             {
                 return;
             }

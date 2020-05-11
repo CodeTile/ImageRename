@@ -8,5 +8,6 @@
         public bool SortByYear { get; set; }
         public string SourcePath { get; set; }
         public bool WriteReverseGeotag { get;  set; }
+        public bool OnlyShowfilesToChange { get; set; }
     }
 }
