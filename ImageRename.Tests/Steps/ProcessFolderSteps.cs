@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using ImageRename.Standard;
+using ImageRename.Standard.Model;
 using ImageRename.Tests.Context;
 using ImageRename.Tests.Models;
 using TechTalk.SpecFlow;
@@ -22,16 +23,18 @@ namespace ImageRename.Tests.Steps
         [Given(@"I process the folder '(.*)' with the following flags")]
         public void GivenIProcessTheFolderWithTheFollowingFlags(string foldername, Table table)
         {
-            var originalPath = Path.Combine(TestFileFolder, foldername);
-
             var row = table.Rows[0];
             var target = new ProcessFolder(Helper.GetConfiguration())
             {
                 DebugDontRenameFile = Convert.ToBoolean(row["DebugDontRenameFile"]),
-                MoveToProcessedByYear = Convert.ToBoolean(row["MoveToProcessedByYear"]),
-                ProcessedPath = string.IsNullOrEmpty(row["ProcessedPath"]) ? null : Path.Combine(TestFileFolder, row["ProcessedPath"])
             };
-            target.Process(originalPath);
+            var parameters = new ProcessParameters()
+            {
+                SortByYear = Convert.ToBoolean(row["MoveToProcessedByYear"]),
+                SourcePath= Path.Combine(TestFileFolder, foldername),
+            ProcessedPath = string.IsNullOrEmpty(row["ProcessedPath"]) ? null : Path.Combine(TestFileFolder, row["ProcessedPath"])
+            };
+            target.Process(parameters);
             Wait(640);
         }
 

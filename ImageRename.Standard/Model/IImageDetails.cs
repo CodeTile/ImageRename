@@ -20,5 +20,6 @@ namespace ImageRename.Standard.Model
         bool HasInternet { get; set; } 
         string YearTaken { get; }
         string QuarterTaken { get; }
+        string ReverseGeoCodeKeyWords { get; set; }
     }
 }

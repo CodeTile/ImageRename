@@ -26,7 +26,7 @@ namespace ImageRename
 
         private enum ProgressReporting
         {
-            PassImageObject=-1,
+            PassImageObject = -1,
             FileCountProgress = 10,
             RenameProgress = 20
         }
@@ -38,13 +38,13 @@ namespace ImageRename
             //_backgroundWorker.ReportProgress(-1, e.Images);
         }
 
-        
+
 
         private void _processor_ReportRenameProgress(object sender, ReportRenameProgressEventArgs e)
         {
             var msg = e.Message.ToString();
             _backgroundWorker.ReportProgress((int)ProgressReporting.RenameProgress, msg);
-            
+
         }
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -52,15 +52,16 @@ namespace ImageRename
             var parameters = (ProcessParameters)e.Argument;
             _processor = new ProcessFolder(Helper.GetConfiguration());
 
-            _processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
-            _processor.MoveToProcessedByYear = parameters.SortByYear;
-            _processor.ProcessedPath = parameters.ProcessedPath;
-            _processor.MoveToprocessed = parameters.MoveToProcessed;
-            _processor.FindOnly = parameters.FindOnly;
+            //_processor.DebugDontRenameFile = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["DebugDontRenameFile"]);
+            //_processor.MoveToProcessedByYear = parameters.SortByYear;
+            //_processor.ProcessedPath = parameters.ProcessedPath;
+            //_processor.MoveToprocessed = parameters.MoveToProcessed;
+            //_processor.FindOnly = parameters.FindOnly;
             _processor.ReportRenameProgress += _processor_ReportRenameProgress;
             _processor.ReportFoundFileProgress += _processor_ReportFoundFileProgress;
             _backgroundWorker.ReportProgress(0, "Starting");
-            _processor.Process(parameters.SourcePath);
+            //_processor.Process(parameters.SourcePath);
+            _processor.Process(parameters);
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -70,14 +71,14 @@ namespace ImageRename
             //    ImagesFound = (ObservableCollection < IImageDetails > )e.UserState;
             //    lvFoundfiles.ItemsSource = ImagesFound;
             //}
-           // else
+            // else
             if (e.ProgressPercentage == (int)ProgressReporting.FileCountProgress)
             {
                 txtFileSummary.Content = e.UserState.ToString();
             }
             else
             {
-                txtProgress.AppendText($"{e.UserState.ToString()}\r\n");
+                txtProgress.AppendText($"{e.UserState}\r\n");
             }
         }
 
@@ -162,6 +163,7 @@ namespace ImageRename
                 SourcePath = txtPath.Text,
                 SortByYear = (bool)chkMoveToProcessedByYear.IsChecked,
                 FindOnly = findOnly,
+                WriteReverseGeotag = (bool)chkReverseGeotag.IsChecked,
             };
             if ((bool)chkMoveToProcessedFolder.IsChecked)
             {
@@ -187,13 +189,5 @@ namespace ImageRename
             _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
         }
 
-        private struct ProcessParameters
-        {
-            public bool FindOnly { get; internal set; }
-            public object MoveToProcessed { get; internal set; }
-            public string ProcessedPath { get; set; }
-            public bool SortByYear { get; set; }
-            public string SourcePath { get; set; }
-        }
     }
 }

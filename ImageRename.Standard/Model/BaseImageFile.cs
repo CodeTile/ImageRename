@@ -210,6 +210,9 @@ namespace ImageRename.Standard.Model
         }
 
         public string YearTaken =>ImageCreated?.Year.ToString();
+
+        public string ReverseGeoCodeKeyWords { get ; set ; }
+
         private DateTime? GetExifDatetime(ImageFile file, ExifTag tag)
         {
             try

@@ -31,6 +31,7 @@
 
             <CheckBox Content="Move File to processed by year." IsChecked="True" VerticalAlignment="Center"   Name="chkMoveToProcessedByYear" />
             <CheckBox Content="Rename Only" IsChecked="False" VerticalAlignment="Center"   Name="chkMoveToProcessedFolder" />
+            <CheckBox Content="Reverse Geotag" IsChecked="True" VerticalAlignment="Center"   Name="chkReverseGeotag" />
         </StackPanel>
         
         <Label Grid.Row="2" Grid.Column="0" Content="Path" Width="50"  HorizontalAlignment="Left" />
@@ -65,8 +66,11 @@
                             <GridViewColumn Header="New KeyWords" DisplayMemberBinding="{Binding HasNewKeywords}"/>
                             <GridViewColumn Header="Longitude" DisplayMemberBinding="{Binding GPS.Longitude}"/>
                             <GridViewColumn Header="Latitude" DisplayMemberBinding="{Binding GPS.Latitude}"/>
-                        
-                            <GridViewColumn Header="Keywords" DisplayMemberBinding="{Binding Keywords}"/>
+
+                            <GridViewColumn Header="Keywords" DisplayMemberBinding="{Binding KeyWords}"/>
+                            <GridViewColumn Header="Original Keywords" DisplayMemberBinding="{Binding OriginalKeywords}"/>
+                            <GridViewColumn Header="GeoCode Keywords" DisplayMemberBinding="{Binding ReverseGeoCodeKeyWords}"/>
+                            
 
                         </GridView>
                     </ListView.View>

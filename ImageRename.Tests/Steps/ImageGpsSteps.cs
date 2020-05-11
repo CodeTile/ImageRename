@@ -59,9 +59,10 @@ namespace ImageRename.Tests.Steps
                 var results = new List<ImageResult>();
                 foreach (var row in table.Rows)
                 {
+                    target.Parameters = new ProcessParameters();
                      path = Path.Combine(TestFileFolder, row["TestFolder"], row["TestFile"]);
                     target.HasInternet = Convert.ToBoolean(row["HasInternet"]);
-                    target.ProcessedPath = GetRowValue(row,"ProcessedPath");
+                    target.Parameters.ProcessedPath = GetRowValue(row,"ProcessedPath");
                     var actual = target.ProcessFile(path);
                     results.Add(new ImageResult()
                     {
@@ -81,7 +82,7 @@ namespace ImageRename.Tests.Steps
                         OriginalKeywords = actual.OriginalKeywords,
                         TestFile = row["TestFile"],
                         TestFolder = row["TestFolder"],
-                        ProcessedPath = target.ProcessedPath
+                        ProcessedPath = target.Parameters.ProcessedPath,
                     }); ;
                 }
                 table.CompareToSet<ImageResult>(results);

@@ -77,7 +77,7 @@ namespace ImageRename.Tests.Features
         
         public virtual void FeatureBackground()
         {
-#line 4
+#line 3
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Path"});
@@ -101,7 +101,7 @@ namespace ImageRename.Tests.Features
                         "DuplicateTimeStampMoveWithExistingFiles"});
             table9.AddRow(new string[] {
                         "DuplicateTimeStampMoveWithExistingFilesProcessed"});
-#line 5
+#line 4
  testRunner.Given("I delete the folders", ((string)(null)), table9, "Given ");
 #line hidden
         }
@@ -118,7 +118,7 @@ namespace ImageRename.Tests.Features
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DontMoveTest", null, ((string[])(null)));
-#line 18
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -138,10 +138,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 19
+#line 18
  testRunner.Given("I create a copy of all test files into the folder \'ProcessFolderDontMoveTest\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -166,7 +166,7 @@ this.FeatureBackground();
                             "\\NEF\\20080601_020200.nef"});
                 table10.AddRow(new string[] {
                             "\\NEF\\Good.nef"});
-#line 20
+#line 19
  testRunner.And("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table10, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -177,7 +177,7 @@ this.FeatureBackground();
                             "false",
                             "false",
                             ""});
-#line 33
+#line 31
  testRunner.When("I process the folder \'ProcessFolderDontMoveTest\' with the following flags", ((string)(null)), table11, "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -202,7 +202,7 @@ this.FeatureBackground();
                             "\\NEF\\20080601_020200.nef"});
                 table12.AddRow(new string[] {
                             "\\NEF\\20080601_020200_2.nef"});
-#line 37
+#line 34
  testRunner.Then("the folder \'ProcessFolderDontMoveTest\' with subfolders contains", ((string)(null)), table12, "Then ");
 #line hidden
             }
@@ -216,7 +216,7 @@ this.FeatureBackground();
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MoveTest1", null, ((string[])(null)));
-#line 50
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -236,10 +236,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 51
+#line 48
  testRunner.Given("I create a copy of all test files into the folder \'ProcessFolderMoveTest\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -264,7 +264,7 @@ this.FeatureBackground();
                             "\\NEF\\20080601_020200.nef"});
                 table13.AddRow(new string[] {
                             "\\NEF\\Good.nef"});
-#line 52
+#line 49
  testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table13, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -275,7 +275,7 @@ this.FeatureBackground();
                             "false",
                             "true",
                             "ProcessFolderMoveTestProcessed"});
-#line 65
+#line 61
  testRunner.When("I process the folder \'ProcessFolderMoveTest\' with the following flags", ((string)(null)), table14, "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -298,21 +298,21 @@ this.FeatureBackground();
                             "\\2018\\Q2\\20180408_122634.CR2"});
                 table15.AddRow(new string[] {
                             "\\2020\\Q1\\20200127_115041.jpg"});
-#line 69
+#line 64
  testRunner.Then("the folder \'ProcessFolderMoveTestProcessed\' with subfolders contains", ((string)(null)), table15, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
                 table16.AddRow(new string[] {
                             "\\JPG\\Bad.jpg"});
-#line 80
+#line 75
  testRunner.And("the folder \'ProcessFolderMoveTest\' with subfolders contains", ((string)(null)), table16, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
                 table17.AddRow(new string[] {
                             "\\JPG"});
-#line 83
+#line 78
  testRunner.And("the folder \'ProcessFolderMoveTest\' has subfolders", ((string)(null)), table17, "And ");
 #line hidden
             }
@@ -326,8 +326,8 @@ this.FeatureBackground();
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MoveTest2", null, ((string[])(null)));
-#line 87
- this.ScenarioInitialize(scenarioInfo);
+#line 82
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -346,17 +346,17 @@ this.FeatureBackground();
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 88
+#line 83
  testRunner.Given("I create a copy of all test files into the folder \'ProcessFolderMoveTest2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                             "Path"});
                 table18.AddRow(new string[] {
                             "JPG\\Bad.jpg"});
-#line 89
+#line 84
  testRunner.And("in the folder \'ProcessFolderMoveTest2\' I delete the files", ((string)(null)), table18, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -379,7 +379,7 @@ this.FeatureBackground();
                             "\\NEF\\20080601_020200.nef"});
                 table19.AddRow(new string[] {
                             "\\NEF\\Good.nef"});
-#line 92
+#line 87
  testRunner.And("the folder \'ProcessFolderMoveTest2\' with subfolders contains", ((string)(null)), table19, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -390,7 +390,7 @@ this.FeatureBackground();
                             "false",
                             "true",
                             "ProcessFolderMoveTest2Processed"});
-#line 104
+#line 98
  testRunner.When("I process the folder \'ProcessFolderMoveTest2\' with the following flags", ((string)(null)), table20, "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -413,10 +413,10 @@ this.FeatureBackground();
                             "\\2018\\Q2\\20180408_122634.CR2"});
                 table21.AddRow(new string[] {
                             "\\2020\\Q1\\20200127_115041.jpg"});
-#line 108
+#line 101
  testRunner.Then("the folder \'ProcessFolderMoveTest2Processed\' with subfolders contains", ((string)(null)), table21, "Then ");
 #line hidden
-#line 119
+#line 112
  testRunner.And("there are no subfolders in \'ProcessFolderMoveTest2\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -430,7 +430,7 @@ this.FeatureBackground();
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DuplicateTimeStampDontMove", null, ((string[])(null)));
-#line 121
+#line 114
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -450,10 +450,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 122
+#line 115
  testRunner.Given("I create a copy of all test files into the folder \'DuplicateTimeStampDontMove\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -481,7 +481,7 @@ this.FeatureBackground();
                             "good.mov",
                             "mov",
                             "duplicate.Mov"});
-#line 123
+#line 116
  testRunner.And("I copy the following files in the folder \'DuplicateTimeStampDontMove\'", ((string)(null)), table22, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -514,7 +514,7 @@ this.FeatureBackground();
                             "\\JPG\\Duplicate2.jpg"});
                 table23.AddRow(new string[] {
                             "\\mov\\duplicate.Mov"});
-#line 130
+#line 122
  testRunner.Then("the folder \'DuplicateTimeStampDontMove\' with subfolders contains", ((string)(null)), table23, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -525,7 +525,7 @@ this.FeatureBackground();
                             "false",
                             "false",
                             ""});
-#line 147
+#line 138
  testRunner.When("I process the folder \'DuplicateTimeStampDontMove\' with the following flags", ((string)(null)), table24, "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -558,7 +558,7 @@ this.FeatureBackground();
                             "\\NEF\\20080601_020200.nef"});
                 table25.AddRow(new string[] {
                             "\\NEF\\20080601_020200_2.nef"});
-#line 150
+#line 141
  testRunner.Then("the folder \'DuplicateTimeStampDontMove\' with subfolders contains", ((string)(null)), table25, "Then ");
 #line hidden
             }
@@ -572,8 +572,8 @@ this.FeatureBackground();
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DuplicateTimeStampMoveWithExistingFiles", null, ((string[])(null)));
-#line 167
- this.ScenarioInitialize(scenarioInfo);
+#line 158
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -592,10 +592,10 @@ this.FeatureBackground();
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 3
 this.FeatureBackground();
 #line hidden
-#line 168
+#line 159
  testRunner.Given("I create a copy of all test files into the folder \'DuplicateTimeStampMoveWithExis" +
                         "tingFiles\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -624,7 +624,7 @@ this.FeatureBackground();
                             "good.mov",
                             "mov",
                             "duplicate.Mov"});
-#line 169
+#line 160
  testRunner.And("I copy the following files in the folder \'DuplicateTimeStampMoveWithExistingFiles" +
                         "\'", ((string)(null)), table26, "And ");
 #line hidden
@@ -643,7 +643,7 @@ this.FeatureBackground();
                             "20180408_122634.CR2",
                             "DuplicateTimeStampMoveWithExistingFilesProcessed\\2018\\Q2",
                             "20180408_122634_2.CR2"});
-#line 175
+#line 166
  testRunner.And("I copy the following files", ((string)(null)), table27, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -676,7 +676,7 @@ this.FeatureBackground();
                             "\\JPG\\Duplicate2.jpg"});
                 table28.AddRow(new string[] {
                             "\\mov\\duplicate.Mov"});
-#line 180
+#line 170
  testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFiles\' with subfolders contains", ((string)(null)), table28, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -685,7 +685,7 @@ this.FeatureBackground();
                             "\\2018\\Q2\\20180408_122634.CR2"});
                 table29.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634_2.CR2"});
-#line 196
+#line 186
  testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFilesProcessed\' with subfolders con" +
                         "tains", ((string)(null)), table29, "Then ");
 #line hidden
@@ -697,7 +697,7 @@ this.FeatureBackground();
                             "false",
                             "true",
                             "DuplicateTimeStampMoveWithExistingFilesProcessed"});
-#line 201
+#line 190
  testRunner.When("I process the folder \'DuplicateTimeStampMoveWithExistingFiles\' with the following" +
                         " flags", ((string)(null)), table30, "When ");
 #line hidden
@@ -705,7 +705,7 @@ this.FeatureBackground();
                             "Path"});
                 table31.AddRow(new string[] {
                             "\\JPG\\Bad.jpg"});
-#line 204
+#line 193
  testRunner.Then("the folder \'DuplicateTimeStampMoveWithExistingFiles\' with subfolders contains", ((string)(null)), table31, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -740,7 +740,7 @@ this.FeatureBackground();
                             "\\2018\\Q2\\20180408_122634_2.CR2"});
                 table32.AddRow(new string[] {
                             "\\2018\\Q2\\20180408_122634_3.CR2"});
-#line 207
+#line 196
  testRunner.And("the folder \'DuplicateTimeStampMoveWithExistingFilesProcessed\' with subfolders con" +
                         "tains", ((string)(null)), table32, "And ");
 #line hidden

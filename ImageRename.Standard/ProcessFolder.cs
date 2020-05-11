@@ -17,21 +17,20 @@ namespace ImageRename.Standard
 {
     public class ProcessFolder
     {
-        private readonly IConfiguration Configuration;
-        private IGeocoder _BingGeoCoder;
-        private List<ContinentDescription> _continents;
-        private bool? _hasInternet;
-        public ObservableCollection<IImageDetails> _images;
-
         public ProcessFolder(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        public ObservableCollection<IImageDetails> _images;
+        private readonly IConfiguration Configuration;
+        private IGeocoder _BingGeoCoder;
+        private List<ContinentDescription> _continents;
+        private bool? _hasInternet;
         public bool DebugDontRenameFile { get; set; } = false;
         public ExifLibrary.ImageFile ExifFileDetails { get; set; }
 
-        public bool FindOnly { get; set; }
+        //public bool FindOnly { get; set; }
 
         public bool HasInternet
         {
@@ -48,11 +47,11 @@ namespace ImageRename.Standard
             { _hasInternet = value; }
         }
 
-        public object MoveToprocessed { get; set; }
-        public bool MoveToProcessedByYear { get; set; }
-        public string ProcessedPath { get; set; }
-        public string SourcePath { get; set; }
-
+        //public object MoveToprocessed { get; set; }
+        //public bool MoveToProcessedByYear { get; set; }
+        public ProcessParameters Parameters { get;  set; }
+        //public string ProcessedPath { get; set; }
+        //public string SourcePath { get; set; }
         #region RenameProgressEvent
 
         public event EventHandler<ReportRenameProgressEventArgs> ReportRenameProgress;
@@ -72,6 +71,8 @@ namespace ImageRename.Standard
 
         public event EventHandler<ReportFindFilesProgressEventArgs> ReportFoundFileProgress;
 
+        
+
         /// <summary>
         /// Event for a file has been found.
         /// </summary>
@@ -82,6 +83,185 @@ namespace ImageRename.Standard
         }
 
         #endregion FindFileProgressEvent
+
+        public bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead(Configuration["InternetConnectionTestURL"]))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void FindFiles(string root)
+        {
+            if (Parameters.SortByYear && !string.IsNullOrEmpty(Parameters.ProcessedPath))
+            {
+                Parameters.ProcessedPath = Path.GetFullPath(Parameters.ProcessedPath);
+                if (!Directory.Exists(Parameters.ProcessedPath))
+                {
+                    Directory.CreateDirectory(Parameters.ProcessedPath);
+                }
+            }
+
+            foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
+            {
+                var processed = ProcessFile(file);
+                if (processed != null)
+                {
+                    _images.Add(ProcessFile(file));
+                }
+            }
+        }
+
+        public string GetKeywordsFromLocation(IGPSCoridates gps)
+        {
+            var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
+            IGeocoder geocoder;
+            string keyWords = null;
+            var priorities = Configuration["MapKeys:Priority"].Split(',');
+            foreach (var geocoderKey in priorities)
+            {
+                Address address = null;
+
+                #region get the GeoCoder object
+
+                switch (geocoderKey.ToUpper())
+                {
+                    case "BING":
+                        geocoder = GetBingGeoCoder();
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(geocoderKey);
+                }
+
+                #endregion get the GeoCoder object
+
+                if (geocoder == null)
+                {
+                    continue;
+                }
+                var addresses = Task.Run(async () => await geocoder.ReverseGeocodeAsync(location));
+                if (addresses != null && addresses.Result.Any())
+                {
+                    address = addresses.Result?.First();
+                }
+                else
+                {
+                    continue;
+                }
+                switch (address.Provider.ToUpper())
+                {
+                    case "BING":
+                        BingAddress a = (BingAddress)address;
+                        keyWords = $"{a.CountryRegion};{GetContinent(a.CountryRegion)};{a.Locality};{a.AdminDistrict};{a.AdminDistrict2};".Replace(";Capital;", ";").Replace($";Stadt {a.AdminDistrict};", ";");
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(keyWords))
+                {
+                    break;
+                }
+            }
+            return keyWords?.Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", "");
+        }
+        public void Process(ProcessParameters parameters)
+        {
+            Parameters = parameters;
+            if (!Directory.Exists(parameters.SourcePath))
+            {
+                throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{parameters.SourcePath}");
+            }
+
+            GetBingGeoCoder();
+
+         
+            _images = new ObservableCollection<IImageDetails>();
+            _images.CollectionChanged += _images_CollectionChanged;
+            FindFiles(parameters.SourcePath);
+            RenameFiles();
+            DeleteEmptySourceFolders(parameters.SourcePath);
+        }
+
+        public IImageDetails ProcessFile(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                throw new FileNotFoundException(filename);
+            }
+            string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
+            IImageDetails image = null;
+            var fileExtention = filename.Split('.').Last().ToLower();
+            if (sFilter.Contains(fileExtention))
+            {
+                switch (fileExtention)
+                {
+                    case "nef":
+                        image = new ImageDetailsNef(filename, Parameters.ProcessedPath) { HasInternet = HasInternet };
+                        break;
+
+                    case "mov":
+                        image = new VideoFile(filename, Parameters.ProcessedPath) { HasInternet = HasInternet };
+                        break;
+
+                    default:
+                        image = new ImageDetails(filename, Parameters.ProcessedPath) { HasInternet = HasInternet };
+                        break;
+                }
+
+                ReverseGeocode(image);
+            }
+            return image;
+        }
+
+        public void ReverseGeocode(IImageDetails image)
+        {
+            if (!image.HasInternet || image.GPS == null)
+            {
+                return;
+            }
+            image.ReverseGeoCodeKeyWords = GetKeywordsFromLocation(image.GPS);
+            var keywords = image.KeyWords + ";" + image.ReverseGeoCodeKeyWords;
+            var newKeywords = (String.Join(";", keywords.Split(';').Distinct().ToList()) + ";").Replace(";;", ";");
+            if (newKeywords.StartsWith(";"))
+            {
+                newKeywords = newKeywords.Substring(1);
+            }
+            image.KeyWords = newKeywords;
+        }
+
+        internal bool AreFilesTheSame(string sourceFile, string destinationFile)
+        {
+            bool retval = false;
+
+            if (GetMD5(sourceFile) != GetMD5(destinationFile))
+            {
+                retval = false;
+            }
+
+            return retval;
+        }
+
+        internal string GetMD5(string filename)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(filename))
+                {
+                    var hash = md5.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                }
+            }
+        }
 
         private void _images_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -165,7 +345,7 @@ namespace ImageRename.Standard
             var destinationFile = item.DestinationFilePath;
             if (File.Exists(destinationFile))
             {
-                ReportRenamingProgress($"{sourceFile.Replace(SourcePath, string.Empty).PadRight(30)} ############# File Exists");
+                ReportRenamingProgress($"{sourceFile.Replace(Parameters.SourcePath, string.Empty),30} ############# File Exists");
                 if (AreFilesTheSame(sourceFile, destinationFile))
                 {
                     _ = destinationFile.Replace(item.SourceFileInfo.Extension, $"(Duplicate){item.SourceFileInfo.Extension}");
@@ -182,12 +362,12 @@ namespace ImageRename.Standard
             item.SourceFileInfo = new FileInfo(destinationFile);
             ReportFindFileProgress();
 
-            ReportRenamingProgress($"{sourceFile.Replace(SourcePath, string.Empty).PadRight(30)} ==> {destinationFile.Replace(SourcePath, string.Empty)}");
+            ReportRenamingProgress($"{sourceFile.Replace(Parameters.SourcePath, string.Empty),30} ==> {destinationFile.Replace(Parameters.SourcePath, string.Empty)}");
         }
 
         private void RenameFiles()
         {
-            if (FindOnly == true || _images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
+            if (Parameters.FindOnly == true || _images == null || !_images.Any(a => a.NeedsRenaming || a.NeedsMoving))
             {
                 return;
             }
@@ -200,7 +380,7 @@ namespace ImageRename.Standard
                 }
                 catch (Exception ex)
                 {
-                    ReportRenamingProgress($"\r\n##############Error\r\n{item.SourceFileInfo.FullName.Replace(SourcePath, string.Empty)}r\n{ex.Message}\r\n####################\n\n");
+                    ReportRenamingProgress($"\r\n##############Error\r\n{item.SourceFileInfo.FullName.Replace(Parameters.SourcePath, string.Empty)}r\n{ex.Message}\r\n####################\n\n");
                 }
             }
         }
@@ -237,185 +417,6 @@ namespace ImageRename.Standard
             var file = ExifLibrary.ImageFile.FromFile(image.SourceFileInfo.FullName);
             file.Properties.Set(ExifTag.WindowsKeywords, image.KeyWords);
             file.Save(image.SourceFileInfo.FullName);
-        }
-
-        internal bool AreFilesTheSame(string sourceFile, string destinationFile)
-        {
-            bool retval = false;
-
-            if (GetMD5(sourceFile) != GetMD5(destinationFile))
-            {
-                retval = false;
-            }
-
-            return retval;
-        }
-
-        internal string GetMD5(string filename)
-        {
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(filename))
-                {
-                    var hash = md5.ComputeHash(stream);
-                    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-                }
-            }
-        }
-
-        public bool CheckForInternetConnection()
-        {
-            try
-            {
-                using (var client = new WebClient())
-                using (client.OpenRead(Configuration["InternetConnectionTestURL"]))
-                    return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public void FindFiles(string root)
-        {
-            if (MoveToProcessedByYear && !string.IsNullOrEmpty(ProcessedPath))
-            {
-                ProcessedPath = Path.GetFullPath(ProcessedPath);
-                if (!Directory.Exists(ProcessedPath))
-                {
-                    Directory.CreateDirectory(ProcessedPath);
-                }
-            }
-
-            foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
-            {
-                var processed = ProcessFile(file);
-                if (processed != null)
-                {
-                    _images.Add(ProcessFile(file));
-                }
-            }
-        }
-
-        public string GetKeywordsFromLocation(IGPSCoridates gps)
-        {
-            var location = new Location(gps.DegreesLatitude, gps.DegreesLongitude);
-            IGeocoder geocoder;
-            string keyWords = null;
-            var priorities = Configuration["MapKeys:Priority"].Split(',');
-            foreach (var geocoderKey in priorities)
-            {
-                Address address = null;
-
-                #region get the GeoCoder object
-
-                switch (geocoderKey.ToUpper())
-                {
-                    case "BING":
-                        geocoder = GetBingGeoCoder();
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(geocoderKey);
-                }
-
-                #endregion get the GeoCoder object
-
-                if (geocoder == null)
-                {
-                    continue;
-                }
-                var addresses = Task.Run(async () => await geocoder.ReverseGeocodeAsync(location));
-                if (addresses != null && addresses.Result.Any())
-                {
-                    address = addresses.Result?.First();
-                }
-                else
-                {
-                    continue;
-                }
-                switch (address.Provider.ToUpper())
-                {
-                    case "BING":
-                        BingAddress a = (BingAddress)address;
-                        keyWords = $"{a.CountryRegion};{GetContinent(a.CountryRegion)};{a.Locality};{a.AdminDistrict};{a.AdminDistrict2};".Replace(";Capital;", ";").Replace($";Stadt {a.AdminDistrict};", ";");
-                        break;
-
-                    default:
-                        break;
-                }
-
-                if (!string.IsNullOrEmpty(keyWords))
-                {
-                    break;
-                }
-            }
-            return keyWords?.Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", ";").Replace(";;", "");
-        }
-
-        public void Process(string root)
-        {
-            if (!Directory.Exists(root))
-            {
-                throw new DirectoryNotFoundException($"\r\nFolder to process has not been found.\r\n\t{root}");
-            }
-
-            GetBingGeoCoder();
-
-            SourcePath = root;
-            _images = new ObservableCollection<IImageDetails>();
-            _images.CollectionChanged += _images_CollectionChanged;
-            FindFiles(root);
-            RenameFiles();
-            DeleteEmptySourceFolders(SourcePath);
-        }
-
-        public IImageDetails ProcessFile(string filename)
-        {
-            if (!File.Exists(filename))
-            {
-                throw new FileNotFoundException(filename);
-            }
-            string[] sFilter = "jpg;jpeg;cr2;nef;mov;m4a;mp4".Split(';');
-            IImageDetails image = null;
-            var fileExtention = filename.Split('.').Last().ToLower();
-            if (sFilter.Contains(fileExtention))
-            {
-                switch (fileExtention)
-                {
-                    case "nef":
-                        image = new ImageDetailsNef(filename, ProcessedPath) { HasInternet = HasInternet };
-                        break;
-
-                    case "mov":
-                        image = new VideoFile(filename, ProcessedPath) { HasInternet = HasInternet };
-                        break;
-
-                    default:
-                        image = new ImageDetails(filename, ProcessedPath) { HasInternet = HasInternet };
-                        break;
-                }
-
-                ReverseGeocode(image);
-                
-            }
-            return image;
-        }
-
-        public void ReverseGeocode(IImageDetails image)
-        {
-            if (!image.HasInternet || image.GPS == null)
-            {
-                return;
-            }
-            var keywords = image.KeyWords + ";" + GetKeywordsFromLocation(image.GPS);
-            var newKeywords = (String.Join(";", keywords.Split(';').Distinct().ToList()) + ";").Replace(";;", ";");
-            if (newKeywords.StartsWith(";"))
-            {
-                newKeywords = newKeywords.Substring(1);
-            }
-            image.KeyWords = newKeywords;
         }
     }
 }
